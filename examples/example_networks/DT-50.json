@@ -1,0 +1,673 @@
+{
+    "name": "DT-17",
+    "nodes": [
+        {
+            "id": 0,
+            "label": "Aachen",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 1,
+            "label": "Augsburg",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 2,
+            "label": "Bayreuth",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 3,
+            "label": "Berlin",
+            "IXP": 7,
+            "DC": 16
+        },
+        {
+            "id": 4,
+            "label": "Bielefeld",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 5,
+            "label": "Braunschweig",
+            "IXP": 0,
+            "DC": 3
+        },
+        {
+            "id": 6,
+            "label": "Bremen",
+            "IXP": 0,
+            "DC": 3
+        },
+        {
+            "id": 7,
+            "label": "Bremerhaven",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 8,
+            "label": "Chemnitz",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 9,
+            "label": "Darmstadt",
+            "IXP": 0,
+            "DC": 4
+        },
+        {
+            "id": 10,
+            "label": "Dortmund",
+            "IXP": 0,
+            "DC": 5
+        },
+        {
+            "id": 11,
+            "label": "Dresden",
+            "IXP": 0,
+            "DC": 5
+        },
+        {
+            "id": 12,
+            "label": "Duesseldorf",
+            "IXP": 5,
+            "DC": 16
+        },
+        {
+            "id": 13,
+            "label": "Erfurt",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 14,
+            "label": "Essen",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 15,
+            "label": "Flensburg",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 16,
+            "label": "Frankfurt",
+            "IXP": 18,
+            "DC": 40
+        },
+        {
+            "id": 17,
+            "label": "Freiburg",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 18,
+            "label": "Fulda",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 19,
+            "label": "Giessen",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 20,
+            "label": "Greifswald",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 21,
+            "label": "Hamburg",
+            "IXP": 3,
+            "DC": 15
+        },
+        {
+            "id": 22,
+            "label": "Hannover",
+            "IXP": 0,
+            "DC": 3
+        },
+        {
+            "id": 23,
+            "label": "Kaiserslautern",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 24,
+            "label": "Karlsruhe",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 25,
+            "label": "Kassel",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 26,
+            "label": "Kempten",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 27,
+            "label": "Kiel",
+            "IXP": 0,
+            "DC": 3
+        },
+        {
+            "id": 28,
+            "label": "Koblenz",
+            "IXP": 0,
+            "DC": 4
+        },
+        {
+            "id": 29,
+            "label": "Koeln",
+            "IXP": 0,
+            "DC": 4
+        },
+        {
+            "id": 30,
+            "label": "Konstanz",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 31,
+            "label": "Leipzig",
+            "IXP": 0,
+            "DC": 7
+        },
+        {
+            "id": 32,
+            "label": "Magdeburg",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 33,
+            "label": "Mannheim",
+            "IXP": 0,
+            "DC": 4
+        },
+        {
+            "id": 34,
+            "label": "Muenchen",
+            "IXP": 1,
+            "DC": 20
+        },
+        {
+            "id": 35,
+            "label": "Muenster",
+            "IXP": 0,
+            "DC": 3
+        },
+        {
+            "id": 36,
+            "label": "Norden",
+            "IXP": 1,
+            "DC": 5
+        },
+        {
+            "id": 37,
+            "label": "Nuernberg",
+            "IXP": 3,
+            "DC": 16
+        },
+        {
+            "id": 38,
+            "label": "Oldenburg",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 39,
+            "label": "Osnabrueck",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 40,
+            "label": "Passau",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 41,
+            "label": "Regensburg",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 42,
+            "label": "Saarbruecken",
+            "IXP": 0,
+            "DC": 3
+        },
+        {
+            "id": 43,
+            "label": "Schwerin",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 44,
+            "label": "Siegen",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 45,
+            "label": "Stuttgart",
+            "IXP": 0,
+            "DC": 13
+        },
+        {
+            "id": 46,
+            "label": "Trier",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 47,
+            "label": "Ulm",
+            "IXP": 0,
+            "DC": 2
+        },
+        {
+            "id": 48,
+            "label": "Wesel",
+            "IXP": 0,
+            "DC": 1
+        },
+        {
+            "id": 49,
+            "label": "Wuerzburg",
+            "IXP": 0,
+            "DC": 2
+        }
+    ],
+    "links": [
+        {
+            "dst": 0,
+            "id": 0,
+            "length": 160,
+            "slots": 400,
+            "src": 2
+        },
+        {
+            "dst": 2,
+            "id": 1,
+            "length": 160,
+            "slots": 400,
+            "src": 0
+        },
+        {
+            "dst": 0,
+            "id": 2,
+            "length": 313,
+            "slots": 400,
+            "src": 6
+        },
+        {
+            "dst": 6,
+            "id": 3,
+            "length": 313,
+            "slots": 400,
+            "src": 0
+        },
+        {
+            "dst": 1,
+            "id": 4,
+            "length": 124,
+            "slots": 400,
+            "src": 2
+        },
+        {
+            "dst": 2,
+            "id": 5,
+            "length": 124,
+            "slots": 400,
+            "src": 1
+        },
+        {
+            "dst": 1,
+            "id": 6,
+            "length": 288,
+            "slots": 400,
+            "src": 3
+        },
+        {
+            "dst": 3,
+            "id": 7,
+            "length": 288,
+            "slots": 400,
+            "src": 1
+        },
+        {
+            "dst": 1,
+            "id": 8,
+            "length": 159,
+            "slots": 400,
+            "src": 4
+        },
+        {
+            "dst": 4,
+            "id": 9,
+            "length": 159,
+            "slots": 400,
+            "src": 1
+        },
+        {
+            "dst": 2,
+            "id": 10,
+            "length": 132,
+            "slots": 400,
+            "src": 4
+        },
+        {
+            "dst": 4,
+            "id": 11,
+            "length": 132,
+            "slots": 400,
+            "src": 2
+        },
+        {
+            "dst": 3,
+            "id": 12,
+            "length": 291,
+            "slots": 400,
+            "src": 4
+        },
+        {
+            "dst": 4,
+            "id": 13,
+            "length": 291,
+            "slots": 400,
+            "src": 3
+        },
+        {
+            "dst": 3,
+            "id": 14,
+            "length": 195,
+            "slots": 400,
+            "src": 8
+        },
+        {
+            "dst": 8,
+            "id": 15,
+            "length": 195,
+            "slots": 400,
+            "src": 3
+        },
+        {
+            "dst": 4,
+            "id": 16,
+            "length": 183,
+            "slots": 400,
+            "src": 6
+        },
+        {
+            "dst": 6,
+            "id": 17,
+            "length": 183,
+            "slots": 400,
+            "src": 4
+        },
+        {
+            "dst": 4,
+            "id": 18,
+            "length": 264,
+            "slots": 400,
+            "src": 8
+        },
+        {
+            "dst": 8,
+            "id": 19,
+            "length": 264,
+            "slots": 400,
+            "src": 4
+        },
+        {
+            "dst": 4,
+            "id": 20,
+            "length": 352,
+            "slots": 400,
+            "src": 10
+        },
+        {
+            "dst": 10,
+            "id": 21,
+            "length": 352,
+            "slots": 400,
+            "src": 4
+        },
+        {
+            "dst": 5,
+            "id": 22,
+            "length": 37,
+            "slots": 400,
+            "src": 6
+        },
+        {
+            "dst": 6,
+            "id": 23,
+            "length": 37,
+            "slots": 400,
+            "src": 5
+        },
+        {
+            "dst": 5,
+            "id": 24,
+            "length": 35,
+            "slots": 400,
+            "src": 7
+        },
+        {
+            "dst": 7,
+            "id": 25,
+            "length": 35,
+            "slots": 400,
+            "src": 5
+        },
+        {
+            "dst": 6,
+            "id": 26,
+            "length": 95,
+            "slots": 400,
+            "src": 9
+        },
+        {
+            "dst": 9,
+            "id": 27,
+            "length": 95,
+            "slots": 400,
+            "src": 6
+        },
+        {
+            "dst": 7,
+            "id": 28,
+            "length": 42,
+            "slots": 400,
+            "src": 9
+        },
+        {
+            "dst": 9,
+            "id": 29,
+            "length": 42,
+            "slots": 400,
+            "src": 7
+        },
+        {
+            "dst": 8,
+            "id": 30,
+            "length": 393,
+            "slots": 400,
+            "src": 10
+        },
+        {
+            "dst": 10,
+            "id": 31,
+            "length": 393,
+            "slots": 400,
+            "src": 8
+        },
+        {
+            "dst": 8,
+            "id": 32,
+            "length": 281,
+            "slots": 400,
+            "src": 11
+        },
+        {
+            "dst": 11,
+            "id": 33,
+            "length": 281,
+            "slots": 400,
+            "src": 8
+        },
+        {
+            "dst": 9,
+            "id": 34,
+            "length": 194,
+            "slots": 400,
+            "src": 10
+        },
+        {
+            "dst": 10,
+            "id": 35,
+            "length": 194,
+            "slots": 400,
+            "src": 9
+        },
+        {
+            "dst": 10,
+            "id": 36,
+            "length": 225,
+            "slots": 400,
+            "src": 11
+        },
+        {
+            "dst": 11,
+            "id": 37,
+            "length": 225,
+            "slots": 400,
+            "src": 10
+        },
+        {
+            "dst": 10,
+            "id": 38,
+            "length": 79,
+            "slots": 400,
+            "src": 12
+        },
+        {
+            "dst": 12,
+            "id": 39,
+            "length": 79,
+            "slots": 400,
+            "src": 10
+        },
+        {
+            "dst": 11,
+            "id": 40,
+            "length": 208,
+            "slots": 400,
+            "src": 14
+        },
+        {
+            "dst": 14,
+            "id": 41,
+            "length": 208,
+            "slots": 400,
+            "src": 11
+        },
+        {
+            "dst": 11,
+            "id": 42,
+            "length": 166,
+            "slots": 400,
+            "src": 16
+        },
+        {
+            "dst": 16,
+            "id": 43,
+            "length": 166,
+            "slots": 400,
+            "src": 11
+        },
+        {
+            "dst": 12,
+            "id": 44,
+            "length": 66,
+            "slots": 400,
+            "src": 13
+        },
+        {
+            "dst": 13,
+            "id": 45,
+            "length": 66,
+            "slots": 400,
+            "src": 12
+        },
+        {
+            "dst": 13,
+            "id": 46,
+            "length": 80,
+            "slots": 400,
+            "src": 14
+        },
+        {
+            "dst": 14,
+            "id": 47,
+            "length": 80,
+            "slots": 400,
+            "src": 13
+        },
+        {
+            "dst": 14,
+            "id": 48,
+            "length": 92,
+            "slots": 400,
+            "src": 15
+        },
+        {
+            "dst": 15,
+            "id": 49,
+            "length": 92,
+            "slots": 400,
+            "src": 14
+        },
+        {
+            "dst": 15,
+            "id": 50,
+            "length": 156,
+            "slots": 400,
+            "src": 16
+        },
+        {
+            "dst": 16,
+            "id": 51,
+            "length": 156,
+            "slots": 400,
+            "src": 15
+        }
+    ]
+}
+
+// TODO LINKS!!!

@@ -1,0 +1,368 @@
+#ifndef __CONTROLLER_H__
+#define __CONTROLLER_H__
+
+// STL
+#include <memory>
+#include <unordered_set>
+// alloc
+#include "../alloc/allocator.hpp"
+// core
+#include "../core/connection.hpp"
+#include "../core/network.hpp"
+#include "../core/p2p.hpp"
+#include "../core/demand.hpp"
+// sim
+#include "event.hpp"
+
+/**
+ * @brief Class with the controller information.
+ *
+ * This class allows you to create the object Controller and manipulate it by
+ * its methods. The importance of this object is that it handles connections
+ * allocation and P2P management. The Controller is the link between the Simulator
+ * and the Network.
+ *
+ */
+class Controller
+{
+public:
+	/**
+	 * @brief Edge structure for adjacency list representation.
+	 * Represents a directed edge in the network graph.
+	 */
+	struct Edge
+	{
+		int to;       ///< Destination node index
+		int linkId;   ///< ID of the link in the network
+		double w;     ///< Weight (typically distance/cost)
+	};
+
+	/**
+	 * @brief Custom hash functor for std::vector<int>.
+	 * Enables using vector<int> as a key in unordered containers.
+	 */
+	struct VecHash {
+		size_t operator()(const std::vector<int>& v) const {
+			size_t seed = v.size();
+			for (int i : v) {
+				seed ^= i + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+			}
+			return seed;
+		}
+	};
+
+	/**
+	 * @brief Constructs a new Controller object. The attribute connections is
+	 * assigned to an empty Connection vector. This object does not have a network
+	 * or connections registered.
+	 *
+	 */
+	Controller();
+	/**
+	 * @brief Constructs a new Controller object. It takes a Network object and
+	 * stores it as an attribute. An empty Connection vector is created and
+	 * stored as well.
+	 *
+	 * @param network The pointer type Network object. This contains all
+	 * the information about the network, nodes, routes, path length and slots.
+	 */
+	Controller(std::shared_ptr<Network> network);
+
+	/**
+	 * @brief Sets the Network object as the network attribute of the controller.
+	 * This is the network that the controller will now handle and who will
+	 * interact with the simulator
+	 *
+	 * @param network The pointer type Network object. This contains all
+	 * the information about the network, nodes, routes, path length and slots.
+	 */
+	void setNetwork(std::shared_ptr<Network> network);
+	/**
+	 * @brief Get the Network in the controller. The return contains all
+	 * the information about the network, nodes, routes, path length and slots.
+	 *
+	 * @return Network. a pointer to the network object from the controller. This
+	 * is the network the controller is currently using
+	 */
+	std::shared_ptr<Network> getNetwork(void) const;
+
+	/**
+	 * @brief Set the allocator of the controller. The allocator determines how
+	 * the connections will be assigned in the network.
+	 *
+	 * @param allocator A pointer to the allocator object.
+	 */
+	void setAllocator(std::unique_ptr<Allocator> allocator);
+	/**
+	 * @brief Get the Allocator object of the controller. The allocator determines
+	 * how the connections will be assigned in the network.
+	 *
+	 * @return Allocator* a pointer to the allocator object.
+	 */
+	std::unique_ptr<Allocator> &getAllocator(void);
+
+	/**
+	 * @brief Set the Callback object
+	 * This function sets a callback to the simulation. It is called
+	 * after every event. It is useful to
+	 * get the time between last provisioning and the next update event.
+	 *
+	 * @param callbackFunction a pointer to inter-event function
+	 */
+	void setCallbackFunction(
+			void (*callbackFunction)(
+					Network &network,																			 // modifiable reference
+					std::vector<std::vector<Demand>> &demands,						 // modifiable reference
+					std::vector<std::unique_ptr<Connection>> &connections, // modifiable reference
+					double time));
+	/**
+	 * @brief Set the failure management function.
+	 * This function will be called in case of a failure in the simulation.
+	 * It allows to implement custom failure handling strategies.
+	 * @param failureManagementFunction a pointer to the failure management function
+	 */
+	void setFailureManagementFunction(
+			void (*failureManagementFunction)(
+					Network &network,																			 // modifiable reference
+					std::vector<std::vector<Demand>> &demands,						 // modifiable reference
+					std::vector<std::unique_ptr<Connection>> &connectionsAffected, // modifiable reference
+					eventType eventType,
+					double time));
+
+	/**
+	 * @brief Adds a new connection to the controller's list of connections.
+	 * The new connection is created with the given parameters and added to the
+	 * connections vector.
+	 */
+	void addConnection(std::unique_ptr<Connection> &&connection);
+	/**
+	 * @brief Get a connection by its ID.
+	 *
+	 *
+	 * @param idConnection The ID of the connection (0-based sequential index).
+	 * @return Connection& A reference to the connection object.
+	 * @throws std::out_of_range if the ID is invalid.
+	 */
+	Connection &getConnection(int idConnection);
+	/**
+	 * @brief Get the connections vector. This vector contains all the
+	 * connections that are currently active in the network. It is used to keep
+	 * track the connections and their respective slots.
+	 *
+	 * @return a vector of Connection objects.
+	 */
+	std::vector<std::unique_ptr<Connection>> &getConnections();
+	/**
+	 * @brief Provisions the demands by allocating the necessary resources in the
+	 * network. This function pointer is set based on the network type (EON, SDM, MB).
+	 *
+	 * @param demands The vector of unique pointers to Demand objects.
+	 * @param bitRates The vector of shared pointers to BitRate objects.
+	 * @param time The current time in the simulation.
+	 */
+	void assignConnections(std::vector<std::vector<Demand>> &demands,
+												 const std::vector<std::shared_ptr<BitRate>> &bitRates,
+												 double time);
+
+	/**
+	 * @brief Computes k shortest paths for all node pairs using Yen's algorithm.
+	 * For each pair of nodes (src, dst) where src < dst, computes k shortest paths
+	 * and creates the reverse paths for (dst, src).
+	 * @param k Number of shortest paths to compute (default: 3)
+	 */
+	void setPaths(int k = 3);
+	/**
+	 * @brief Sets the paths vector from the routes on the JSON file.
+	 * @param pathsFilename name of the JSON file that contains the routes.
+	 */
+	void setPaths(std::string pathsFilename);
+	/**
+	 * @brief Get the Paths vector. This vector represents all the routes present
+	 * in the network between the source and destination nodes.
+	 *
+	 * @return a pointer to the four dimensional vector which represents the
+	 * paths.
+	 */
+	std::shared_ptr<Paths> getPaths(void) const;
+	/**
+	 * @brief Clears all stored paths.
+	 */
+	void clearPaths(void);
+
+	/**
+	 * @brief Adds a new P2P connection to the controller's list of P2P connections.
+	 * The new P2P connection is created with the given source and destination nodes,
+	 * and new fibers are created for each link in the specified path.
+	 *
+	 * @param src Source node id
+	 * @param dst Destination node id
+	 * @param pathIdx Index of the path to use from the precomputed paths
+	 * @param bandSlotMatrix Configuration matrix for fiber creation [band][core][mode] = slots
+	 */
+	void addP2P(int src, int dst, int pathIdx, const std::map<fns::Band, std::vector<std::vector<int>>> &bandSlotMatrix);
+	/**
+	 * @brief Adds a new P2P connection to the controller's list of P2P connections.
+	 * The new P2P connection is created with the given source and destination nodes,
+	 * and the specified fibers are used for each link in the specified path.
+	 *
+	 * @param src Source node id
+	 * @param dst Destination node id
+	 * @param pathIdx Index of the path to use from the precomputed paths
+	 * @param fiberIdxs Vector of fiber indices to be used in each link of the path
+	 *
+	 * @throws std::invalid_argument if the size of fiberIdxs does not match the number of links in the path
+	 * @throws std::invalid_argument if any fiber is active or already assigned to another P2P
+	 */
+	void addP2P(int src, int dst, int pathIdx, std::vector<int> fiberIdxs);
+	/**
+	 * @brief Get a P2P connection by its ID.
+	 *
+	 * @param id The ID of the P2P connection (0-based sequential index).
+	 * @return P2P& A reference to the P2P connection object.
+	 * @throws std::out_of_range if the ID is invalid.
+	 */
+	P2P &getP2P(int id);
+	/**
+	 * @brief Get all P2P connections.
+	 *
+	 * @return std::vector<std::unique_ptr<P2P>>& A reference to the vector of P2P connections.
+	 */
+	std::vector<std::unique_ptr<P2P>> &getP2Ps();
+	/**
+	 * @brief Migrates an existing connection to a specified P2P connection.
+	 * This involves checking if the connection is not already allocated in a P2P,
+	 * allocating the required slots in the specified P2P, and updating the
+	 * connection's allocation status and bitrate.
+	 *
+	 * @param p2pId The ID of the P2P connection to migrate to.
+	 * @param core The core index to use in the P2P fiber.
+	 * @param band The band to use in the P2P fiber.
+	 * @param mode The mode to use in the P2P fiber.
+	 * @param slotFrom The starting slot index (inclusive) for allocation.
+	 * @param slotTo The ending slot index (exclusive) for allocation.
+	 * @param idConnection The ID of the connection to be migrated.
+	 * @param bitRate A shared pointer to the new BitRate object for the connection.
+	 *
+	 * @throws std::runtime_error if the connection is already allocated in a P2P.
+	 */
+	void migrateConnectionToP2P(int p2pId, 
+															int core, 
+															fns::Band band, 
+															int mode, 
+															int slotFrom, 
+															int slotTo, 
+															int idConnection, 
+															std::shared_ptr<const BitRate> bitRate);
+
+
+	// Network modification methods
+
+	/**
+	 * @brief Adds a bidirectional link between two nodes in the network.
+	 *
+	 * By default this just marks the topology as dirty;
+	 * actual adjacency/path recomputation happens later (lazy).
+	 *
+	 * @param src Source node index.
+	 * @param dst Destination node index.
+	 * @param length Link length.
+	 * @param bandSlotMatrix Fiber slot configuration for the new link(s).
+	 */
+	void addLink(int src,
+							 int dst,
+							 float length,
+							 const std::map<fns::Band, std::vector<std::vector<int>>> &bandSlotMatrix);
+	/**
+	 * @brief Adds a new node between time periods to the network with the given attributes.
+	 *
+	 * By default this just marks the topology as dirty;
+	 * actual adjacency/path recomputation happens later (lazy).
+	 *
+	 * @param id The ID of the node (must be unique).
+	 * @param dcs Optional number of data centers at the node.
+	 * @param ixps Optional number of Internet exchange points at the node.
+	 * @param population Optional population value associated with the node.
+	 * @param label Optional string label for the node.
+	 * @param longitude Optional longitude coordinate for the node's geographical location.
+	 * @param latitude Optional latitude coordinate for the node's geographical location.
+	 * @param param1 Optional parameter 1 for custom use.
+	 * @param param2 Optional parameter 2 for custom use.
+	 */
+	void addNode(int id,
+							 std::optional<int> dcs = std::nullopt,
+							 std::optional<int> ixps = std::nullopt,
+							 std::optional<double> population = std::nullopt,
+							 std::optional<std::string> label = std::nullopt,
+							 std::optional<double> longitude = std::nullopt,
+							 std::optional<double> latitude = std::nullopt,
+							 std::optional<double> param1 = std::nullopt,
+							 std::optional<double> param2 = std::nullopt);	
+
+
+	// Path helpers
+							 
+	/**
+	 * @brief Builds the adjacency list representation of the network and calculates node degrees.
+	 * 
+	 * This method creates an adjacency list from the network's links and simultaneously
+	 * calculates the out-degree for each node. The calculated degree is stored in each
+	 * Node object using setDegree(). This ensures that node degrees are automatically
+	 * updated whenever the network topology changes (e.g., when links are added).
+	 * 
+	 * The adjacency list is used for efficient pathfinding algorithms (Dijkstra, Yen's K-shortest paths).
+	 * 
+	 * @note This method is automatically called when:
+	 *       - The network is set via setNetwork()
+	 *       - Links or nodes are added via addLink() or addNode() (triggers recompute flag)
+	 */
+	void buildAdjacencyList();
+
+	// TODO: MAKE IT PRIVATE and set a getter
+	void (*failureManagementFunction)(
+		Network& network,
+		std::vector<std::vector<Demand>>& demands,
+		std::vector<std::unique_ptr<Connection>>& connectionsAffected,
+		eventType eventType,
+		double time);
+
+private:
+	std::shared_ptr<Network> network;
+	std::unique_ptr<Allocator> allocator;
+	std::shared_ptr<Paths> path;
+	std::vector<std::unique_ptr<Connection>> connections;
+	std::vector<std::unique_ptr<P2P>> p2ps;
+	std::vector<std::vector<Edge>> adj;
+	int k;
+	bool recompute;
+
+	/**
+	 * @brief Callback function called after every event in the simulation.
+	 */
+	void (*callbackFunction)(
+			Network &network,// modifiable reference
+			std::vector<std::vector<Demand>> &demands,// modifiable reference
+			std::vector<std::unique_ptr<Connection>> &connections, // modifiable reference
+			double time);
+
+	// Path helpers
+
+	/**
+	 * @brief Computes the shortest path between two nodes using Dijkstra's algorithm.
+	 * @param src Source node index
+	 * @param dst Destination node index
+	 * @param excludedLinks Set of link IDs to exclude from the search
+	 * @return std::vector<int> Vector of node indices representing the shortest path
+	 */
+	std::vector<int> dijkstra(int src, int dst, const std::unordered_set<int> &excludedLinks = {}, const std::unordered_set<int> &excludedNodes = {});
+
+	/**
+	 * @brief Computes k shortest paths between two nodes using Yen's algorithm.
+	 * @param src Source node index
+	 * @param dst Destination node index
+	 * @param k Number of shortest paths to find
+	 * @return std::vector<std::vector<int>> Vector of paths, each path is a vector of node indices
+	 */
+	std::vector<std::vector<int>> yenKShortestPaths(int src, int dst, int k);
+};
+
+#endif

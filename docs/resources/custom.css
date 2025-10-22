@@ -1,0 +1,69 @@
+.cls-1 { fill: #e24329; }  /* Red */
+.cls-2 { fill: #fc6d26; }  /* Orange */
+.cls-3 { fill: #fca326; }  /* Yellow */
+
+/* GitLab Corner Styles */
+.gitlab-corner {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 70px;
+    height: 70px;
+    z-index: 10000;
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+/* Create a proper triangle background */
+.gitlab-corner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: #3f5fd3; /* GitLab Orange */
+    clip-path: polygon(100% 0, 100% 100%, 0 0); /* Triangle Shape */
+}
+
+/* Adjust GitLab logo placement */
+.gitlab-corner svg {
+    position: absolute;
+    top: 7px;  /* Move it down */
+    right: 7px; /* Move it left */
+    width: 50.3px; /* Adjust size */
+    height: 50.3px;
+    transform: rotate(0deg); /* Remove rotation */
+}
+
+/* Ensure animation runs infinitely when hovered */
+.gitlab-corner:hover .cls-1 { animation: cycle 1s infinite; }
+.gitlab-corner:hover .cls-2 { animation: cycleMid 1s infinite; }
+.gitlab-corner:hover .cls-3 { animation: cycleEnd 1s infinite; }
+
+/* Define smooth infinite keyframe animation */
+@keyframes cycle { 
+    0%, 100% { fill: #fc6d26; } 
+    33% { fill: #e24329; } 
+    66% { fill: #fca326; } 
+}
+@keyframes cycleMid { 
+    0%, 100% { fill: #e24329; } 
+    33% { fill: #fca326; } 
+    66% { fill: #fc6d26; } 
+}
+@keyframes cycleEnd { 
+    0%, 100% { fill: #fca326; } 
+    33% { fill: #fc6d26; } 
+    66% { fill: #e24329; } 
+}
+
+html {
+    /* Make sure sidebar is wide enough to contain the page title (logo + title + version) */
+    --side-nav-fixed-width: 335px;
+}
+
+/* Auto expand navtree */
+#nav-tree .children_ul {
+    display: block;
+  }

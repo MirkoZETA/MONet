@@ -1,0 +1,13 @@
+{
+    "routes": [
+        {
+            "src": 0,
+            "dst": 1,
+            "paths": [
+                [0, 1],
+                [0, 2, 3, 1]
+            ],
+            "comment": "Example route file. Omit this routes file to auto-calculate k-shortest paths."
+        }
+    ]
+}

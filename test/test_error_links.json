@@ -1,0 +1,16 @@
+{
+  "name": "Warning Test Network",
+  "nodes": [
+    { "id": 0, "label": "Node A" },
+    { "id": 1, "label": "Node B" }
+  ],
+  "links": [
+    {
+      "id": 0, "src": 0, "dst": 1, "length": 100.0,
+      "fibers": [
+        { "slots": 400, "type": "SSMF" },
+        { "slots": [100, 90, 80], "type": "MCF" }
+      ]
+    }
+  ]
+}

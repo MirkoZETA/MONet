@@ -1,0 +1,1980 @@
+=== Testing K-Shortest Paths (K=5) with DT17.json ===
+=== Network Nodes ===
+Node 0: Norden
+Node 1: Hamburg
+Node 2: Bremen
+Node 3: Berlin
+Node 4: Hannover
+Node 5: Essen
+Node 6: Dortmund
+Node 7: Duesseldorf
+Node 8: Leipzig
+Node 9: Koeln
+Node 10: Frankfurt
+Node 11: Nuernberg
+Node 12: Mannheim
+Node 13: Karlsruhe
+Node 14: Stuttgart
+Node 15: Ulm
+Node 16: Muenchen
+
+=== Network Links ===
+Link 0: Bremen -> Norden (Length: 160 km)
+Link 1: Norden -> Bremen (Length: 160 km)
+Link 2: Dortmund -> Norden (Length: 313 km)
+Link 3: Norden -> Dortmund (Length: 313 km)
+Link 4: Bremen -> Hamburg (Length: 124 km)
+Link 5: Hamburg -> Bremen (Length: 124 km)
+Link 6: Berlin -> Hamburg (Length: 288 km)
+Link 7: Hamburg -> Berlin (Length: 288 km)
+Link 8: Hannover -> Hamburg (Length: 159 km)
+Link 9: Hamburg -> Hannover (Length: 159 km)
+Link 10: Hannover -> Bremen (Length: 132 km)
+Link 11: Bremen -> Hannover (Length: 132 km)
+Link 12: Hannover -> Berlin (Length: 291 km)
+Link 13: Berlin -> Hannover (Length: 291 km)
+Link 14: Leipzig -> Berlin (Length: 195 km)
+Link 15: Berlin -> Leipzig (Length: 195 km)
+Link 16: Dortmund -> Hannover (Length: 183 km)
+Link 17: Hannover -> Dortmund (Length: 183 km)
+Link 18: Leipzig -> Hannover (Length: 264 km)
+Link 19: Hannover -> Leipzig (Length: 264 km)
+Link 20: Frankfurt -> Hannover (Length: 352 km)
+Link 21: Hannover -> Frankfurt (Length: 352 km)
+Link 22: Dortmund -> Essen (Length: 37 km)
+Link 23: Essen -> Dortmund (Length: 37 km)
+Link 24: Duesseldorf -> Essen (Length: 35 km)
+Link 25: Essen -> Duesseldorf (Length: 35 km)
+Link 26: Koeln -> Dortmund (Length: 95 km)
+Link 27: Dortmund -> Koeln (Length: 95 km)
+Link 28: Koeln -> Duesseldorf (Length: 42 km)
+Link 29: Duesseldorf -> Koeln (Length: 42 km)
+Link 30: Frankfurt -> Leipzig (Length: 393 km)
+Link 31: Leipzig -> Frankfurt (Length: 393 km)
+Link 32: Nuernberg -> Leipzig (Length: 281 km)
+Link 33: Leipzig -> Nuernberg (Length: 281 km)
+Link 34: Frankfurt -> Koeln (Length: 194 km)
+Link 35: Koeln -> Frankfurt (Length: 194 km)
+Link 36: Nuernberg -> Frankfurt (Length: 225 km)
+Link 37: Frankfurt -> Nuernberg (Length: 225 km)
+Link 38: Mannheim -> Frankfurt (Length: 79 km)
+Link 39: Frankfurt -> Mannheim (Length: 79 km)
+Link 40: Stuttgart -> Nuernberg (Length: 208 km)
+Link 41: Nuernberg -> Stuttgart (Length: 208 km)
+Link 42: Muenchen -> Nuernberg (Length: 166 km)
+Link 43: Nuernberg -> Muenchen (Length: 166 km)
+Link 44: Karlsruhe -> Mannheim (Length: 66 km)
+Link 45: Mannheim -> Karlsruhe (Length: 66 km)
+Link 46: Stuttgart -> Karlsruhe (Length: 80 km)
+Link 47: Karlsruhe -> Stuttgart (Length: 80 km)
+Link 48: Ulm -> Stuttgart (Length: 92 km)
+Link 49: Stuttgart -> Ulm (Length: 92 km)
+Link 50: Muenchen -> Ulm (Length: 156 km)
+Link 51: Ulm -> Muenchen (Length: 156 km)
+
+=== Computed K-Shortest Paths (K=5) ===
+From 0 to 1:
+  Path 1: 0-2 -> 2-1 (Total: 284 km)
+  Path 2: 0-2 -> 2-4 -> 4-1 (Total: 451 km)
+  Path 3: 0-6 -> 6-4 -> 4-1 (Total: 655 km)
+  Path 4: 0-6 -> 6-4 -> 4-2 -> 2-1 (Total: 752 km)
+  Path 5: 0-2 -> 2-4 -> 4-3 -> 3-1 (Total: 871 km)
+
+From 0 to 2:
+  Path 1: 0-2 (Total: 160 km)
+  Path 2: 0-6 -> 6-4 -> 4-2 (Total: 628 km)
+  Path 3: 0-6 -> 6-4 -> 4-1 -> 1-2 (Total: 779 km)
+  Path 4: 0-6 -> 6-9 -> 9-10 -> 10-4 -> 4-2 (Total: 1086 km)
+  Path 5: 0-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-4 -> 4-2 (Total: 1105 km)
+
+From 0 to 3:
+  Path 1: 0-2 -> 2-1 -> 1-3 (Total: 572 km)
+  Path 2: 0-2 -> 2-4 -> 4-3 (Total: 583 km)
+  Path 3: 0-2 -> 2-1 -> 1-4 -> 4-3 (Total: 734 km)
+  Path 4: 0-2 -> 2-4 -> 4-1 -> 1-3 (Total: 739 km)
+  Path 5: 0-2 -> 2-4 -> 4-8 -> 8-3 (Total: 751 km)
+
+From 0 to 4:
+  Path 1: 0-2 -> 2-4 (Total: 292 km)
+  Path 2: 0-2 -> 2-1 -> 1-4 (Total: 443 km)
+  Path 3: 0-6 -> 6-4 (Total: 496 km)
+  Path 4: 0-2 -> 2-1 -> 1-3 -> 3-4 (Total: 863 km)
+  Path 5: 0-6 -> 6-9 -> 9-10 -> 10-4 (Total: 954 km)
+
+From 0 to 5:
+  Path 1: 0-6 -> 6-5 (Total: 350 km)
+  Path 2: 0-6 -> 6-9 -> 9-7 -> 7-5 (Total: 485 km)
+  Path 3: 0-2 -> 2-4 -> 4-6 -> 6-5 (Total: 512 km)
+  Path 4: 0-2 -> 2-4 -> 4-6 -> 6-9 -> 9-7 -> 7-5 (Total: 647 km)
+  Path 5: 0-2 -> 2-1 -> 1-4 -> 4-6 -> 6-5 (Total: 663 km)
+
+From 0 to 6:
+  Path 1: 0-6 (Total: 313 km)
+  Path 2: 0-2 -> 2-4 -> 4-6 (Total: 475 km)
+  Path 3: 0-2 -> 2-1 -> 1-4 -> 4-6 (Total: 626 km)
+  Path 4: 0-2 -> 2-4 -> 4-10 -> 10-9 -> 9-6 (Total: 933 km)
+  Path 5: 0-2 -> 2-4 -> 4-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 952 km)
+
+From 0 to 7:
+  Path 1: 0-6 -> 6-5 -> 5-7 (Total: 385 km)
+  Path 2: 0-6 -> 6-9 -> 9-7 (Total: 450 km)
+  Path 3: 0-2 -> 2-4 -> 4-6 -> 6-5 -> 5-7 (Total: 547 km)
+  Path 4: 0-2 -> 2-4 -> 4-6 -> 6-9 -> 9-7 (Total: 612 km)
+  Path 5: 0-2 -> 2-1 -> 1-4 -> 4-6 -> 6-5 -> 5-7 (Total: 698 km)
+
+From 0 to 8:
+  Path 1: 0-2 -> 2-4 -> 4-8 (Total: 556 km)
+  Path 2: 0-2 -> 2-1 -> 1-4 -> 4-8 (Total: 707 km)
+  Path 3: 0-6 -> 6-4 -> 4-8 (Total: 760 km)
+  Path 4: 0-2 -> 2-1 -> 1-3 -> 3-8 (Total: 767 km)
+  Path 5: 0-2 -> 2-4 -> 4-3 -> 3-8 (Total: 778 km)
+
+From 0 to 9:
+  Path 1: 0-6 -> 6-9 (Total: 408 km)
+  Path 2: 0-6 -> 6-5 -> 5-7 -> 7-9 (Total: 427 km)
+  Path 3: 0-2 -> 2-4 -> 4-6 -> 6-9 (Total: 570 km)
+  Path 4: 0-2 -> 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 589 km)
+  Path 5: 0-2 -> 2-1 -> 1-4 -> 4-6 -> 6-9 (Total: 721 km)
+
+From 0 to 10:
+  Path 1: 0-6 -> 6-9 -> 9-10 (Total: 602 km)
+  Path 2: 0-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 (Total: 621 km)
+  Path 3: 0-2 -> 2-4 -> 4-10 (Total: 644 km)
+  Path 4: 0-2 -> 2-4 -> 4-6 -> 6-9 -> 9-10 (Total: 764 km)
+  Path 5: 0-2 -> 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 (Total: 783 km)
+
+From 0 to 11:
+  Path 1: 0-6 -> 6-9 -> 9-10 -> 10-11 (Total: 827 km)
+  Path 2: 0-2 -> 2-4 -> 4-8 -> 8-11 (Total: 837 km)
+  Path 3: 0-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 (Total: 846 km)
+  Path 4: 0-2 -> 2-4 -> 4-10 -> 10-11 (Total: 869 km)
+  Path 5: 0-2 -> 2-1 -> 1-4 -> 4-8 -> 8-11 (Total: 988 km)
+
+From 0 to 12:
+  Path 1: 0-6 -> 6-9 -> 9-10 -> 10-12 (Total: 681 km)
+  Path 2: 0-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 (Total: 700 km)
+  Path 3: 0-2 -> 2-4 -> 4-10 -> 10-12 (Total: 723 km)
+  Path 4: 0-2 -> 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 (Total: 843 km)
+  Path 5: 0-2 -> 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 (Total: 862 km)
+
+From 0 to 13:
+  Path 1: 0-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 747 km)
+  Path 2: 0-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 (Total: 766 km)
+  Path 3: 0-2 -> 2-4 -> 4-10 -> 10-12 -> 12-13 (Total: 789 km)
+  Path 4: 0-2 -> 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 909 km)
+  Path 5: 0-2 -> 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 (Total: 928 km)
+
+From 0 to 14:
+  Path 1: 0-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 827 km)
+  Path 2: 0-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 846 km)
+  Path 3: 0-2 -> 2-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 869 km)
+  Path 4: 0-2 -> 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 989 km)
+  Path 5: 0-2 -> 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 1008 km)
+
+From 0 to 15:
+  Path 1: 0-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 919 km)
+  Path 2: 0-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 938 km)
+  Path 3: 0-2 -> 2-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 961 km)
+  Path 4: 0-2 -> 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 1081 km)
+  Path 5: 0-2 -> 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 1100 km)
+
+From 0 to 16:
+  Path 1: 0-6 -> 6-9 -> 9-10 -> 10-11 -> 11-16 (Total: 993 km)
+  Path 2: 0-2 -> 2-4 -> 4-8 -> 8-11 -> 11-16 (Total: 1003 km)
+  Path 3: 0-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-16 (Total: 1012 km)
+  Path 4: 0-2 -> 2-4 -> 4-10 -> 10-11 -> 11-16 (Total: 1035 km)
+  Path 5: 0-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 1075 km)
+
+From 1 to 0:
+  Path 1: 1-2 -> 2-0 (Total: 284 km)
+  Path 2: 1-4 -> 4-2 -> 2-0 (Total: 451 km)
+  Path 3: 1-4 -> 4-6 -> 6-0 (Total: 655 km)
+  Path 4: 1-2 -> 2-4 -> 4-6 -> 6-0 (Total: 752 km)
+  Path 5: 1-3 -> 3-4 -> 4-2 -> 2-0 (Total: 871 km)
+
+From 1 to 2:
+  Path 1: 1-2 (Total: 124 km)
+  Path 2: 1-4 -> 4-2 (Total: 291 km)
+  Path 3: 1-3 -> 3-4 -> 4-2 (Total: 711 km)
+  Path 4: 1-4 -> 4-6 -> 6-0 -> 0-2 (Total: 815 km)
+  Path 5: 1-3 -> 3-8 -> 8-4 -> 4-2 (Total: 879 km)
+
+From 1 to 3:
+  Path 1: 1-3 (Total: 288 km)
+  Path 2: 1-4 -> 4-3 (Total: 450 km)
+  Path 3: 1-2 -> 2-4 -> 4-3 (Total: 547 km)
+  Path 4: 1-4 -> 4-8 -> 8-3 (Total: 618 km)
+  Path 5: 1-2 -> 2-4 -> 4-8 -> 8-3 (Total: 715 km)
+
+From 1 to 4:
+  Path 1: 1-4 (Total: 159 km)
+  Path 2: 1-2 -> 2-4 (Total: 256 km)
+  Path 3: 1-3 -> 3-4 (Total: 579 km)
+  Path 4: 1-3 -> 3-8 -> 8-4 (Total: 747 km)
+  Path 5: 1-2 -> 2-0 -> 0-6 -> 6-4 (Total: 780 km)
+
+From 1 to 5:
+  Path 1: 1-4 -> 4-6 -> 6-5 (Total: 379 km)
+  Path 2: 1-2 -> 2-4 -> 4-6 -> 6-5 (Total: 476 km)
+  Path 3: 1-4 -> 4-6 -> 6-9 -> 9-7 -> 7-5 (Total: 514 km)
+  Path 4: 1-2 -> 2-4 -> 4-6 -> 6-9 -> 9-7 -> 7-5 (Total: 611 km)
+  Path 5: 1-2 -> 2-0 -> 0-6 -> 6-5 (Total: 634 km)
+
+From 1 to 6:
+  Path 1: 1-4 -> 4-6 (Total: 342 km)
+  Path 2: 1-2 -> 2-4 -> 4-6 (Total: 439 km)
+  Path 3: 1-2 -> 2-0 -> 0-6 (Total: 597 km)
+  Path 4: 1-3 -> 3-4 -> 4-6 (Total: 762 km)
+  Path 5: 1-4 -> 4-2 -> 2-0 -> 0-6 (Total: 764 km)
+
+From 1 to 7:
+  Path 1: 1-4 -> 4-6 -> 6-5 -> 5-7 (Total: 414 km)
+  Path 2: 1-4 -> 4-6 -> 6-9 -> 9-7 (Total: 479 km)
+  Path 3: 1-2 -> 2-4 -> 4-6 -> 6-5 -> 5-7 (Total: 511 km)
+  Path 4: 1-2 -> 2-4 -> 4-6 -> 6-9 -> 9-7 (Total: 576 km)
+  Path 5: 1-2 -> 2-0 -> 0-6 -> 6-5 -> 5-7 (Total: 669 km)
+
+From 1 to 8:
+  Path 1: 1-4 -> 4-8 (Total: 423 km)
+  Path 2: 1-3 -> 3-8 (Total: 483 km)
+  Path 3: 1-2 -> 2-4 -> 4-8 (Total: 520 km)
+  Path 4: 1-4 -> 4-3 -> 3-8 (Total: 645 km)
+  Path 5: 1-2 -> 2-4 -> 4-3 -> 3-8 (Total: 742 km)
+
+From 1 to 9:
+  Path 1: 1-4 -> 4-6 -> 6-9 (Total: 437 km)
+  Path 2: 1-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 456 km)
+  Path 3: 1-2 -> 2-4 -> 4-6 -> 6-9 (Total: 534 km)
+  Path 4: 1-2 -> 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 553 km)
+  Path 5: 1-2 -> 2-0 -> 0-6 -> 6-9 (Total: 692 km)
+
+From 1 to 10:
+  Path 1: 1-4 -> 4-10 (Total: 511 km)
+  Path 2: 1-2 -> 2-4 -> 4-10 (Total: 608 km)
+  Path 3: 1-4 -> 4-6 -> 6-9 -> 9-10 (Total: 631 km)
+  Path 4: 1-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 (Total: 650 km)
+  Path 5: 1-2 -> 2-4 -> 4-6 -> 6-9 -> 9-10 (Total: 728 km)
+
+From 1 to 11:
+  Path 1: 1-4 -> 4-8 -> 8-11 (Total: 704 km)
+  Path 2: 1-4 -> 4-10 -> 10-11 (Total: 736 km)
+  Path 3: 1-3 -> 3-8 -> 8-11 (Total: 764 km)
+  Path 4: 1-2 -> 2-4 -> 4-8 -> 8-11 (Total: 801 km)
+  Path 5: 1-2 -> 2-4 -> 4-10 -> 10-11 (Total: 833 km)
+
+From 1 to 12:
+  Path 1: 1-4 -> 4-10 -> 10-12 (Total: 590 km)
+  Path 2: 1-2 -> 2-4 -> 4-10 -> 10-12 (Total: 687 km)
+  Path 3: 1-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 (Total: 710 km)
+  Path 4: 1-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 (Total: 729 km)
+  Path 5: 1-2 -> 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 (Total: 807 km)
+
+From 1 to 13:
+  Path 1: 1-4 -> 4-10 -> 10-12 -> 12-13 (Total: 656 km)
+  Path 2: 1-2 -> 2-4 -> 4-10 -> 10-12 -> 12-13 (Total: 753 km)
+  Path 3: 1-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 776 km)
+  Path 4: 1-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 (Total: 795 km)
+  Path 5: 1-2 -> 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 873 km)
+
+From 1 to 14:
+  Path 1: 1-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 736 km)
+  Path 2: 1-2 -> 2-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 833 km)
+  Path 3: 1-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 856 km)
+  Path 4: 1-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 875 km)
+  Path 5: 1-4 -> 4-8 -> 8-11 -> 11-14 (Total: 912 km)
+
+From 1 to 15:
+  Path 1: 1-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 828 km)
+  Path 2: 1-2 -> 2-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 925 km)
+  Path 3: 1-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 948 km)
+  Path 4: 1-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 967 km)
+  Path 5: 1-4 -> 4-8 -> 8-11 -> 11-14 -> 14-15 (Total: 1004 km)
+
+From 1 to 16:
+  Path 1: 1-4 -> 4-8 -> 8-11 -> 11-16 (Total: 870 km)
+  Path 2: 1-4 -> 4-10 -> 10-11 -> 11-16 (Total: 902 km)
+  Path 3: 1-3 -> 3-8 -> 8-11 -> 11-16 (Total: 930 km)
+  Path 4: 1-2 -> 2-4 -> 4-8 -> 8-11 -> 11-16 (Total: 967 km)
+  Path 5: 1-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 984 km)
+
+From 2 to 0:
+  Path 1: 2-0 (Total: 160 km)
+  Path 2: 2-4 -> 4-6 -> 6-0 (Total: 628 km)
+  Path 3: 2-1 -> 1-4 -> 4-6 -> 6-0 (Total: 779 km)
+  Path 4: 2-4 -> 4-10 -> 10-9 -> 9-6 -> 6-0 (Total: 1086 km)
+  Path 5: 2-4 -> 4-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-0 (Total: 1105 km)
+
+From 2 to 1:
+  Path 1: 2-1 (Total: 124 km)
+  Path 2: 2-4 -> 4-1 (Total: 291 km)
+  Path 3: 2-4 -> 4-3 -> 3-1 (Total: 711 km)
+  Path 4: 2-0 -> 0-6 -> 6-4 -> 4-1 (Total: 815 km)
+  Path 5: 2-4 -> 4-8 -> 8-3 -> 3-1 (Total: 879 km)
+
+From 2 to 3:
+  Path 1: 2-1 -> 1-3 (Total: 412 km)
+  Path 2: 2-4 -> 4-3 (Total: 423 km)
+  Path 3: 2-1 -> 1-4 -> 4-3 (Total: 574 km)
+  Path 4: 2-4 -> 4-1 -> 1-3 (Total: 579 km)
+  Path 5: 2-4 -> 4-8 -> 8-3 (Total: 591 km)
+
+From 2 to 4:
+  Path 1: 2-4 (Total: 132 km)
+  Path 2: 2-1 -> 1-4 (Total: 283 km)
+  Path 3: 2-0 -> 0-6 -> 6-4 (Total: 656 km)
+  Path 4: 2-1 -> 1-3 -> 3-4 (Total: 703 km)
+  Path 5: 2-1 -> 1-3 -> 3-8 -> 8-4 (Total: 871 km)
+
+From 2 to 5:
+  Path 1: 2-4 -> 4-6 -> 6-5 (Total: 352 km)
+  Path 2: 2-4 -> 4-6 -> 6-9 -> 9-7 -> 7-5 (Total: 487 km)
+  Path 3: 2-1 -> 1-4 -> 4-6 -> 6-5 (Total: 503 km)
+  Path 4: 2-0 -> 0-6 -> 6-5 (Total: 510 km)
+  Path 5: 2-1 -> 1-4 -> 4-6 -> 6-9 -> 9-7 -> 7-5 (Total: 638 km)
+
+From 2 to 6:
+  Path 1: 2-4 -> 4-6 (Total: 315 km)
+  Path 2: 2-1 -> 1-4 -> 4-6 (Total: 466 km)
+  Path 3: 2-0 -> 0-6 (Total: 473 km)
+  Path 4: 2-4 -> 4-10 -> 10-9 -> 9-6 (Total: 773 km)
+  Path 5: 2-4 -> 4-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 792 km)
+
+From 2 to 7:
+  Path 1: 2-4 -> 4-6 -> 6-5 -> 5-7 (Total: 387 km)
+  Path 2: 2-4 -> 4-6 -> 6-9 -> 9-7 (Total: 452 km)
+  Path 3: 2-1 -> 1-4 -> 4-6 -> 6-5 -> 5-7 (Total: 538 km)
+  Path 4: 2-0 -> 0-6 -> 6-5 -> 5-7 (Total: 545 km)
+  Path 5: 2-1 -> 1-4 -> 4-6 -> 6-9 -> 9-7 (Total: 603 km)
+
+From 2 to 8:
+  Path 1: 2-4 -> 4-8 (Total: 396 km)
+  Path 2: 2-1 -> 1-4 -> 4-8 (Total: 547 km)
+  Path 3: 2-1 -> 1-3 -> 3-8 (Total: 607 km)
+  Path 4: 2-4 -> 4-3 -> 3-8 (Total: 618 km)
+  Path 5: 2-1 -> 1-4 -> 4-3 -> 3-8 (Total: 769 km)
+
+From 2 to 9:
+  Path 1: 2-4 -> 4-6 -> 6-9 (Total: 410 km)
+  Path 2: 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 429 km)
+  Path 3: 2-1 -> 1-4 -> 4-6 -> 6-9 (Total: 561 km)
+  Path 4: 2-0 -> 0-6 -> 6-9 (Total: 568 km)
+  Path 5: 2-1 -> 1-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 580 km)
+
+From 2 to 10:
+  Path 1: 2-4 -> 4-10 (Total: 484 km)
+  Path 2: 2-4 -> 4-6 -> 6-9 -> 9-10 (Total: 604 km)
+  Path 3: 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 (Total: 623 km)
+  Path 4: 2-1 -> 1-4 -> 4-10 (Total: 635 km)
+  Path 5: 2-1 -> 1-4 -> 4-6 -> 6-9 -> 9-10 (Total: 755 km)
+
+From 2 to 11:
+  Path 1: 2-4 -> 4-8 -> 8-11 (Total: 677 km)
+  Path 2: 2-4 -> 4-10 -> 10-11 (Total: 709 km)
+  Path 3: 2-1 -> 1-4 -> 4-8 -> 8-11 (Total: 828 km)
+  Path 4: 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-11 (Total: 829 km)
+  Path 5: 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 (Total: 848 km)
+
+From 2 to 12:
+  Path 1: 2-4 -> 4-10 -> 10-12 (Total: 563 km)
+  Path 2: 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 (Total: 683 km)
+  Path 3: 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 (Total: 702 km)
+  Path 4: 2-1 -> 1-4 -> 4-10 -> 10-12 (Total: 714 km)
+  Path 5: 2-1 -> 1-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 (Total: 834 km)
+
+From 2 to 13:
+  Path 1: 2-4 -> 4-10 -> 10-12 -> 12-13 (Total: 629 km)
+  Path 2: 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 749 km)
+  Path 3: 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 (Total: 768 km)
+  Path 4: 2-1 -> 1-4 -> 4-10 -> 10-12 -> 12-13 (Total: 780 km)
+  Path 5: 2-1 -> 1-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 900 km)
+
+From 2 to 14:
+  Path 1: 2-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 709 km)
+  Path 2: 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 829 km)
+  Path 3: 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 848 km)
+  Path 4: 2-1 -> 1-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 860 km)
+  Path 5: 2-4 -> 4-8 -> 8-11 -> 11-14 (Total: 885 km)
+
+From 2 to 15:
+  Path 1: 2-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 801 km)
+  Path 2: 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 921 km)
+  Path 3: 2-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 940 km)
+  Path 4: 2-1 -> 1-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 952 km)
+  Path 5: 2-4 -> 4-8 -> 8-11 -> 11-14 -> 14-15 (Total: 977 km)
+
+From 2 to 16:
+  Path 1: 2-4 -> 4-8 -> 8-11 -> 11-16 (Total: 843 km)
+  Path 2: 2-4 -> 4-10 -> 10-11 -> 11-16 (Total: 875 km)
+  Path 3: 2-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 957 km)
+  Path 4: 2-1 -> 1-4 -> 4-8 -> 8-11 -> 11-16 (Total: 994 km)
+  Path 5: 2-4 -> 4-6 -> 6-9 -> 9-10 -> 10-11 -> 11-16 (Total: 995 km)
+
+From 3 to 0:
+  Path 1: 3-1 -> 1-2 -> 2-0 (Total: 572 km)
+  Path 2: 3-4 -> 4-2 -> 2-0 (Total: 583 km)
+  Path 3: 3-4 -> 4-1 -> 1-2 -> 2-0 (Total: 734 km)
+  Path 4: 3-1 -> 1-4 -> 4-2 -> 2-0 (Total: 739 km)
+  Path 5: 3-8 -> 8-4 -> 4-2 -> 2-0 (Total: 751 km)
+
+From 3 to 1:
+  Path 1: 3-1 (Total: 288 km)
+  Path 2: 3-4 -> 4-1 (Total: 450 km)
+  Path 3: 3-4 -> 4-2 -> 2-1 (Total: 547 km)
+  Path 4: 3-8 -> 8-4 -> 4-1 (Total: 618 km)
+  Path 5: 3-8 -> 8-4 -> 4-2 -> 2-1 (Total: 715 km)
+
+From 3 to 2:
+  Path 1: 3-1 -> 1-2 (Total: 412 km)
+  Path 2: 3-4 -> 4-2 (Total: 423 km)
+  Path 3: 3-4 -> 4-1 -> 1-2 (Total: 574 km)
+  Path 4: 3-1 -> 1-4 -> 4-2 (Total: 579 km)
+  Path 5: 3-8 -> 8-4 -> 4-2 (Total: 591 km)
+
+From 3 to 4:
+  Path 1: 3-4 (Total: 291 km)
+  Path 2: 3-1 -> 1-4 (Total: 447 km)
+  Path 3: 3-8 -> 8-4 (Total: 459 km)
+  Path 4: 3-1 -> 1-2 -> 2-4 (Total: 544 km)
+  Path 5: 3-8 -> 8-10 -> 10-4 (Total: 940 km)
+
+From 3 to 5:
+  Path 1: 3-4 -> 4-6 -> 6-5 (Total: 511 km)
+  Path 2: 3-4 -> 4-6 -> 6-9 -> 9-7 -> 7-5 (Total: 646 km)
+  Path 3: 3-1 -> 1-4 -> 4-6 -> 6-5 (Total: 667 km)
+  Path 4: 3-8 -> 8-4 -> 4-6 -> 6-5 (Total: 679 km)
+  Path 5: 3-1 -> 1-2 -> 2-4 -> 4-6 -> 6-5 (Total: 764 km)
+
+From 3 to 6:
+  Path 1: 3-4 -> 4-6 (Total: 474 km)
+  Path 2: 3-1 -> 1-4 -> 4-6 (Total: 630 km)
+  Path 3: 3-8 -> 8-4 -> 4-6 (Total: 642 km)
+  Path 4: 3-1 -> 1-2 -> 2-4 -> 4-6 (Total: 727 km)
+  Path 5: 3-8 -> 8-10 -> 10-9 -> 9-6 (Total: 877 km)
+
+From 3 to 7:
+  Path 1: 3-4 -> 4-6 -> 6-5 -> 5-7 (Total: 546 km)
+  Path 2: 3-4 -> 4-6 -> 6-9 -> 9-7 (Total: 611 km)
+  Path 3: 3-1 -> 1-4 -> 4-6 -> 6-5 -> 5-7 (Total: 702 km)
+  Path 4: 3-8 -> 8-4 -> 4-6 -> 6-5 -> 5-7 (Total: 714 km)
+  Path 5: 3-1 -> 1-4 -> 4-6 -> 6-9 -> 9-7 (Total: 767 km)
+
+From 3 to 8:
+  Path 1: 3-8 (Total: 195 km)
+  Path 2: 3-4 -> 4-8 (Total: 555 km)
+  Path 3: 3-1 -> 1-4 -> 4-8 (Total: 711 km)
+  Path 4: 3-1 -> 1-2 -> 2-4 -> 4-8 (Total: 808 km)
+  Path 5: 3-4 -> 4-10 -> 10-8 (Total: 1036 km)
+
+From 3 to 9:
+  Path 1: 3-4 -> 4-6 -> 6-9 (Total: 569 km)
+  Path 2: 3-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 588 km)
+  Path 3: 3-1 -> 1-4 -> 4-6 -> 6-9 (Total: 725 km)
+  Path 4: 3-8 -> 8-4 -> 4-6 -> 6-9 (Total: 737 km)
+  Path 5: 3-1 -> 1-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 744 km)
+
+From 3 to 10:
+  Path 1: 3-8 -> 8-10 (Total: 588 km)
+  Path 2: 3-4 -> 4-10 (Total: 643 km)
+  Path 3: 3-8 -> 8-11 -> 11-10 (Total: 701 km)
+  Path 4: 3-4 -> 4-6 -> 6-9 -> 9-10 (Total: 763 km)
+  Path 5: 3-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 (Total: 782 km)
+
+From 3 to 11:
+  Path 1: 3-8 -> 8-11 (Total: 476 km)
+  Path 2: 3-8 -> 8-10 -> 10-11 (Total: 813 km)
+  Path 3: 3-4 -> 4-8 -> 8-11 (Total: 836 km)
+  Path 4: 3-4 -> 4-10 -> 10-11 (Total: 868 km)
+  Path 5: 3-4 -> 4-6 -> 6-9 -> 9-10 -> 10-11 (Total: 988 km)
+
+From 3 to 12:
+  Path 1: 3-8 -> 8-10 -> 10-12 (Total: 667 km)
+  Path 2: 3-4 -> 4-10 -> 10-12 (Total: 722 km)
+  Path 3: 3-8 -> 8-11 -> 11-10 -> 10-12 (Total: 780 km)
+  Path 4: 3-8 -> 8-11 -> 11-14 -> 14-13 -> 13-12 (Total: 830 km)
+  Path 5: 3-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 (Total: 842 km)
+
+From 3 to 13:
+  Path 1: 3-8 -> 8-10 -> 10-12 -> 12-13 (Total: 733 km)
+  Path 2: 3-8 -> 8-11 -> 11-14 -> 14-13 (Total: 764 km)
+  Path 3: 3-4 -> 4-10 -> 10-12 -> 12-13 (Total: 788 km)
+  Path 4: 3-8 -> 8-11 -> 11-10 -> 10-12 -> 12-13 (Total: 846 km)
+  Path 5: 3-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 908 km)
+
+From 3 to 14:
+  Path 1: 3-8 -> 8-11 -> 11-14 (Total: 684 km)
+  Path 2: 3-8 -> 8-10 -> 10-12 -> 12-13 -> 13-14 (Total: 813 km)
+  Path 3: 3-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 868 km)
+  Path 4: 3-8 -> 8-11 -> 11-16 -> 16-15 -> 15-14 (Total: 890 km)
+  Path 5: 3-8 -> 8-11 -> 11-10 -> 10-12 -> 12-13 -> 13-14 (Total: 926 km)
+
+From 3 to 15:
+  Path 1: 3-8 -> 8-11 -> 11-14 -> 14-15 (Total: 776 km)
+  Path 2: 3-8 -> 8-11 -> 11-16 -> 16-15 (Total: 798 km)
+  Path 3: 3-8 -> 8-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 905 km)
+  Path 4: 3-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 960 km)
+  Path 5: 3-8 -> 8-11 -> 11-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 1018 km)
+
+From 3 to 16:
+  Path 1: 3-8 -> 8-11 -> 11-16 (Total: 642 km)
+  Path 2: 3-8 -> 8-11 -> 11-14 -> 14-15 -> 15-16 (Total: 932 km)
+  Path 3: 3-8 -> 8-10 -> 10-11 -> 11-16 (Total: 979 km)
+  Path 4: 3-4 -> 4-8 -> 8-11 -> 11-16 (Total: 1002 km)
+  Path 5: 3-4 -> 4-10 -> 10-11 -> 11-16 (Total: 1034 km)
+
+From 4 to 0:
+  Path 1: 4-2 -> 2-0 (Total: 292 km)
+  Path 2: 4-1 -> 1-2 -> 2-0 (Total: 443 km)
+  Path 3: 4-6 -> 6-0 (Total: 496 km)
+  Path 4: 4-3 -> 3-1 -> 1-2 -> 2-0 (Total: 863 km)
+  Path 5: 4-10 -> 10-9 -> 9-6 -> 6-0 (Total: 954 km)
+
+From 4 to 1:
+  Path 1: 4-1 (Total: 159 km)
+  Path 2: 4-2 -> 2-1 (Total: 256 km)
+  Path 3: 4-3 -> 3-1 (Total: 579 km)
+  Path 4: 4-8 -> 8-3 -> 3-1 (Total: 747 km)
+  Path 5: 4-6 -> 6-0 -> 0-2 -> 2-1 (Total: 780 km)
+
+From 4 to 2:
+  Path 1: 4-2 (Total: 132 km)
+  Path 2: 4-1 -> 1-2 (Total: 283 km)
+  Path 3: 4-6 -> 6-0 -> 0-2 (Total: 656 km)
+  Path 4: 4-3 -> 3-1 -> 1-2 (Total: 703 km)
+  Path 5: 4-8 -> 8-3 -> 3-1 -> 1-2 (Total: 871 km)
+
+From 4 to 3:
+  Path 1: 4-3 (Total: 291 km)
+  Path 2: 4-1 -> 1-3 (Total: 447 km)
+  Path 3: 4-8 -> 8-3 (Total: 459 km)
+  Path 4: 4-2 -> 2-1 -> 1-3 (Total: 544 km)
+  Path 5: 4-10 -> 10-8 -> 8-3 (Total: 940 km)
+
+From 4 to 5:
+  Path 1: 4-6 -> 6-5 (Total: 220 km)
+  Path 2: 4-6 -> 6-9 -> 9-7 -> 7-5 (Total: 355 km)
+  Path 3: 4-10 -> 10-9 -> 9-7 -> 7-5 (Total: 623 km)
+  Path 4: 4-2 -> 2-0 -> 0-6 -> 6-5 (Total: 642 km)
+  Path 5: 4-10 -> 10-9 -> 9-6 -> 6-5 (Total: 678 km)
+
+From 4 to 6:
+  Path 1: 4-6 (Total: 183 km)
+  Path 2: 4-2 -> 2-0 -> 0-6 (Total: 605 km)
+  Path 3: 4-10 -> 10-9 -> 9-6 (Total: 641 km)
+  Path 4: 4-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 660 km)
+  Path 5: 4-1 -> 1-2 -> 2-0 -> 0-6 (Total: 756 km)
+
+From 4 to 7:
+  Path 1: 4-6 -> 6-5 -> 5-7 (Total: 255 km)
+  Path 2: 4-6 -> 6-9 -> 9-7 (Total: 320 km)
+  Path 3: 4-10 -> 10-9 -> 9-7 (Total: 588 km)
+  Path 4: 4-2 -> 2-0 -> 0-6 -> 6-5 -> 5-7 (Total: 677 km)
+  Path 5: 4-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 713 km)
+
+From 4 to 8:
+  Path 1: 4-8 (Total: 264 km)
+  Path 2: 4-3 -> 3-8 (Total: 486 km)
+  Path 3: 4-1 -> 1-3 -> 3-8 (Total: 642 km)
+  Path 4: 4-2 -> 2-1 -> 1-3 -> 3-8 (Total: 739 km)
+  Path 5: 4-10 -> 10-8 (Total: 745 km)
+
+From 4 to 9:
+  Path 1: 4-6 -> 6-9 (Total: 278 km)
+  Path 2: 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 297 km)
+  Path 3: 4-10 -> 10-9 (Total: 546 km)
+  Path 4: 4-2 -> 2-0 -> 0-6 -> 6-9 (Total: 700 km)
+  Path 5: 4-2 -> 2-0 -> 0-6 -> 6-5 -> 5-7 -> 7-9 (Total: 719 km)
+
+From 4 to 10:
+  Path 1: 4-10 (Total: 352 km)
+  Path 2: 4-6 -> 6-9 -> 9-10 (Total: 472 km)
+  Path 3: 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 (Total: 491 km)
+  Path 4: 4-8 -> 8-10 (Total: 657 km)
+  Path 5: 4-8 -> 8-11 -> 11-10 (Total: 770 km)
+
+From 4 to 11:
+  Path 1: 4-8 -> 8-11 (Total: 545 km)
+  Path 2: 4-10 -> 10-11 (Total: 577 km)
+  Path 3: 4-6 -> 6-9 -> 9-10 -> 10-11 (Total: 697 km)
+  Path 4: 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 (Total: 716 km)
+  Path 5: 4-3 -> 3-8 -> 8-11 (Total: 767 km)
+
+From 4 to 12:
+  Path 1: 4-10 -> 10-12 (Total: 431 km)
+  Path 2: 4-6 -> 6-9 -> 9-10 -> 10-12 (Total: 551 km)
+  Path 3: 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 (Total: 570 km)
+  Path 4: 4-8 -> 8-10 -> 10-12 (Total: 736 km)
+  Path 5: 4-8 -> 8-11 -> 11-10 -> 10-12 (Total: 849 km)
+
+From 4 to 13:
+  Path 1: 4-10 -> 10-12 -> 12-13 (Total: 497 km)
+  Path 2: 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 617 km)
+  Path 3: 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 (Total: 636 km)
+  Path 4: 4-8 -> 8-10 -> 10-12 -> 12-13 (Total: 802 km)
+  Path 5: 4-8 -> 8-11 -> 11-14 -> 14-13 (Total: 833 km)
+
+From 4 to 14:
+  Path 1: 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 577 km)
+  Path 2: 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 697 km)
+  Path 3: 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 716 km)
+  Path 4: 4-8 -> 8-11 -> 11-14 (Total: 753 km)
+  Path 5: 4-10 -> 10-11 -> 11-14 (Total: 785 km)
+
+From 4 to 15:
+  Path 1: 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 669 km)
+  Path 2: 4-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 789 km)
+  Path 3: 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 808 km)
+  Path 4: 4-8 -> 8-11 -> 11-14 -> 14-15 (Total: 845 km)
+  Path 5: 4-8 -> 8-11 -> 11-16 -> 16-15 (Total: 867 km)
+
+From 4 to 16:
+  Path 1: 4-8 -> 8-11 -> 11-16 (Total: 711 km)
+  Path 2: 4-10 -> 10-11 -> 11-16 (Total: 743 km)
+  Path 3: 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 825 km)
+  Path 4: 4-6 -> 6-9 -> 9-10 -> 10-11 -> 11-16 (Total: 863 km)
+  Path 5: 4-6 -> 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-16 (Total: 882 km)
+
+From 5 to 0:
+  Path 1: 5-6 -> 6-0 (Total: 350 km)
+  Path 2: 5-7 -> 7-9 -> 9-6 -> 6-0 (Total: 485 km)
+  Path 3: 5-6 -> 6-4 -> 4-2 -> 2-0 (Total: 512 km)
+  Path 4: 5-7 -> 7-9 -> 9-6 -> 6-4 -> 4-2 -> 2-0 (Total: 647 km)
+  Path 5: 5-6 -> 6-4 -> 4-1 -> 1-2 -> 2-0 (Total: 663 km)
+
+From 5 to 1:
+  Path 1: 5-6 -> 6-4 -> 4-1 (Total: 379 km)
+  Path 2: 5-6 -> 6-4 -> 4-2 -> 2-1 (Total: 476 km)
+  Path 3: 5-7 -> 7-9 -> 9-6 -> 6-4 -> 4-1 (Total: 514 km)
+  Path 4: 5-7 -> 7-9 -> 9-6 -> 6-4 -> 4-2 -> 2-1 (Total: 611 km)
+  Path 5: 5-6 -> 6-0 -> 0-2 -> 2-1 (Total: 634 km)
+
+From 5 to 2:
+  Path 1: 5-6 -> 6-4 -> 4-2 (Total: 352 km)
+  Path 2: 5-7 -> 7-9 -> 9-6 -> 6-4 -> 4-2 (Total: 487 km)
+  Path 3: 5-6 -> 6-4 -> 4-1 -> 1-2 (Total: 503 km)
+  Path 4: 5-6 -> 6-0 -> 0-2 (Total: 510 km)
+  Path 5: 5-7 -> 7-9 -> 9-6 -> 6-4 -> 4-1 -> 1-2 (Total: 638 km)
+
+From 5 to 3:
+  Path 1: 5-6 -> 6-4 -> 4-3 (Total: 511 km)
+  Path 2: 5-7 -> 7-9 -> 9-6 -> 6-4 -> 4-3 (Total: 646 km)
+  Path 3: 5-6 -> 6-4 -> 4-1 -> 1-3 (Total: 667 km)
+  Path 4: 5-6 -> 6-4 -> 4-8 -> 8-3 (Total: 679 km)
+  Path 5: 5-6 -> 6-4 -> 4-2 -> 2-1 -> 1-3 (Total: 764 km)
+
+From 5 to 4:
+  Path 1: 5-6 -> 6-4 (Total: 220 km)
+  Path 2: 5-7 -> 7-9 -> 9-6 -> 6-4 (Total: 355 km)
+  Path 3: 5-7 -> 7-9 -> 9-10 -> 10-4 (Total: 623 km)
+  Path 4: 5-6 -> 6-0 -> 0-2 -> 2-4 (Total: 642 km)
+  Path 5: 5-6 -> 6-9 -> 9-10 -> 10-4 (Total: 678 km)
+
+From 5 to 6:
+  Path 1: 5-6 (Total: 37 km)
+  Path 2: 5-7 -> 7-9 -> 9-6 (Total: 172 km)
+  Path 3: 5-7 -> 7-9 -> 9-10 -> 10-4 -> 4-6 (Total: 806 km)
+  Path 4: 5-7 -> 7-9 -> 9-10 -> 10-8 -> 8-4 -> 4-6 (Total: 1111 km)
+  Path 5: 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-8 -> 8-4 -> 4-6 (Total: 1224 km)
+
+From 5 to 7:
+  Path 1: 5-7 (Total: 35 km)
+  Path 2: 5-6 -> 6-9 -> 9-7 (Total: 174 km)
+  Path 3: 5-6 -> 6-4 -> 4-10 -> 10-9 -> 9-7 (Total: 808 km)
+  Path 4: 5-6 -> 6-4 -> 4-8 -> 8-10 -> 10-9 -> 9-7 (Total: 1113 km)
+  Path 5: 5-6 -> 6-4 -> 4-8 -> 8-11 -> 11-10 -> 10-9 -> 9-7 (Total: 1226 km)
+
+From 5 to 8:
+  Path 1: 5-6 -> 6-4 -> 4-8 (Total: 484 km)
+  Path 2: 5-7 -> 7-9 -> 9-6 -> 6-4 -> 4-8 (Total: 619 km)
+  Path 3: 5-7 -> 7-9 -> 9-10 -> 10-8 (Total: 664 km)
+  Path 4: 5-6 -> 6-4 -> 4-3 -> 3-8 (Total: 706 km)
+  Path 5: 5-6 -> 6-9 -> 9-10 -> 10-8 (Total: 719 km)
+
+From 5 to 9:
+  Path 1: 5-7 -> 7-9 (Total: 77 km)
+  Path 2: 5-6 -> 6-9 (Total: 132 km)
+  Path 3: 5-6 -> 6-4 -> 4-10 -> 10-9 (Total: 766 km)
+  Path 4: 5-6 -> 6-4 -> 4-8 -> 8-10 -> 10-9 (Total: 1071 km)
+  Path 5: 5-6 -> 6-4 -> 4-8 -> 8-11 -> 11-10 -> 10-9 (Total: 1184 km)
+
+From 5 to 10:
+  Path 1: 5-7 -> 7-9 -> 9-10 (Total: 271 km)
+  Path 2: 5-6 -> 6-9 -> 9-10 (Total: 326 km)
+  Path 3: 5-6 -> 6-4 -> 4-10 (Total: 572 km)
+  Path 4: 5-7 -> 7-9 -> 9-6 -> 6-4 -> 4-10 (Total: 707 km)
+  Path 5: 5-6 -> 6-4 -> 4-8 -> 8-10 (Total: 877 km)
+
+From 5 to 11:
+  Path 1: 5-7 -> 7-9 -> 9-10 -> 10-11 (Total: 496 km)
+  Path 2: 5-6 -> 6-9 -> 9-10 -> 10-11 (Total: 551 km)
+  Path 3: 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 (Total: 704 km)
+  Path 4: 5-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 (Total: 759 km)
+  Path 5: 5-6 -> 6-4 -> 4-8 -> 8-11 (Total: 765 km)
+
+From 5 to 12:
+  Path 1: 5-7 -> 7-9 -> 9-10 -> 10-12 (Total: 350 km)
+  Path 2: 5-6 -> 6-9 -> 9-10 -> 10-12 (Total: 405 km)
+  Path 3: 5-6 -> 6-4 -> 4-10 -> 10-12 (Total: 651 km)
+  Path 4: 5-7 -> 7-9 -> 9-6 -> 6-4 -> 4-10 -> 10-12 (Total: 786 km)
+  Path 5: 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-14 -> 14-13 -> 13-12 (Total: 850 km)
+
+From 5 to 13:
+  Path 1: 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 (Total: 416 km)
+  Path 2: 5-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 471 km)
+  Path 3: 5-6 -> 6-4 -> 4-10 -> 10-12 -> 12-13 (Total: 717 km)
+  Path 4: 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-14 -> 14-13 (Total: 784 km)
+  Path 5: 5-6 -> 6-9 -> 9-10 -> 10-11 -> 11-14 -> 14-13 (Total: 839 km)
+
+From 5 to 14:
+  Path 1: 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 496 km)
+  Path 2: 5-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 551 km)
+  Path 3: 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-14 (Total: 704 km)
+  Path 4: 5-6 -> 6-9 -> 9-10 -> 10-11 -> 11-14 (Total: 759 km)
+  Path 5: 5-6 -> 6-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 797 km)
+
+From 5 to 15:
+  Path 1: 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 588 km)
+  Path 2: 5-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 643 km)
+  Path 3: 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-14 -> 14-15 (Total: 796 km)
+  Path 4: 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-16 -> 16-15 (Total: 818 km)
+  Path 5: 5-6 -> 6-9 -> 9-10 -> 10-11 -> 11-14 -> 14-15 (Total: 851 km)
+
+From 5 to 16:
+  Path 1: 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-16 (Total: 662 km)
+  Path 2: 5-6 -> 6-9 -> 9-10 -> 10-11 -> 11-16 (Total: 717 km)
+  Path 3: 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 744 km)
+  Path 4: 5-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 799 km)
+  Path 5: 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 -> 11-16 (Total: 870 km)
+
+From 6 to 0:
+  Path 1: 6-0 (Total: 313 km)
+  Path 2: 6-4 -> 4-2 -> 2-0 (Total: 475 km)
+  Path 3: 6-4 -> 4-1 -> 1-2 -> 2-0 (Total: 626 km)
+  Path 4: 6-9 -> 9-10 -> 10-4 -> 4-2 -> 2-0 (Total: 933 km)
+  Path 5: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-4 -> 4-2 -> 2-0 (Total: 952 km)
+
+From 6 to 1:
+  Path 1: 6-4 -> 4-1 (Total: 342 km)
+  Path 2: 6-4 -> 4-2 -> 2-1 (Total: 439 km)
+  Path 3: 6-0 -> 0-2 -> 2-1 (Total: 597 km)
+  Path 4: 6-4 -> 4-3 -> 3-1 (Total: 762 km)
+  Path 5: 6-0 -> 0-2 -> 2-4 -> 4-1 (Total: 764 km)
+
+From 6 to 2:
+  Path 1: 6-4 -> 4-2 (Total: 315 km)
+  Path 2: 6-4 -> 4-1 -> 1-2 (Total: 466 km)
+  Path 3: 6-0 -> 0-2 (Total: 473 km)
+  Path 4: 6-9 -> 9-10 -> 10-4 -> 4-2 (Total: 773 km)
+  Path 5: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-4 -> 4-2 (Total: 792 km)
+
+From 6 to 3:
+  Path 1: 6-4 -> 4-3 (Total: 474 km)
+  Path 2: 6-4 -> 4-1 -> 1-3 (Total: 630 km)
+  Path 3: 6-4 -> 4-8 -> 8-3 (Total: 642 km)
+  Path 4: 6-4 -> 4-2 -> 2-1 -> 1-3 (Total: 727 km)
+  Path 5: 6-9 -> 9-10 -> 10-8 -> 8-3 (Total: 877 km)
+
+From 6 to 4:
+  Path 1: 6-4 (Total: 183 km)
+  Path 2: 6-0 -> 0-2 -> 2-4 (Total: 605 km)
+  Path 3: 6-9 -> 9-10 -> 10-4 (Total: 641 km)
+  Path 4: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-4 (Total: 660 km)
+  Path 5: 6-0 -> 0-2 -> 2-1 -> 1-4 (Total: 756 km)
+
+From 6 to 5:
+  Path 1: 6-5 (Total: 37 km)
+  Path 2: 6-9 -> 9-7 -> 7-5 (Total: 172 km)
+  Path 3: 6-4 -> 4-10 -> 10-9 -> 9-7 -> 7-5 (Total: 806 km)
+  Path 4: 6-4 -> 4-8 -> 8-10 -> 10-9 -> 9-7 -> 7-5 (Total: 1111 km)
+  Path 5: 6-4 -> 4-8 -> 8-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 (Total: 1224 km)
+
+From 6 to 7:
+  Path 1: 6-5 -> 5-7 (Total: 72 km)
+  Path 2: 6-9 -> 9-7 (Total: 137 km)
+  Path 3: 6-4 -> 4-10 -> 10-9 -> 9-7 (Total: 771 km)
+  Path 4: 6-4 -> 4-8 -> 8-10 -> 10-9 -> 9-7 (Total: 1076 km)
+  Path 5: 6-4 -> 4-8 -> 8-11 -> 11-10 -> 10-9 -> 9-7 (Total: 1189 km)
+
+From 6 to 8:
+  Path 1: 6-4 -> 4-8 (Total: 447 km)
+  Path 2: 6-4 -> 4-3 -> 3-8 (Total: 669 km)
+  Path 3: 6-9 -> 9-10 -> 10-8 (Total: 682 km)
+  Path 4: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-8 (Total: 701 km)
+  Path 5: 6-9 -> 9-10 -> 10-11 -> 11-8 (Total: 795 km)
+
+From 6 to 9:
+  Path 1: 6-9 (Total: 95 km)
+  Path 2: 6-5 -> 5-7 -> 7-9 (Total: 114 km)
+  Path 3: 6-4 -> 4-10 -> 10-9 (Total: 729 km)
+  Path 4: 6-4 -> 4-8 -> 8-10 -> 10-9 (Total: 1034 km)
+  Path 5: 6-4 -> 4-8 -> 8-11 -> 11-10 -> 10-9 (Total: 1147 km)
+
+From 6 to 10:
+  Path 1: 6-9 -> 9-10 (Total: 289 km)
+  Path 2: 6-5 -> 5-7 -> 7-9 -> 9-10 (Total: 308 km)
+  Path 3: 6-4 -> 4-10 (Total: 535 km)
+  Path 4: 6-4 -> 4-8 -> 8-10 (Total: 840 km)
+  Path 5: 6-4 -> 4-8 -> 8-11 -> 11-10 (Total: 953 km)
+
+From 6 to 11:
+  Path 1: 6-9 -> 9-10 -> 10-11 (Total: 514 km)
+  Path 2: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 (Total: 533 km)
+  Path 3: 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 (Total: 722 km)
+  Path 4: 6-4 -> 4-8 -> 8-11 (Total: 728 km)
+  Path 5: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 (Total: 741 km)
+
+From 6 to 12:
+  Path 1: 6-9 -> 9-10 -> 10-12 (Total: 368 km)
+  Path 2: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 (Total: 387 km)
+  Path 3: 6-4 -> 4-10 -> 10-12 (Total: 614 km)
+  Path 4: 6-9 -> 9-10 -> 10-11 -> 11-14 -> 14-13 -> 13-12 (Total: 868 km)
+  Path 5: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-14 -> 14-13 -> 13-12 (Total: 887 km)
+
+From 6 to 13:
+  Path 1: 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 434 km)
+  Path 2: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 (Total: 453 km)
+  Path 3: 6-4 -> 4-10 -> 10-12 -> 12-13 (Total: 680 km)
+  Path 4: 6-9 -> 9-10 -> 10-11 -> 11-14 -> 14-13 (Total: 802 km)
+  Path 5: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-14 -> 14-13 (Total: 821 km)
+
+From 6 to 14:
+  Path 1: 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 514 km)
+  Path 2: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 533 km)
+  Path 3: 6-9 -> 9-10 -> 10-11 -> 11-14 (Total: 722 km)
+  Path 4: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-14 (Total: 741 km)
+  Path 5: 6-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 760 km)
+
+From 6 to 15:
+  Path 1: 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 606 km)
+  Path 2: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 625 km)
+  Path 3: 6-9 -> 9-10 -> 10-11 -> 11-14 -> 14-15 (Total: 814 km)
+  Path 4: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-14 -> 14-15 (Total: 833 km)
+  Path 5: 6-9 -> 9-10 -> 10-11 -> 11-16 -> 16-15 (Total: 836 km)
+
+From 6 to 16:
+  Path 1: 6-9 -> 9-10 -> 10-11 -> 11-16 (Total: 680 km)
+  Path 2: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-11 -> 11-16 (Total: 699 km)
+  Path 3: 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 762 km)
+  Path 4: 6-5 -> 5-7 -> 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 781 km)
+  Path 5: 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 -> 11-16 (Total: 888 km)
+
+From 7 to 0:
+  Path 1: 7-5 -> 5-6 -> 6-0 (Total: 385 km)
+  Path 2: 7-9 -> 9-6 -> 6-0 (Total: 450 km)
+  Path 3: 7-5 -> 5-6 -> 6-4 -> 4-2 -> 2-0 (Total: 547 km)
+  Path 4: 7-9 -> 9-6 -> 6-4 -> 4-2 -> 2-0 (Total: 612 km)
+  Path 5: 7-5 -> 5-6 -> 6-4 -> 4-1 -> 1-2 -> 2-0 (Total: 698 km)
+
+From 7 to 1:
+  Path 1: 7-5 -> 5-6 -> 6-4 -> 4-1 (Total: 414 km)
+  Path 2: 7-9 -> 9-6 -> 6-4 -> 4-1 (Total: 479 km)
+  Path 3: 7-5 -> 5-6 -> 6-4 -> 4-2 -> 2-1 (Total: 511 km)
+  Path 4: 7-9 -> 9-6 -> 6-4 -> 4-2 -> 2-1 (Total: 576 km)
+  Path 5: 7-5 -> 5-6 -> 6-0 -> 0-2 -> 2-1 (Total: 669 km)
+
+From 7 to 2:
+  Path 1: 7-5 -> 5-6 -> 6-4 -> 4-2 (Total: 387 km)
+  Path 2: 7-9 -> 9-6 -> 6-4 -> 4-2 (Total: 452 km)
+  Path 3: 7-5 -> 5-6 -> 6-4 -> 4-1 -> 1-2 (Total: 538 km)
+  Path 4: 7-5 -> 5-6 -> 6-0 -> 0-2 (Total: 545 km)
+  Path 5: 7-9 -> 9-6 -> 6-4 -> 4-1 -> 1-2 (Total: 603 km)
+
+From 7 to 3:
+  Path 1: 7-5 -> 5-6 -> 6-4 -> 4-3 (Total: 546 km)
+  Path 2: 7-9 -> 9-6 -> 6-4 -> 4-3 (Total: 611 km)
+  Path 3: 7-5 -> 5-6 -> 6-4 -> 4-1 -> 1-3 (Total: 702 km)
+  Path 4: 7-5 -> 5-6 -> 6-4 -> 4-8 -> 8-3 (Total: 714 km)
+  Path 5: 7-9 -> 9-6 -> 6-4 -> 4-1 -> 1-3 (Total: 767 km)
+
+From 7 to 4:
+  Path 1: 7-5 -> 5-6 -> 6-4 (Total: 255 km)
+  Path 2: 7-9 -> 9-6 -> 6-4 (Total: 320 km)
+  Path 3: 7-9 -> 9-10 -> 10-4 (Total: 588 km)
+  Path 4: 7-5 -> 5-6 -> 6-0 -> 0-2 -> 2-4 (Total: 677 km)
+  Path 5: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-4 (Total: 713 km)
+
+From 7 to 5:
+  Path 1: 7-5 (Total: 35 km)
+  Path 2: 7-9 -> 9-6 -> 6-5 (Total: 174 km)
+  Path 3: 7-9 -> 9-10 -> 10-4 -> 4-6 -> 6-5 (Total: 808 km)
+  Path 4: 7-9 -> 9-10 -> 10-8 -> 8-4 -> 4-6 -> 6-5 (Total: 1113 km)
+  Path 5: 7-9 -> 9-10 -> 10-11 -> 11-8 -> 8-4 -> 4-6 -> 6-5 (Total: 1226 km)
+
+From 7 to 6:
+  Path 1: 7-5 -> 5-6 (Total: 72 km)
+  Path 2: 7-9 -> 9-6 (Total: 137 km)
+  Path 3: 7-9 -> 9-10 -> 10-4 -> 4-6 (Total: 771 km)
+  Path 4: 7-9 -> 9-10 -> 10-8 -> 8-4 -> 4-6 (Total: 1076 km)
+  Path 5: 7-9 -> 9-10 -> 10-11 -> 11-8 -> 8-4 -> 4-6 (Total: 1189 km)
+
+From 7 to 8:
+  Path 1: 7-5 -> 5-6 -> 6-4 -> 4-8 (Total: 519 km)
+  Path 2: 7-9 -> 9-6 -> 6-4 -> 4-8 (Total: 584 km)
+  Path 3: 7-9 -> 9-10 -> 10-8 (Total: 629 km)
+  Path 4: 7-5 -> 5-6 -> 6-4 -> 4-3 -> 3-8 (Total: 741 km)
+  Path 5: 7-9 -> 9-10 -> 10-11 -> 11-8 (Total: 742 km)
+
+From 7 to 9:
+  Path 1: 7-9 (Total: 42 km)
+  Path 2: 7-5 -> 5-6 -> 6-9 (Total: 167 km)
+  Path 3: 7-5 -> 5-6 -> 6-4 -> 4-10 -> 10-9 (Total: 801 km)
+  Path 4: 7-5 -> 5-6 -> 6-4 -> 4-8 -> 8-10 -> 10-9 (Total: 1106 km)
+  Path 5: 7-5 -> 5-6 -> 6-4 -> 4-8 -> 8-11 -> 11-10 -> 10-9 (Total: 1219 km)
+
+From 7 to 10:
+  Path 1: 7-9 -> 9-10 (Total: 236 km)
+  Path 2: 7-5 -> 5-6 -> 6-9 -> 9-10 (Total: 361 km)
+  Path 3: 7-5 -> 5-6 -> 6-4 -> 4-10 (Total: 607 km)
+  Path 4: 7-9 -> 9-6 -> 6-4 -> 4-10 (Total: 672 km)
+  Path 5: 7-5 -> 5-6 -> 6-4 -> 4-8 -> 8-10 (Total: 912 km)
+
+From 7 to 11:
+  Path 1: 7-9 -> 9-10 -> 10-11 (Total: 461 km)
+  Path 2: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-11 (Total: 586 km)
+  Path 3: 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 (Total: 669 km)
+  Path 4: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 (Total: 794 km)
+  Path 5: 7-5 -> 5-6 -> 6-4 -> 4-8 -> 8-11 (Total: 800 km)
+
+From 7 to 12:
+  Path 1: 7-9 -> 9-10 -> 10-12 (Total: 315 km)
+  Path 2: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-12 (Total: 440 km)
+  Path 3: 7-5 -> 5-6 -> 6-4 -> 4-10 -> 10-12 (Total: 686 km)
+  Path 4: 7-9 -> 9-6 -> 6-4 -> 4-10 -> 10-12 (Total: 751 km)
+  Path 5: 7-9 -> 9-10 -> 10-11 -> 11-14 -> 14-13 -> 13-12 (Total: 815 km)
+
+From 7 to 13:
+  Path 1: 7-9 -> 9-10 -> 10-12 -> 12-13 (Total: 381 km)
+  Path 2: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 (Total: 506 km)
+  Path 3: 7-9 -> 9-10 -> 10-11 -> 11-14 -> 14-13 (Total: 749 km)
+  Path 4: 7-5 -> 5-6 -> 6-4 -> 4-10 -> 10-12 -> 12-13 (Total: 752 km)
+  Path 5: 7-9 -> 9-6 -> 6-4 -> 4-10 -> 10-12 -> 12-13 (Total: 817 km)
+
+From 7 to 14:
+  Path 1: 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 461 km)
+  Path 2: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 586 km)
+  Path 3: 7-9 -> 9-10 -> 10-11 -> 11-14 (Total: 669 km)
+  Path 4: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-11 -> 11-14 (Total: 794 km)
+  Path 5: 7-5 -> 5-6 -> 6-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 832 km)
+
+From 7 to 15:
+  Path 1: 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 553 km)
+  Path 2: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 678 km)
+  Path 3: 7-9 -> 9-10 -> 10-11 -> 11-14 -> 14-15 (Total: 761 km)
+  Path 4: 7-9 -> 9-10 -> 10-11 -> 11-16 -> 16-15 (Total: 783 km)
+  Path 5: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-11 -> 11-14 -> 14-15 (Total: 886 km)
+
+From 7 to 16:
+  Path 1: 7-9 -> 9-10 -> 10-11 -> 11-16 (Total: 627 km)
+  Path 2: 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 709 km)
+  Path 3: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-11 -> 11-16 (Total: 752 km)
+  Path 4: 7-5 -> 5-6 -> 6-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 834 km)
+  Path 5: 7-9 -> 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 -> 11-16 (Total: 835 km)
+
+From 8 to 0:
+  Path 1: 8-4 -> 4-2 -> 2-0 (Total: 556 km)
+  Path 2: 8-4 -> 4-1 -> 1-2 -> 2-0 (Total: 707 km)
+  Path 3: 8-4 -> 4-6 -> 6-0 (Total: 760 km)
+  Path 4: 8-3 -> 3-1 -> 1-2 -> 2-0 (Total: 767 km)
+  Path 5: 8-3 -> 3-4 -> 4-2 -> 2-0 (Total: 778 km)
+
+From 8 to 1:
+  Path 1: 8-4 -> 4-1 (Total: 423 km)
+  Path 2: 8-3 -> 3-1 (Total: 483 km)
+  Path 3: 8-4 -> 4-2 -> 2-1 (Total: 520 km)
+  Path 4: 8-3 -> 3-4 -> 4-1 (Total: 645 km)
+  Path 5: 8-3 -> 3-4 -> 4-2 -> 2-1 (Total: 742 km)
+
+From 8 to 2:
+  Path 1: 8-4 -> 4-2 (Total: 396 km)
+  Path 2: 8-4 -> 4-1 -> 1-2 (Total: 547 km)
+  Path 3: 8-3 -> 3-1 -> 1-2 (Total: 607 km)
+  Path 4: 8-3 -> 3-4 -> 4-2 (Total: 618 km)
+  Path 5: 8-3 -> 3-4 -> 4-1 -> 1-2 (Total: 769 km)
+
+From 8 to 3:
+  Path 1: 8-3 (Total: 195 km)
+  Path 2: 8-4 -> 4-3 (Total: 555 km)
+  Path 3: 8-4 -> 4-1 -> 1-3 (Total: 711 km)
+  Path 4: 8-4 -> 4-2 -> 2-1 -> 1-3 (Total: 808 km)
+  Path 5: 8-10 -> 10-4 -> 4-3 (Total: 1036 km)
+
+From 8 to 4:
+  Path 1: 8-4 (Total: 264 km)
+  Path 2: 8-3 -> 3-4 (Total: 486 km)
+  Path 3: 8-3 -> 3-1 -> 1-4 (Total: 642 km)
+  Path 4: 8-3 -> 3-1 -> 1-2 -> 2-4 (Total: 739 km)
+  Path 5: 8-10 -> 10-4 (Total: 745 km)
+
+From 8 to 5:
+  Path 1: 8-4 -> 4-6 -> 6-5 (Total: 484 km)
+  Path 2: 8-4 -> 4-6 -> 6-9 -> 9-7 -> 7-5 (Total: 619 km)
+  Path 3: 8-10 -> 10-9 -> 9-7 -> 7-5 (Total: 664 km)
+  Path 4: 8-3 -> 3-4 -> 4-6 -> 6-5 (Total: 706 km)
+  Path 5: 8-10 -> 10-9 -> 9-6 -> 6-5 (Total: 719 km)
+
+From 8 to 6:
+  Path 1: 8-4 -> 4-6 (Total: 447 km)
+  Path 2: 8-3 -> 3-4 -> 4-6 (Total: 669 km)
+  Path 3: 8-10 -> 10-9 -> 9-6 (Total: 682 km)
+  Path 4: 8-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 701 km)
+  Path 5: 8-11 -> 11-10 -> 10-9 -> 9-6 (Total: 795 km)
+
+From 8 to 7:
+  Path 1: 8-4 -> 4-6 -> 6-5 -> 5-7 (Total: 519 km)
+  Path 2: 8-4 -> 4-6 -> 6-9 -> 9-7 (Total: 584 km)
+  Path 3: 8-10 -> 10-9 -> 9-7 (Total: 629 km)
+  Path 4: 8-3 -> 3-4 -> 4-6 -> 6-5 -> 5-7 (Total: 741 km)
+  Path 5: 8-11 -> 11-10 -> 10-9 -> 9-7 (Total: 742 km)
+
+From 8 to 9:
+  Path 1: 8-4 -> 4-6 -> 6-9 (Total: 542 km)
+  Path 2: 8-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 561 km)
+  Path 3: 8-10 -> 10-9 (Total: 587 km)
+  Path 4: 8-11 -> 11-10 -> 10-9 (Total: 700 km)
+  Path 5: 8-3 -> 3-4 -> 4-6 -> 6-9 (Total: 764 km)
+
+From 8 to 10:
+  Path 1: 8-10 (Total: 393 km)
+  Path 2: 8-11 -> 11-10 (Total: 506 km)
+  Path 3: 8-4 -> 4-10 (Total: 616 km)
+  Path 4: 8-11 -> 11-14 -> 14-13 -> 13-12 -> 12-10 (Total: 714 km)
+  Path 5: 8-4 -> 4-6 -> 6-9 -> 9-10 (Total: 736 km)
+
+From 8 to 11:
+  Path 1: 8-11 (Total: 281 km)
+  Path 2: 8-10 -> 10-11 (Total: 618 km)
+  Path 3: 8-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 (Total: 826 km)
+  Path 4: 8-4 -> 4-10 -> 10-11 (Total: 841 km)
+  Path 5: 8-4 -> 4-6 -> 6-9 -> 9-10 -> 10-11 (Total: 961 km)
+
+From 8 to 12:
+  Path 1: 8-10 -> 10-12 (Total: 472 km)
+  Path 2: 8-11 -> 11-10 -> 10-12 (Total: 585 km)
+  Path 3: 8-11 -> 11-14 -> 14-13 -> 13-12 (Total: 635 km)
+  Path 4: 8-4 -> 4-10 -> 10-12 (Total: 695 km)
+  Path 5: 8-4 -> 4-6 -> 6-9 -> 9-10 -> 10-12 (Total: 815 km)
+
+From 8 to 13:
+  Path 1: 8-10 -> 10-12 -> 12-13 (Total: 538 km)
+  Path 2: 8-11 -> 11-14 -> 14-13 (Total: 569 km)
+  Path 3: 8-11 -> 11-10 -> 10-12 -> 12-13 (Total: 651 km)
+  Path 4: 8-4 -> 4-10 -> 10-12 -> 12-13 (Total: 761 km)
+  Path 5: 8-11 -> 11-16 -> 16-15 -> 15-14 -> 14-13 (Total: 775 km)
+
+From 8 to 14:
+  Path 1: 8-11 -> 11-14 (Total: 489 km)
+  Path 2: 8-10 -> 10-12 -> 12-13 -> 13-14 (Total: 618 km)
+  Path 3: 8-11 -> 11-16 -> 16-15 -> 15-14 (Total: 695 km)
+  Path 4: 8-11 -> 11-10 -> 10-12 -> 12-13 -> 13-14 (Total: 731 km)
+  Path 5: 8-10 -> 10-11 -> 11-14 (Total: 826 km)
+
+From 8 to 15:
+  Path 1: 8-11 -> 11-14 -> 14-15 (Total: 581 km)
+  Path 2: 8-11 -> 11-16 -> 16-15 (Total: 603 km)
+  Path 3: 8-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 710 km)
+  Path 4: 8-11 -> 11-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 823 km)
+  Path 5: 8-10 -> 10-11 -> 11-14 -> 14-15 (Total: 918 km)
+
+From 8 to 16:
+  Path 1: 8-11 -> 11-16 (Total: 447 km)
+  Path 2: 8-11 -> 11-14 -> 14-15 -> 15-16 (Total: 737 km)
+  Path 3: 8-10 -> 10-11 -> 11-16 (Total: 784 km)
+  Path 4: 8-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 866 km)
+  Path 5: 8-11 -> 11-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 979 km)
+
+From 9 to 0:
+  Path 1: 9-6 -> 6-0 (Total: 408 km)
+  Path 2: 9-7 -> 7-5 -> 5-6 -> 6-0 (Total: 427 km)
+  Path 3: 9-6 -> 6-4 -> 4-2 -> 2-0 (Total: 570 km)
+  Path 4: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 -> 2-0 (Total: 589 km)
+  Path 5: 9-6 -> 6-4 -> 4-1 -> 1-2 -> 2-0 (Total: 721 km)
+
+From 9 to 1:
+  Path 1: 9-6 -> 6-4 -> 4-1 (Total: 437 km)
+  Path 2: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-1 (Total: 456 km)
+  Path 3: 9-6 -> 6-4 -> 4-2 -> 2-1 (Total: 534 km)
+  Path 4: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 -> 2-1 (Total: 553 km)
+  Path 5: 9-6 -> 6-0 -> 0-2 -> 2-1 (Total: 692 km)
+
+From 9 to 2:
+  Path 1: 9-6 -> 6-4 -> 4-2 (Total: 410 km)
+  Path 2: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 (Total: 429 km)
+  Path 3: 9-6 -> 6-4 -> 4-1 -> 1-2 (Total: 561 km)
+  Path 4: 9-6 -> 6-0 -> 0-2 (Total: 568 km)
+  Path 5: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-1 -> 1-2 (Total: 580 km)
+
+From 9 to 3:
+  Path 1: 9-6 -> 6-4 -> 4-3 (Total: 569 km)
+  Path 2: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-3 (Total: 588 km)
+  Path 3: 9-6 -> 6-4 -> 4-1 -> 1-3 (Total: 725 km)
+  Path 4: 9-6 -> 6-4 -> 4-8 -> 8-3 (Total: 737 km)
+  Path 5: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-1 -> 1-3 (Total: 744 km)
+
+From 9 to 4:
+  Path 1: 9-6 -> 6-4 (Total: 278 km)
+  Path 2: 9-7 -> 7-5 -> 5-6 -> 6-4 (Total: 297 km)
+  Path 3: 9-10 -> 10-4 (Total: 546 km)
+  Path 4: 9-6 -> 6-0 -> 0-2 -> 2-4 (Total: 700 km)
+  Path 5: 9-7 -> 7-5 -> 5-6 -> 6-0 -> 0-2 -> 2-4 (Total: 719 km)
+
+From 9 to 5:
+  Path 1: 9-7 -> 7-5 (Total: 77 km)
+  Path 2: 9-6 -> 6-5 (Total: 132 km)
+  Path 3: 9-10 -> 10-4 -> 4-6 -> 6-5 (Total: 766 km)
+  Path 4: 9-10 -> 10-8 -> 8-4 -> 4-6 -> 6-5 (Total: 1071 km)
+  Path 5: 9-10 -> 10-11 -> 11-8 -> 8-4 -> 4-6 -> 6-5 (Total: 1184 km)
+
+From 9 to 6:
+  Path 1: 9-6 (Total: 95 km)
+  Path 2: 9-7 -> 7-5 -> 5-6 (Total: 114 km)
+  Path 3: 9-10 -> 10-4 -> 4-6 (Total: 729 km)
+  Path 4: 9-10 -> 10-8 -> 8-4 -> 4-6 (Total: 1034 km)
+  Path 5: 9-10 -> 10-11 -> 11-8 -> 8-4 -> 4-6 (Total: 1147 km)
+
+From 9 to 7:
+  Path 1: 9-7 (Total: 42 km)
+  Path 2: 9-6 -> 6-5 -> 5-7 (Total: 167 km)
+  Path 3: 9-10 -> 10-4 -> 4-6 -> 6-5 -> 5-7 (Total: 801 km)
+  Path 4: 9-10 -> 10-8 -> 8-4 -> 4-6 -> 6-5 -> 5-7 (Total: 1106 km)
+  Path 5: 9-10 -> 10-11 -> 11-8 -> 8-4 -> 4-6 -> 6-5 -> 5-7 (Total: 1219 km)
+
+From 9 to 8:
+  Path 1: 9-6 -> 6-4 -> 4-8 (Total: 542 km)
+  Path 2: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-8 (Total: 561 km)
+  Path 3: 9-10 -> 10-8 (Total: 587 km)
+  Path 4: 9-10 -> 10-11 -> 11-8 (Total: 700 km)
+  Path 5: 9-6 -> 6-4 -> 4-3 -> 3-8 (Total: 764 km)
+
+From 9 to 10:
+  Path 1: 9-10 (Total: 194 km)
+  Path 2: 9-6 -> 6-4 -> 4-10 (Total: 630 km)
+  Path 3: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-10 (Total: 649 km)
+  Path 4: 9-6 -> 6-4 -> 4-8 -> 8-10 (Total: 935 km)
+  Path 5: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-8 -> 8-10 (Total: 954 km)
+
+From 9 to 11:
+  Path 1: 9-10 -> 10-11 (Total: 419 km)
+  Path 2: 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 (Total: 627 km)
+  Path 3: 9-6 -> 6-4 -> 4-8 -> 8-11 (Total: 823 km)
+  Path 4: 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 -> 16-11 (Total: 833 km)
+  Path 5: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-8 -> 8-11 (Total: 842 km)
+
+From 9 to 12:
+  Path 1: 9-10 -> 10-12 (Total: 273 km)
+  Path 2: 9-6 -> 6-4 -> 4-10 -> 10-12 (Total: 709 km)
+  Path 3: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-10 -> 10-12 (Total: 728 km)
+  Path 4: 9-10 -> 10-11 -> 11-14 -> 14-13 -> 13-12 (Total: 773 km)
+  Path 5: 9-10 -> 10-11 -> 11-16 -> 16-15 -> 15-14 -> 14-13 -> 13-12 (Total: 979 km)
+
+From 9 to 13:
+  Path 1: 9-10 -> 10-12 -> 12-13 (Total: 339 km)
+  Path 2: 9-10 -> 10-11 -> 11-14 -> 14-13 (Total: 707 km)
+  Path 3: 9-6 -> 6-4 -> 4-10 -> 10-12 -> 12-13 (Total: 775 km)
+  Path 4: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-10 -> 10-12 -> 12-13 (Total: 794 km)
+  Path 5: 9-10 -> 10-11 -> 11-16 -> 16-15 -> 15-14 -> 14-13 (Total: 913 km)
+
+From 9 to 14:
+  Path 1: 9-10 -> 10-12 -> 12-13 -> 13-14 (Total: 419 km)
+  Path 2: 9-10 -> 10-11 -> 11-14 (Total: 627 km)
+  Path 3: 9-10 -> 10-11 -> 11-16 -> 16-15 -> 15-14 (Total: 833 km)
+  Path 4: 9-6 -> 6-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 855 km)
+  Path 5: 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 874 km)
+
+From 9 to 15:
+  Path 1: 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 511 km)
+  Path 2: 9-10 -> 10-11 -> 11-14 -> 14-15 (Total: 719 km)
+  Path 3: 9-10 -> 10-11 -> 11-16 -> 16-15 (Total: 741 km)
+  Path 4: 9-6 -> 6-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 947 km)
+  Path 5: 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 -> 11-16 -> 16-15 (Total: 949 km)
+
+From 9 to 16:
+  Path 1: 9-10 -> 10-11 -> 11-16 (Total: 585 km)
+  Path 2: 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 667 km)
+  Path 3: 9-10 -> 10-12 -> 12-13 -> 13-14 -> 14-11 -> 11-16 (Total: 793 km)
+  Path 4: 9-10 -> 10-11 -> 11-14 -> 14-15 -> 15-16 (Total: 875 km)
+  Path 5: 9-6 -> 6-4 -> 4-8 -> 8-11 -> 11-16 (Total: 989 km)
+
+From 10 to 0:
+  Path 1: 10-9 -> 9-6 -> 6-0 (Total: 602 km)
+  Path 2: 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-0 (Total: 621 km)
+  Path 3: 10-4 -> 4-2 -> 2-0 (Total: 644 km)
+  Path 4: 10-9 -> 9-6 -> 6-4 -> 4-2 -> 2-0 (Total: 764 km)
+  Path 5: 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 -> 2-0 (Total: 783 km)
+
+From 10 to 1:
+  Path 1: 10-4 -> 4-1 (Total: 511 km)
+  Path 2: 10-4 -> 4-2 -> 2-1 (Total: 608 km)
+  Path 3: 10-9 -> 9-6 -> 6-4 -> 4-1 (Total: 631 km)
+  Path 4: 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-1 (Total: 650 km)
+  Path 5: 10-9 -> 9-6 -> 6-4 -> 4-2 -> 2-1 (Total: 728 km)
+
+From 10 to 2:
+  Path 1: 10-4 -> 4-2 (Total: 484 km)
+  Path 2: 10-9 -> 9-6 -> 6-4 -> 4-2 (Total: 604 km)
+  Path 3: 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 (Total: 623 km)
+  Path 4: 10-4 -> 4-1 -> 1-2 (Total: 635 km)
+  Path 5: 10-9 -> 9-6 -> 6-4 -> 4-1 -> 1-2 (Total: 755 km)
+
+From 10 to 3:
+  Path 1: 10-8 -> 8-3 (Total: 588 km)
+  Path 2: 10-4 -> 4-3 (Total: 643 km)
+  Path 3: 10-11 -> 11-8 -> 8-3 (Total: 701 km)
+  Path 4: 10-9 -> 9-6 -> 6-4 -> 4-3 (Total: 763 km)
+  Path 5: 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-3 (Total: 782 km)
+
+From 10 to 4:
+  Path 1: 10-4 (Total: 352 km)
+  Path 2: 10-9 -> 9-6 -> 6-4 (Total: 472 km)
+  Path 3: 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 (Total: 491 km)
+  Path 4: 10-8 -> 8-4 (Total: 657 km)
+  Path 5: 10-11 -> 11-8 -> 8-4 (Total: 770 km)
+
+From 10 to 5:
+  Path 1: 10-9 -> 9-7 -> 7-5 (Total: 271 km)
+  Path 2: 10-9 -> 9-6 -> 6-5 (Total: 326 km)
+  Path 3: 10-4 -> 4-6 -> 6-5 (Total: 572 km)
+  Path 4: 10-4 -> 4-6 -> 6-9 -> 9-7 -> 7-5 (Total: 707 km)
+  Path 5: 10-8 -> 8-4 -> 4-6 -> 6-5 (Total: 877 km)
+
+From 10 to 6:
+  Path 1: 10-9 -> 9-6 (Total: 289 km)
+  Path 2: 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 308 km)
+  Path 3: 10-4 -> 4-6 (Total: 535 km)
+  Path 4: 10-8 -> 8-4 -> 4-6 (Total: 840 km)
+  Path 5: 10-11 -> 11-8 -> 8-4 -> 4-6 (Total: 953 km)
+
+From 10 to 7:
+  Path 1: 10-9 -> 9-7 (Total: 236 km)
+  Path 2: 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 361 km)
+  Path 3: 10-4 -> 4-6 -> 6-5 -> 5-7 (Total: 607 km)
+  Path 4: 10-4 -> 4-6 -> 6-9 -> 9-7 (Total: 672 km)
+  Path 5: 10-8 -> 8-4 -> 4-6 -> 6-5 -> 5-7 (Total: 912 km)
+
+From 10 to 8:
+  Path 1: 10-8 (Total: 393 km)
+  Path 2: 10-11 -> 11-8 (Total: 506 km)
+  Path 3: 10-4 -> 4-8 (Total: 616 km)
+  Path 4: 10-12 -> 12-13 -> 13-14 -> 14-11 -> 11-8 (Total: 714 km)
+  Path 5: 10-9 -> 9-6 -> 6-4 -> 4-8 (Total: 736 km)
+
+From 10 to 9:
+  Path 1: 10-9 (Total: 194 km)
+  Path 2: 10-4 -> 4-6 -> 6-9 (Total: 630 km)
+  Path 3: 10-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 649 km)
+  Path 4: 10-8 -> 8-4 -> 4-6 -> 6-9 (Total: 935 km)
+  Path 5: 10-8 -> 8-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 954 km)
+
+From 10 to 11:
+  Path 1: 10-11 (Total: 225 km)
+  Path 2: 10-12 -> 12-13 -> 13-14 -> 14-11 (Total: 433 km)
+  Path 3: 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 -> 16-11 (Total: 639 km)
+  Path 4: 10-8 -> 8-11 (Total: 674 km)
+  Path 5: 10-4 -> 4-8 -> 8-11 (Total: 897 km)
+
+From 10 to 12:
+  Path 1: 10-12 (Total: 79 km)
+  Path 2: 10-11 -> 11-14 -> 14-13 -> 13-12 (Total: 579 km)
+  Path 3: 10-11 -> 11-16 -> 16-15 -> 15-14 -> 14-13 -> 13-12 (Total: 785 km)
+  Path 4: 10-8 -> 8-11 -> 11-14 -> 14-13 -> 13-12 (Total: 1028 km)
+  Path 5: 10-8 -> 8-11 -> 11-16 -> 16-15 -> 15-14 -> 14-13 -> 13-12 (Total: 1234 km)
+
+From 10 to 13:
+  Path 1: 10-12 -> 12-13 (Total: 145 km)
+  Path 2: 10-11 -> 11-14 -> 14-13 (Total: 513 km)
+  Path 3: 10-11 -> 11-16 -> 16-15 -> 15-14 -> 14-13 (Total: 719 km)
+  Path 4: 10-8 -> 8-11 -> 11-14 -> 14-13 (Total: 962 km)
+  Path 5: 10-8 -> 8-11 -> 11-16 -> 16-15 -> 15-14 -> 14-13 (Total: 1168 km)
+
+From 10 to 14:
+  Path 1: 10-12 -> 12-13 -> 13-14 (Total: 225 km)
+  Path 2: 10-11 -> 11-14 (Total: 433 km)
+  Path 3: 10-11 -> 11-16 -> 16-15 -> 15-14 (Total: 639 km)
+  Path 4: 10-8 -> 8-11 -> 11-14 (Total: 882 km)
+  Path 5: 10-8 -> 8-11 -> 11-16 -> 16-15 -> 15-14 (Total: 1088 km)
+
+From 10 to 15:
+  Path 1: 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 317 km)
+  Path 2: 10-11 -> 11-14 -> 14-15 (Total: 525 km)
+  Path 3: 10-11 -> 11-16 -> 16-15 (Total: 547 km)
+  Path 4: 10-12 -> 12-13 -> 13-14 -> 14-11 -> 11-16 -> 16-15 (Total: 755 km)
+  Path 5: 10-8 -> 8-11 -> 11-14 -> 14-15 (Total: 974 km)
+
+From 10 to 16:
+  Path 1: 10-11 -> 11-16 (Total: 391 km)
+  Path 2: 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 473 km)
+  Path 3: 10-12 -> 12-13 -> 13-14 -> 14-11 -> 11-16 (Total: 599 km)
+  Path 4: 10-11 -> 11-14 -> 14-15 -> 15-16 (Total: 681 km)
+  Path 5: 10-8 -> 8-11 -> 11-16 (Total: 840 km)
+
+From 11 to 0:
+  Path 1: 11-10 -> 10-9 -> 9-6 -> 6-0 (Total: 827 km)
+  Path 2: 11-8 -> 8-4 -> 4-2 -> 2-0 (Total: 837 km)
+  Path 3: 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-0 (Total: 846 km)
+  Path 4: 11-10 -> 10-4 -> 4-2 -> 2-0 (Total: 869 km)
+  Path 5: 11-8 -> 8-4 -> 4-1 -> 1-2 -> 2-0 (Total: 988 km)
+
+From 11 to 1:
+  Path 1: 11-8 -> 8-4 -> 4-1 (Total: 704 km)
+  Path 2: 11-10 -> 10-4 -> 4-1 (Total: 736 km)
+  Path 3: 11-8 -> 8-3 -> 3-1 (Total: 764 km)
+  Path 4: 11-8 -> 8-4 -> 4-2 -> 2-1 (Total: 801 km)
+  Path 5: 11-10 -> 10-4 -> 4-2 -> 2-1 (Total: 833 km)
+
+From 11 to 2:
+  Path 1: 11-8 -> 8-4 -> 4-2 (Total: 677 km)
+  Path 2: 11-10 -> 10-4 -> 4-2 (Total: 709 km)
+  Path 3: 11-8 -> 8-4 -> 4-1 -> 1-2 (Total: 828 km)
+  Path 4: 11-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 (Total: 829 km)
+  Path 5: 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 (Total: 848 km)
+
+From 11 to 3:
+  Path 1: 11-8 -> 8-3 (Total: 476 km)
+  Path 2: 11-10 -> 10-8 -> 8-3 (Total: 813 km)
+  Path 3: 11-8 -> 8-4 -> 4-3 (Total: 836 km)
+  Path 4: 11-10 -> 10-4 -> 4-3 (Total: 868 km)
+  Path 5: 11-10 -> 10-9 -> 9-6 -> 6-4 -> 4-3 (Total: 988 km)
+
+From 11 to 4:
+  Path 1: 11-8 -> 8-4 (Total: 545 km)
+  Path 2: 11-10 -> 10-4 (Total: 577 km)
+  Path 3: 11-10 -> 10-9 -> 9-6 -> 6-4 (Total: 697 km)
+  Path 4: 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 (Total: 716 km)
+  Path 5: 11-8 -> 8-3 -> 3-4 (Total: 767 km)
+
+From 11 to 5:
+  Path 1: 11-10 -> 10-9 -> 9-7 -> 7-5 (Total: 496 km)
+  Path 2: 11-10 -> 10-9 -> 9-6 -> 6-5 (Total: 551 km)
+  Path 3: 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 (Total: 704 km)
+  Path 4: 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-5 (Total: 759 km)
+  Path 5: 11-8 -> 8-4 -> 4-6 -> 6-5 (Total: 765 km)
+
+From 11 to 6:
+  Path 1: 11-10 -> 10-9 -> 9-6 (Total: 514 km)
+  Path 2: 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 533 km)
+  Path 3: 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 (Total: 722 km)
+  Path 4: 11-8 -> 8-4 -> 4-6 (Total: 728 km)
+  Path 5: 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 741 km)
+
+From 11 to 7:
+  Path 1: 11-10 -> 10-9 -> 9-7 (Total: 461 km)
+  Path 2: 11-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 586 km)
+  Path 3: 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 (Total: 669 km)
+  Path 4: 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 794 km)
+  Path 5: 11-8 -> 8-4 -> 4-6 -> 6-5 -> 5-7 (Total: 800 km)
+
+From 11 to 8:
+  Path 1: 11-8 (Total: 281 km)
+  Path 2: 11-10 -> 10-8 (Total: 618 km)
+  Path 3: 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-8 (Total: 826 km)
+  Path 4: 11-10 -> 10-4 -> 4-8 (Total: 841 km)
+  Path 5: 11-10 -> 10-9 -> 9-6 -> 6-4 -> 4-8 (Total: 961 km)
+
+From 11 to 9:
+  Path 1: 11-10 -> 10-9 (Total: 419 km)
+  Path 2: 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 (Total: 627 km)
+  Path 3: 11-8 -> 8-4 -> 4-6 -> 6-9 (Total: 823 km)
+  Path 4: 11-16 -> 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 (Total: 833 km)
+  Path 5: 11-8 -> 8-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 842 km)
+
+From 11 to 10:
+  Path 1: 11-10 (Total: 225 km)
+  Path 2: 11-14 -> 14-13 -> 13-12 -> 12-10 (Total: 433 km)
+  Path 3: 11-16 -> 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 (Total: 639 km)
+  Path 4: 11-8 -> 8-10 (Total: 674 km)
+  Path 5: 11-8 -> 8-4 -> 4-10 (Total: 897 km)
+
+From 11 to 12:
+  Path 1: 11-10 -> 10-12 (Total: 304 km)
+  Path 2: 11-14 -> 14-13 -> 13-12 (Total: 354 km)
+  Path 3: 11-16 -> 16-15 -> 15-14 -> 14-13 -> 13-12 (Total: 560 km)
+  Path 4: 11-8 -> 8-10 -> 10-12 (Total: 753 km)
+  Path 5: 11-8 -> 8-4 -> 4-10 -> 10-12 (Total: 976 km)
+
+From 11 to 13:
+  Path 1: 11-14 -> 14-13 (Total: 288 km)
+  Path 2: 11-10 -> 10-12 -> 12-13 (Total: 370 km)
+  Path 3: 11-16 -> 16-15 -> 15-14 -> 14-13 (Total: 494 km)
+  Path 4: 11-8 -> 8-10 -> 10-12 -> 12-13 (Total: 819 km)
+  Path 5: 11-8 -> 8-4 -> 4-10 -> 10-12 -> 12-13 (Total: 1042 km)
+
+From 11 to 14:
+  Path 1: 11-14 (Total: 208 km)
+  Path 2: 11-16 -> 16-15 -> 15-14 (Total: 414 km)
+  Path 3: 11-10 -> 10-12 -> 12-13 -> 13-14 (Total: 450 km)
+  Path 4: 11-8 -> 8-10 -> 10-12 -> 12-13 -> 13-14 (Total: 899 km)
+  Path 5: 11-8 -> 8-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 1122 km)
+
+From 11 to 15:
+  Path 1: 11-14 -> 14-15 (Total: 300 km)
+  Path 2: 11-16 -> 16-15 (Total: 322 km)
+  Path 3: 11-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 542 km)
+  Path 4: 11-8 -> 8-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 991 km)
+  Path 5: 11-8 -> 8-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 1214 km)
+
+From 11 to 16:
+  Path 1: 11-16 (Total: 166 km)
+  Path 2: 11-14 -> 14-15 -> 15-16 (Total: 456 km)
+  Path 3: 11-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 698 km)
+  Path 4: 11-8 -> 8-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 1147 km)
+  Path 5: 11-8 -> 8-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 1370 km)
+
+From 12 to 0:
+  Path 1: 12-10 -> 10-9 -> 9-6 -> 6-0 (Total: 681 km)
+  Path 2: 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-0 (Total: 700 km)
+  Path 3: 12-10 -> 10-4 -> 4-2 -> 2-0 (Total: 723 km)
+  Path 4: 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 -> 2-0 (Total: 843 km)
+  Path 5: 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 -> 2-0 (Total: 862 km)
+
+From 12 to 1:
+  Path 1: 12-10 -> 10-4 -> 4-1 (Total: 590 km)
+  Path 2: 12-10 -> 10-4 -> 4-2 -> 2-1 (Total: 687 km)
+  Path 3: 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-1 (Total: 710 km)
+  Path 4: 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-1 (Total: 729 km)
+  Path 5: 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 -> 2-1 (Total: 807 km)
+
+From 12 to 2:
+  Path 1: 12-10 -> 10-4 -> 4-2 (Total: 563 km)
+  Path 2: 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 (Total: 683 km)
+  Path 3: 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 (Total: 702 km)
+  Path 4: 12-10 -> 10-4 -> 4-1 -> 1-2 (Total: 714 km)
+  Path 5: 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-1 -> 1-2 (Total: 834 km)
+
+From 12 to 3:
+  Path 1: 12-10 -> 10-8 -> 8-3 (Total: 667 km)
+  Path 2: 12-10 -> 10-4 -> 4-3 (Total: 722 km)
+  Path 3: 12-10 -> 10-11 -> 11-8 -> 8-3 (Total: 780 km)
+  Path 4: 12-13 -> 13-14 -> 14-11 -> 11-8 -> 8-3 (Total: 830 km)
+  Path 5: 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-3 (Total: 842 km)
+
+From 12 to 4:
+  Path 1: 12-10 -> 10-4 (Total: 431 km)
+  Path 2: 12-10 -> 10-9 -> 9-6 -> 6-4 (Total: 551 km)
+  Path 3: 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 (Total: 570 km)
+  Path 4: 12-10 -> 10-8 -> 8-4 (Total: 736 km)
+  Path 5: 12-10 -> 10-11 -> 11-8 -> 8-4 (Total: 849 km)
+
+From 12 to 5:
+  Path 1: 12-10 -> 10-9 -> 9-7 -> 7-5 (Total: 350 km)
+  Path 2: 12-10 -> 10-9 -> 9-6 -> 6-5 (Total: 405 km)
+  Path 3: 12-10 -> 10-4 -> 4-6 -> 6-5 (Total: 651 km)
+  Path 4: 12-10 -> 10-4 -> 4-6 -> 6-9 -> 9-7 -> 7-5 (Total: 786 km)
+  Path 5: 12-13 -> 13-14 -> 14-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 (Total: 850 km)
+
+From 12 to 6:
+  Path 1: 12-10 -> 10-9 -> 9-6 (Total: 368 km)
+  Path 2: 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 387 km)
+  Path 3: 12-10 -> 10-4 -> 4-6 (Total: 614 km)
+  Path 4: 12-13 -> 13-14 -> 14-11 -> 11-10 -> 10-9 -> 9-6 (Total: 868 km)
+  Path 5: 12-13 -> 13-14 -> 14-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 887 km)
+
+From 12 to 7:
+  Path 1: 12-10 -> 10-9 -> 9-7 (Total: 315 km)
+  Path 2: 12-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 440 km)
+  Path 3: 12-10 -> 10-4 -> 4-6 -> 6-5 -> 5-7 (Total: 686 km)
+  Path 4: 12-10 -> 10-4 -> 4-6 -> 6-9 -> 9-7 (Total: 751 km)
+  Path 5: 12-13 -> 13-14 -> 14-11 -> 11-10 -> 10-9 -> 9-7 (Total: 815 km)
+
+From 12 to 8:
+  Path 1: 12-10 -> 10-8 (Total: 472 km)
+  Path 2: 12-10 -> 10-11 -> 11-8 (Total: 585 km)
+  Path 3: 12-13 -> 13-14 -> 14-11 -> 11-8 (Total: 635 km)
+  Path 4: 12-10 -> 10-4 -> 4-8 (Total: 695 km)
+  Path 5: 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-8 (Total: 815 km)
+
+From 12 to 9:
+  Path 1: 12-10 -> 10-9 (Total: 273 km)
+  Path 2: 12-10 -> 10-4 -> 4-6 -> 6-9 (Total: 709 km)
+  Path 3: 12-10 -> 10-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 728 km)
+  Path 4: 12-13 -> 13-14 -> 14-11 -> 11-10 -> 10-9 (Total: 773 km)
+  Path 5: 12-13 -> 13-14 -> 14-15 -> 15-16 -> 16-11 -> 11-10 -> 10-9 (Total: 979 km)
+
+From 12 to 10:
+  Path 1: 12-10 (Total: 79 km)
+  Path 2: 12-13 -> 13-14 -> 14-11 -> 11-10 (Total: 579 km)
+  Path 3: 12-13 -> 13-14 -> 14-15 -> 15-16 -> 16-11 -> 11-10 (Total: 785 km)
+  Path 4: 12-13 -> 13-14 -> 14-11 -> 11-8 -> 8-10 (Total: 1028 km)
+  Path 5: 12-13 -> 13-14 -> 14-15 -> 15-16 -> 16-11 -> 11-8 -> 8-10 (Total: 1234 km)
+
+From 12 to 11:
+  Path 1: 12-10 -> 10-11 (Total: 304 km)
+  Path 2: 12-13 -> 13-14 -> 14-11 (Total: 354 km)
+  Path 3: 12-13 -> 13-14 -> 14-15 -> 15-16 -> 16-11 (Total: 560 km)
+  Path 4: 12-10 -> 10-8 -> 8-11 (Total: 753 km)
+  Path 5: 12-10 -> 10-4 -> 4-8 -> 8-11 (Total: 976 km)
+
+From 12 to 13:
+  Path 1: 12-13 (Total: 66 km)
+  Path 2: 12-10 -> 10-11 -> 11-14 -> 14-13 (Total: 592 km)
+  Path 3: 12-10 -> 10-11 -> 11-16 -> 16-15 -> 15-14 -> 14-13 (Total: 798 km)
+  Path 4: 12-10 -> 10-8 -> 8-11 -> 11-14 -> 14-13 (Total: 1041 km)
+  Path 5: 12-10 -> 10-8 -> 8-11 -> 11-16 -> 16-15 -> 15-14 -> 14-13 (Total: 1247 km)
+
+From 12 to 14:
+  Path 1: 12-13 -> 13-14 (Total: 146 km)
+  Path 2: 12-10 -> 10-11 -> 11-14 (Total: 512 km)
+  Path 3: 12-10 -> 10-11 -> 11-16 -> 16-15 -> 15-14 (Total: 718 km)
+  Path 4: 12-10 -> 10-8 -> 8-11 -> 11-14 (Total: 961 km)
+  Path 5: 12-10 -> 10-8 -> 8-11 -> 11-16 -> 16-15 -> 15-14 (Total: 1167 km)
+
+From 12 to 15:
+  Path 1: 12-13 -> 13-14 -> 14-15 (Total: 238 km)
+  Path 2: 12-10 -> 10-11 -> 11-14 -> 14-15 (Total: 604 km)
+  Path 3: 12-10 -> 10-11 -> 11-16 -> 16-15 (Total: 626 km)
+  Path 4: 12-13 -> 13-14 -> 14-11 -> 11-16 -> 16-15 (Total: 676 km)
+  Path 5: 12-10 -> 10-8 -> 8-11 -> 11-14 -> 14-15 (Total: 1053 km)
+
+From 12 to 16:
+  Path 1: 12-13 -> 13-14 -> 14-15 -> 15-16 (Total: 394 km)
+  Path 2: 12-10 -> 10-11 -> 11-16 (Total: 470 km)
+  Path 3: 12-13 -> 13-14 -> 14-11 -> 11-16 (Total: 520 km)
+  Path 4: 12-10 -> 10-11 -> 11-14 -> 14-15 -> 15-16 (Total: 760 km)
+  Path 5: 12-10 -> 10-8 -> 8-11 -> 11-16 (Total: 919 km)
+
+From 13 to 0:
+  Path 1: 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-0 (Total: 747 km)
+  Path 2: 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-0 (Total: 766 km)
+  Path 3: 13-12 -> 12-10 -> 10-4 -> 4-2 -> 2-0 (Total: 789 km)
+  Path 4: 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 -> 2-0 (Total: 909 km)
+  Path 5: 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 -> 2-0 (Total: 928 km)
+
+From 13 to 1:
+  Path 1: 13-12 -> 12-10 -> 10-4 -> 4-1 (Total: 656 km)
+  Path 2: 13-12 -> 12-10 -> 10-4 -> 4-2 -> 2-1 (Total: 753 km)
+  Path 3: 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-1 (Total: 776 km)
+  Path 4: 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-1 (Total: 795 km)
+  Path 5: 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 -> 2-1 (Total: 873 km)
+
+From 13 to 2:
+  Path 1: 13-12 -> 12-10 -> 10-4 -> 4-2 (Total: 629 km)
+  Path 2: 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 (Total: 749 km)
+  Path 3: 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 (Total: 768 km)
+  Path 4: 13-12 -> 12-10 -> 10-4 -> 4-1 -> 1-2 (Total: 780 km)
+  Path 5: 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-1 -> 1-2 (Total: 900 km)
+
+From 13 to 3:
+  Path 1: 13-12 -> 12-10 -> 10-8 -> 8-3 (Total: 733 km)
+  Path 2: 13-14 -> 14-11 -> 11-8 -> 8-3 (Total: 764 km)
+  Path 3: 13-12 -> 12-10 -> 10-4 -> 4-3 (Total: 788 km)
+  Path 4: 13-12 -> 12-10 -> 10-11 -> 11-8 -> 8-3 (Total: 846 km)
+  Path 5: 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-3 (Total: 908 km)
+
+From 13 to 4:
+  Path 1: 13-12 -> 12-10 -> 10-4 (Total: 497 km)
+  Path 2: 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 (Total: 617 km)
+  Path 3: 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 (Total: 636 km)
+  Path 4: 13-12 -> 12-10 -> 10-8 -> 8-4 (Total: 802 km)
+  Path 5: 13-14 -> 14-11 -> 11-8 -> 8-4 (Total: 833 km)
+
+From 13 to 5:
+  Path 1: 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 (Total: 416 km)
+  Path 2: 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-5 (Total: 471 km)
+  Path 3: 13-12 -> 12-10 -> 10-4 -> 4-6 -> 6-5 (Total: 717 km)
+  Path 4: 13-14 -> 14-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 (Total: 784 km)
+  Path 5: 13-14 -> 14-11 -> 11-10 -> 10-9 -> 9-6 -> 6-5 (Total: 839 km)
+
+From 13 to 6:
+  Path 1: 13-12 -> 12-10 -> 10-9 -> 9-6 (Total: 434 km)
+  Path 2: 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 453 km)
+  Path 3: 13-12 -> 12-10 -> 10-4 -> 4-6 (Total: 680 km)
+  Path 4: 13-14 -> 14-11 -> 11-10 -> 10-9 -> 9-6 (Total: 802 km)
+  Path 5: 13-14 -> 14-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 821 km)
+
+From 13 to 7:
+  Path 1: 13-12 -> 12-10 -> 10-9 -> 9-7 (Total: 381 km)
+  Path 2: 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 506 km)
+  Path 3: 13-14 -> 14-11 -> 11-10 -> 10-9 -> 9-7 (Total: 749 km)
+  Path 4: 13-12 -> 12-10 -> 10-4 -> 4-6 -> 6-5 -> 5-7 (Total: 752 km)
+  Path 5: 13-12 -> 12-10 -> 10-4 -> 4-6 -> 6-9 -> 9-7 (Total: 817 km)
+
+From 13 to 8:
+  Path 1: 13-12 -> 12-10 -> 10-8 (Total: 538 km)
+  Path 2: 13-14 -> 14-11 -> 11-8 (Total: 569 km)
+  Path 3: 13-12 -> 12-10 -> 10-11 -> 11-8 (Total: 651 km)
+  Path 4: 13-12 -> 12-10 -> 10-4 -> 4-8 (Total: 761 km)
+  Path 5: 13-14 -> 14-15 -> 15-16 -> 16-11 -> 11-8 (Total: 775 km)
+
+From 13 to 9:
+  Path 1: 13-12 -> 12-10 -> 10-9 (Total: 339 km)
+  Path 2: 13-14 -> 14-11 -> 11-10 -> 10-9 (Total: 707 km)
+  Path 3: 13-12 -> 12-10 -> 10-4 -> 4-6 -> 6-9 (Total: 775 km)
+  Path 4: 13-12 -> 12-10 -> 10-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 794 km)
+  Path 5: 13-14 -> 14-15 -> 15-16 -> 16-11 -> 11-10 -> 10-9 (Total: 913 km)
+
+From 13 to 10:
+  Path 1: 13-12 -> 12-10 (Total: 145 km)
+  Path 2: 13-14 -> 14-11 -> 11-10 (Total: 513 km)
+  Path 3: 13-14 -> 14-15 -> 15-16 -> 16-11 -> 11-10 (Total: 719 km)
+  Path 4: 13-14 -> 14-11 -> 11-8 -> 8-10 (Total: 962 km)
+  Path 5: 13-14 -> 14-15 -> 15-16 -> 16-11 -> 11-8 -> 8-10 (Total: 1168 km)
+
+From 13 to 11:
+  Path 1: 13-14 -> 14-11 (Total: 288 km)
+  Path 2: 13-12 -> 12-10 -> 10-11 (Total: 370 km)
+  Path 3: 13-14 -> 14-15 -> 15-16 -> 16-11 (Total: 494 km)
+  Path 4: 13-12 -> 12-10 -> 10-8 -> 8-11 (Total: 819 km)
+  Path 5: 13-12 -> 12-10 -> 10-4 -> 4-8 -> 8-11 (Total: 1042 km)
+
+From 13 to 12:
+  Path 1: 13-12 (Total: 66 km)
+  Path 2: 13-14 -> 14-11 -> 11-10 -> 10-12 (Total: 592 km)
+  Path 3: 13-14 -> 14-15 -> 15-16 -> 16-11 -> 11-10 -> 10-12 (Total: 798 km)
+  Path 4: 13-14 -> 14-11 -> 11-8 -> 8-10 -> 10-12 (Total: 1041 km)
+  Path 5: 13-14 -> 14-15 -> 15-16 -> 16-11 -> 11-8 -> 8-10 -> 10-12 (Total: 1247 km)
+
+From 13 to 14:
+  Path 1: 13-14 (Total: 80 km)
+  Path 2: 13-12 -> 12-10 -> 10-11 -> 11-14 (Total: 578 km)
+  Path 3: 13-12 -> 12-10 -> 10-11 -> 11-16 -> 16-15 -> 15-14 (Total: 784 km)
+  Path 4: 13-12 -> 12-10 -> 10-8 -> 8-11 -> 11-14 (Total: 1027 km)
+  Path 5: 13-12 -> 12-10 -> 10-8 -> 8-11 -> 11-16 -> 16-15 -> 15-14 (Total: 1233 km)
+
+From 13 to 15:
+  Path 1: 13-14 -> 14-15 (Total: 172 km)
+  Path 2: 13-14 -> 14-11 -> 11-16 -> 16-15 (Total: 610 km)
+  Path 3: 13-12 -> 12-10 -> 10-11 -> 11-14 -> 14-15 (Total: 670 km)
+  Path 4: 13-12 -> 12-10 -> 10-11 -> 11-16 -> 16-15 (Total: 692 km)
+  Path 5: 13-12 -> 12-10 -> 10-8 -> 8-11 -> 11-14 -> 14-15 (Total: 1119 km)
+
+From 13 to 16:
+  Path 1: 13-14 -> 14-15 -> 15-16 (Total: 328 km)
+  Path 2: 13-14 -> 14-11 -> 11-16 (Total: 454 km)
+  Path 3: 13-12 -> 12-10 -> 10-11 -> 11-16 (Total: 536 km)
+  Path 4: 13-12 -> 12-10 -> 10-11 -> 11-14 -> 14-15 -> 15-16 (Total: 826 km)
+  Path 5: 13-12 -> 12-10 -> 10-8 -> 8-11 -> 11-16 (Total: 985 km)
+
+From 14 to 0:
+  Path 1: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-0 (Total: 827 km)
+  Path 2: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-0 (Total: 846 km)
+  Path 3: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-2 -> 2-0 (Total: 869 km)
+  Path 4: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 -> 2-0 (Total: 989 km)
+  Path 5: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 -> 2-0 (Total: 1008 km)
+
+From 14 to 1:
+  Path 1: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-1 (Total: 736 km)
+  Path 2: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-2 -> 2-1 (Total: 833 km)
+  Path 3: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-1 (Total: 856 km)
+  Path 4: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-1 (Total: 875 km)
+  Path 5: 14-11 -> 11-8 -> 8-4 -> 4-1 (Total: 912 km)
+
+From 14 to 2:
+  Path 1: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-2 (Total: 709 km)
+  Path 2: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 (Total: 829 km)
+  Path 3: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 (Total: 848 km)
+  Path 4: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-1 -> 1-2 (Total: 860 km)
+  Path 5: 14-11 -> 11-8 -> 8-4 -> 4-2 (Total: 885 km)
+
+From 14 to 3:
+  Path 1: 14-11 -> 11-8 -> 8-3 (Total: 684 km)
+  Path 2: 14-13 -> 13-12 -> 12-10 -> 10-8 -> 8-3 (Total: 813 km)
+  Path 3: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-3 (Total: 868 km)
+  Path 4: 14-15 -> 15-16 -> 16-11 -> 11-8 -> 8-3 (Total: 890 km)
+  Path 5: 14-13 -> 13-12 -> 12-10 -> 10-11 -> 11-8 -> 8-3 (Total: 926 km)
+
+From 14 to 4:
+  Path 1: 14-13 -> 13-12 -> 12-10 -> 10-4 (Total: 577 km)
+  Path 2: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 (Total: 697 km)
+  Path 3: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 (Total: 716 km)
+  Path 4: 14-11 -> 11-8 -> 8-4 (Total: 753 km)
+  Path 5: 14-11 -> 11-10 -> 10-4 (Total: 785 km)
+
+From 14 to 5:
+  Path 1: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 (Total: 496 km)
+  Path 2: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-5 (Total: 551 km)
+  Path 3: 14-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 (Total: 704 km)
+  Path 4: 14-11 -> 11-10 -> 10-9 -> 9-6 -> 6-5 (Total: 759 km)
+  Path 5: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-6 -> 6-5 (Total: 797 km)
+
+From 14 to 6:
+  Path 1: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 (Total: 514 km)
+  Path 2: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 533 km)
+  Path 3: 14-11 -> 11-10 -> 10-9 -> 9-6 (Total: 722 km)
+  Path 4: 14-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 741 km)
+  Path 5: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-6 (Total: 760 km)
+
+From 14 to 7:
+  Path 1: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 (Total: 461 km)
+  Path 2: 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 586 km)
+  Path 3: 14-11 -> 11-10 -> 10-9 -> 9-7 (Total: 669 km)
+  Path 4: 14-11 -> 11-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 794 km)
+  Path 5: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-6 -> 6-5 -> 5-7 (Total: 832 km)
+
+From 14 to 8:
+  Path 1: 14-11 -> 11-8 (Total: 489 km)
+  Path 2: 14-13 -> 13-12 -> 12-10 -> 10-8 (Total: 618 km)
+  Path 3: 14-15 -> 15-16 -> 16-11 -> 11-8 (Total: 695 km)
+  Path 4: 14-13 -> 13-12 -> 12-10 -> 10-11 -> 11-8 (Total: 731 km)
+  Path 5: 14-11 -> 11-10 -> 10-8 (Total: 826 km)
+
+From 14 to 9:
+  Path 1: 14-13 -> 13-12 -> 12-10 -> 10-9 (Total: 419 km)
+  Path 2: 14-11 -> 11-10 -> 10-9 (Total: 627 km)
+  Path 3: 14-15 -> 15-16 -> 16-11 -> 11-10 -> 10-9 (Total: 833 km)
+  Path 4: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-6 -> 6-9 (Total: 855 km)
+  Path 5: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-6 -> 6-5 -> 5-7 -> 7-9 (Total: 874 km)
+
+From 14 to 10:
+  Path 1: 14-13 -> 13-12 -> 12-10 (Total: 225 km)
+  Path 2: 14-11 -> 11-10 (Total: 433 km)
+  Path 3: 14-15 -> 15-16 -> 16-11 -> 11-10 (Total: 639 km)
+  Path 4: 14-11 -> 11-8 -> 8-10 (Total: 882 km)
+  Path 5: 14-15 -> 15-16 -> 16-11 -> 11-8 -> 8-10 (Total: 1088 km)
+
+From 14 to 11:
+  Path 1: 14-11 (Total: 208 km)
+  Path 2: 14-15 -> 15-16 -> 16-11 (Total: 414 km)
+  Path 3: 14-13 -> 13-12 -> 12-10 -> 10-11 (Total: 450 km)
+  Path 4: 14-13 -> 13-12 -> 12-10 -> 10-8 -> 8-11 (Total: 899 km)
+  Path 5: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-8 -> 8-11 (Total: 1122 km)
+
+From 14 to 12:
+  Path 1: 14-13 -> 13-12 (Total: 146 km)
+  Path 2: 14-11 -> 11-10 -> 10-12 (Total: 512 km)
+  Path 3: 14-15 -> 15-16 -> 16-11 -> 11-10 -> 10-12 (Total: 718 km)
+  Path 4: 14-11 -> 11-8 -> 8-10 -> 10-12 (Total: 961 km)
+  Path 5: 14-15 -> 15-16 -> 16-11 -> 11-8 -> 8-10 -> 10-12 (Total: 1167 km)
+
+From 14 to 13:
+  Path 1: 14-13 (Total: 80 km)
+  Path 2: 14-11 -> 11-10 -> 10-12 -> 12-13 (Total: 578 km)
+  Path 3: 14-15 -> 15-16 -> 16-11 -> 11-10 -> 10-12 -> 12-13 (Total: 784 km)
+  Path 4: 14-11 -> 11-8 -> 8-10 -> 10-12 -> 12-13 (Total: 1027 km)
+  Path 5: 14-15 -> 15-16 -> 16-11 -> 11-8 -> 8-10 -> 10-12 -> 12-13 (Total: 1233 km)
+
+From 14 to 15:
+  Path 1: 14-15 (Total: 92 km)
+  Path 2: 14-11 -> 11-16 -> 16-15 (Total: 530 km)
+  Path 3: 14-13 -> 13-12 -> 12-10 -> 10-11 -> 11-16 -> 16-15 (Total: 772 km)
+  Path 4: 14-13 -> 13-12 -> 12-10 -> 10-8 -> 8-11 -> 11-16 -> 16-15 (Total: 1221 km)
+  Path 5: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-8 -> 8-11 -> 11-16 -> 16-15 (Total: 1444 km)
+
+From 14 to 16:
+  Path 1: 14-15 -> 15-16 (Total: 248 km)
+  Path 2: 14-11 -> 11-16 (Total: 374 km)
+  Path 3: 14-13 -> 13-12 -> 12-10 -> 10-11 -> 11-16 (Total: 616 km)
+  Path 4: 14-13 -> 13-12 -> 12-10 -> 10-8 -> 8-11 -> 11-16 (Total: 1065 km)
+  Path 5: 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-8 -> 8-11 -> 11-16 (Total: 1288 km)
+
+From 15 to 0:
+  Path 1: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-0 (Total: 919 km)
+  Path 2: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-0 (Total: 938 km)
+  Path 3: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-2 -> 2-0 (Total: 961 km)
+  Path 4: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 -> 2-0 (Total: 1081 km)
+  Path 5: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 -> 2-0 (Total: 1100 km)
+
+From 15 to 1:
+  Path 1: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-1 (Total: 828 km)
+  Path 2: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-2 -> 2-1 (Total: 925 km)
+  Path 3: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-1 (Total: 948 km)
+  Path 4: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-1 (Total: 967 km)
+  Path 5: 15-14 -> 14-11 -> 11-8 -> 8-4 -> 4-1 (Total: 1004 km)
+
+From 15 to 2:
+  Path 1: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-2 (Total: 801 km)
+  Path 2: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 (Total: 921 km)
+  Path 3: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 -> 4-2 (Total: 940 km)
+  Path 4: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-1 -> 1-2 (Total: 952 km)
+  Path 5: 15-14 -> 14-11 -> 11-8 -> 8-4 -> 4-2 (Total: 977 km)
+
+From 15 to 3:
+  Path 1: 15-14 -> 14-11 -> 11-8 -> 8-3 (Total: 776 km)
+  Path 2: 15-16 -> 16-11 -> 11-8 -> 8-3 (Total: 798 km)
+  Path 3: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-8 -> 8-3 (Total: 905 km)
+  Path 4: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-3 (Total: 960 km)
+  Path 5: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-11 -> 11-8 -> 8-3 (Total: 1018 km)
+
+From 15 to 4:
+  Path 1: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 (Total: 669 km)
+  Path 2: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-4 (Total: 789 km)
+  Path 3: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 (Total: 808 km)
+  Path 4: 15-14 -> 14-11 -> 11-8 -> 8-4 (Total: 845 km)
+  Path 5: 15-16 -> 16-11 -> 11-8 -> 8-4 (Total: 867 km)
+
+From 15 to 5:
+  Path 1: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 (Total: 588 km)
+  Path 2: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-5 (Total: 643 km)
+  Path 3: 15-14 -> 14-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 (Total: 796 km)
+  Path 4: 15-16 -> 16-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 (Total: 818 km)
+  Path 5: 15-14 -> 14-11 -> 11-10 -> 10-9 -> 9-6 -> 6-5 (Total: 851 km)
+
+From 15 to 6:
+  Path 1: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 (Total: 606 km)
+  Path 2: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 625 km)
+  Path 3: 15-14 -> 14-11 -> 11-10 -> 10-9 -> 9-6 (Total: 814 km)
+  Path 4: 15-14 -> 14-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 833 km)
+  Path 5: 15-16 -> 16-11 -> 11-10 -> 10-9 -> 9-6 (Total: 836 km)
+
+From 15 to 7:
+  Path 1: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 (Total: 553 km)
+  Path 2: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 678 km)
+  Path 3: 15-14 -> 14-11 -> 11-10 -> 10-9 -> 9-7 (Total: 761 km)
+  Path 4: 15-16 -> 16-11 -> 11-10 -> 10-9 -> 9-7 (Total: 783 km)
+  Path 5: 15-14 -> 14-11 -> 11-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 886 km)
+
+From 15 to 8:
+  Path 1: 15-14 -> 14-11 -> 11-8 (Total: 581 km)
+  Path 2: 15-16 -> 16-11 -> 11-8 (Total: 603 km)
+  Path 3: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-8 (Total: 710 km)
+  Path 4: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-11 -> 11-8 (Total: 823 km)
+  Path 5: 15-14 -> 14-11 -> 11-10 -> 10-8 (Total: 918 km)
+
+From 15 to 9:
+  Path 1: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 (Total: 511 km)
+  Path 2: 15-14 -> 14-11 -> 11-10 -> 10-9 (Total: 719 km)
+  Path 3: 15-16 -> 16-11 -> 11-10 -> 10-9 (Total: 741 km)
+  Path 4: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-6 -> 6-9 (Total: 947 km)
+  Path 5: 15-16 -> 16-11 -> 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 (Total: 949 km)
+
+From 15 to 10:
+  Path 1: 15-14 -> 14-13 -> 13-12 -> 12-10 (Total: 317 km)
+  Path 2: 15-14 -> 14-11 -> 11-10 (Total: 525 km)
+  Path 3: 15-16 -> 16-11 -> 11-10 (Total: 547 km)
+  Path 4: 15-16 -> 16-11 -> 11-14 -> 14-13 -> 13-12 -> 12-10 (Total: 755 km)
+  Path 5: 15-14 -> 14-11 -> 11-8 -> 8-10 (Total: 974 km)
+
+From 15 to 11:
+  Path 1: 15-14 -> 14-11 (Total: 300 km)
+  Path 2: 15-16 -> 16-11 (Total: 322 km)
+  Path 3: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-11 (Total: 542 km)
+  Path 4: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-8 -> 8-11 (Total: 991 km)
+  Path 5: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-8 -> 8-11 (Total: 1214 km)
+
+From 15 to 12:
+  Path 1: 15-14 -> 14-13 -> 13-12 (Total: 238 km)
+  Path 2: 15-14 -> 14-11 -> 11-10 -> 10-12 (Total: 604 km)
+  Path 3: 15-16 -> 16-11 -> 11-10 -> 10-12 (Total: 626 km)
+  Path 4: 15-16 -> 16-11 -> 11-14 -> 14-13 -> 13-12 (Total: 676 km)
+  Path 5: 15-14 -> 14-11 -> 11-8 -> 8-10 -> 10-12 (Total: 1053 km)
+
+From 15 to 13:
+  Path 1: 15-14 -> 14-13 (Total: 172 km)
+  Path 2: 15-16 -> 16-11 -> 11-14 -> 14-13 (Total: 610 km)
+  Path 3: 15-14 -> 14-11 -> 11-10 -> 10-12 -> 12-13 (Total: 670 km)
+  Path 4: 15-16 -> 16-11 -> 11-10 -> 10-12 -> 12-13 (Total: 692 km)
+  Path 5: 15-14 -> 14-11 -> 11-8 -> 8-10 -> 10-12 -> 12-13 (Total: 1119 km)
+
+From 15 to 14:
+  Path 1: 15-14 (Total: 92 km)
+  Path 2: 15-16 -> 16-11 -> 11-14 (Total: 530 km)
+  Path 3: 15-16 -> 16-11 -> 11-10 -> 10-12 -> 12-13 -> 13-14 (Total: 772 km)
+  Path 4: 15-16 -> 16-11 -> 11-8 -> 8-10 -> 10-12 -> 12-13 -> 13-14 (Total: 1221 km)
+  Path 5: 15-16 -> 16-11 -> 11-8 -> 8-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 1444 km)
+
+From 15 to 16:
+  Path 1: 15-16 (Total: 156 km)
+  Path 2: 15-14 -> 14-11 -> 11-16 (Total: 466 km)
+  Path 3: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-11 -> 11-16 (Total: 708 km)
+  Path 4: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-8 -> 8-11 -> 11-16 (Total: 1157 km)
+  Path 5: 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-8 -> 8-11 -> 11-16 (Total: 1380 km)
+
+From 16 to 0:
+  Path 1: 16-11 -> 11-10 -> 10-9 -> 9-6 -> 6-0 (Total: 993 km)
+  Path 2: 16-11 -> 11-8 -> 8-4 -> 4-2 -> 2-0 (Total: 1003 km)
+  Path 3: 16-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-0 (Total: 1012 km)
+  Path 4: 16-11 -> 11-10 -> 10-4 -> 4-2 -> 2-0 (Total: 1035 km)
+  Path 5: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-0 (Total: 1075 km)
+
+From 16 to 1:
+  Path 1: 16-11 -> 11-8 -> 8-4 -> 4-1 (Total: 870 km)
+  Path 2: 16-11 -> 11-10 -> 10-4 -> 4-1 (Total: 902 km)
+  Path 3: 16-11 -> 11-8 -> 8-3 -> 3-1 (Total: 930 km)
+  Path 4: 16-11 -> 11-8 -> 8-4 -> 4-2 -> 2-1 (Total: 967 km)
+  Path 5: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-1 (Total: 984 km)
+
+From 16 to 2:
+  Path 1: 16-11 -> 11-8 -> 8-4 -> 4-2 (Total: 843 km)
+  Path 2: 16-11 -> 11-10 -> 10-4 -> 4-2 (Total: 875 km)
+  Path 3: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-2 (Total: 957 km)
+  Path 4: 16-11 -> 11-8 -> 8-4 -> 4-1 -> 1-2 (Total: 994 km)
+  Path 5: 16-11 -> 11-10 -> 10-9 -> 9-6 -> 6-4 -> 4-2 (Total: 995 km)
+
+From 16 to 3:
+  Path 1: 16-11 -> 11-8 -> 8-3 (Total: 642 km)
+  Path 2: 16-15 -> 15-14 -> 14-11 -> 11-8 -> 8-3 (Total: 932 km)
+  Path 3: 16-11 -> 11-10 -> 10-8 -> 8-3 (Total: 979 km)
+  Path 4: 16-11 -> 11-8 -> 8-4 -> 4-3 (Total: 1002 km)
+  Path 5: 16-11 -> 11-10 -> 10-4 -> 4-3 (Total: 1034 km)
+
+From 16 to 4:
+  Path 1: 16-11 -> 11-8 -> 8-4 (Total: 711 km)
+  Path 2: 16-11 -> 11-10 -> 10-4 (Total: 743 km)
+  Path 3: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 (Total: 825 km)
+  Path 4: 16-11 -> 11-10 -> 10-9 -> 9-6 -> 6-4 (Total: 863 km)
+  Path 5: 16-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 -> 6-4 (Total: 882 km)
+
+From 16 to 5:
+  Path 1: 16-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 (Total: 662 km)
+  Path 2: 16-11 -> 11-10 -> 10-9 -> 9-6 -> 6-5 (Total: 717 km)
+  Path 3: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 (Total: 744 km)
+  Path 4: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-5 (Total: 799 km)
+  Path 5: 16-11 -> 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 (Total: 870 km)
+
+From 16 to 6:
+  Path 1: 16-11 -> 11-10 -> 10-9 -> 9-6 (Total: 680 km)
+  Path 2: 16-11 -> 11-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 699 km)
+  Path 3: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 (Total: 762 km)
+  Path 4: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 -> 7-5 -> 5-6 (Total: 781 km)
+  Path 5: 16-11 -> 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 (Total: 888 km)
+
+From 16 to 7:
+  Path 1: 16-11 -> 11-10 -> 10-9 -> 9-7 (Total: 627 km)
+  Path 2: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 (Total: 709 km)
+  Path 3: 16-11 -> 11-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 752 km)
+  Path 4: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-6 -> 6-5 -> 5-7 (Total: 834 km)
+  Path 5: 16-11 -> 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 -> 9-7 (Total: 835 km)
+
+From 16 to 8:
+  Path 1: 16-11 -> 11-8 (Total: 447 km)
+  Path 2: 16-15 -> 15-14 -> 14-11 -> 11-8 (Total: 737 km)
+  Path 3: 16-11 -> 11-10 -> 10-8 (Total: 784 km)
+  Path 4: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-8 (Total: 866 km)
+  Path 5: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-11 -> 11-8 (Total: 979 km)
+
+From 16 to 9:
+  Path 1: 16-11 -> 11-10 -> 10-9 (Total: 585 km)
+  Path 2: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 (Total: 667 km)
+  Path 3: 16-11 -> 11-14 -> 14-13 -> 13-12 -> 12-10 -> 10-9 (Total: 793 km)
+  Path 4: 16-15 -> 15-14 -> 14-11 -> 11-10 -> 10-9 (Total: 875 km)
+  Path 5: 16-11 -> 11-8 -> 8-4 -> 4-6 -> 6-9 (Total: 989 km)
+
+From 16 to 10:
+  Path 1: 16-11 -> 11-10 (Total: 391 km)
+  Path 2: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 (Total: 473 km)
+  Path 3: 16-11 -> 11-14 -> 14-13 -> 13-12 -> 12-10 (Total: 599 km)
+  Path 4: 16-15 -> 15-14 -> 14-11 -> 11-10 (Total: 681 km)
+  Path 5: 16-11 -> 11-8 -> 8-10 (Total: 840 km)
+
+From 16 to 11:
+  Path 1: 16-11 (Total: 166 km)
+  Path 2: 16-15 -> 15-14 -> 14-11 (Total: 456 km)
+  Path 3: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-11 (Total: 698 km)
+  Path 4: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-8 -> 8-11 (Total: 1147 km)
+  Path 5: 16-15 -> 15-14 -> 14-13 -> 13-12 -> 12-10 -> 10-4 -> 4-8 -> 8-11 (Total: 1370 km)
+
+From 16 to 12:
+  Path 1: 16-15 -> 15-14 -> 14-13 -> 13-12 (Total: 394 km)
+  Path 2: 16-11 -> 11-10 -> 10-12 (Total: 470 km)
+  Path 3: 16-11 -> 11-14 -> 14-13 -> 13-12 (Total: 520 km)
+  Path 4: 16-15 -> 15-14 -> 14-11 -> 11-10 -> 10-12 (Total: 760 km)
+  Path 5: 16-11 -> 11-8 -> 8-10 -> 10-12 (Total: 919 km)
+
+From 16 to 13:
+  Path 1: 16-15 -> 15-14 -> 14-13 (Total: 328 km)
+  Path 2: 16-11 -> 11-14 -> 14-13 (Total: 454 km)
+  Path 3: 16-11 -> 11-10 -> 10-12 -> 12-13 (Total: 536 km)
+  Path 4: 16-15 -> 15-14 -> 14-11 -> 11-10 -> 10-12 -> 12-13 (Total: 826 km)
+  Path 5: 16-11 -> 11-8 -> 8-10 -> 10-12 -> 12-13 (Total: 985 km)
+
+From 16 to 14:
+  Path 1: 16-15 -> 15-14 (Total: 248 km)
+  Path 2: 16-11 -> 11-14 (Total: 374 km)
+  Path 3: 16-11 -> 11-10 -> 10-12 -> 12-13 -> 13-14 (Total: 616 km)
+  Path 4: 16-11 -> 11-8 -> 8-10 -> 10-12 -> 12-13 -> 13-14 (Total: 1065 km)
+  Path 5: 16-11 -> 11-8 -> 8-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 (Total: 1288 km)
+
+From 16 to 15:
+  Path 1: 16-15 (Total: 156 km)
+  Path 2: 16-11 -> 11-14 -> 14-15 (Total: 466 km)
+  Path 3: 16-11 -> 11-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 708 km)
+  Path 4: 16-11 -> 11-8 -> 8-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 1157 km)
+  Path 5: 16-11 -> 11-8 -> 8-4 -> 4-10 -> 10-12 -> 12-13 -> 13-14 -> 14-15 (Total: 1380 km)
+
+Test completed successfully!

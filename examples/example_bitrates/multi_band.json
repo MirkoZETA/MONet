@@ -1,0 +1,230 @@
+{
+    "100": [
+        {
+            "BPSK": [
+                {
+                    "C": {
+                        "slots": 1,
+                        "reach": 17400
+                    },
+                    "L": {
+                        "slots": 1,
+                        "reach": 16700
+                    },
+                    "S": {
+                        "slots": 1,
+                        "reach": 14800
+                    },
+                    "E": {
+                        "slots": 1,
+                        "reach": 3100
+                    }
+                }
+            ]
+        }
+    ],
+    "200": [
+        {
+            "QPSK": [
+                {
+                    "C": {
+                        "slots": 1,
+                        "reach": 8700
+                    },
+                    "L": {
+                        "slots": 1,
+                        "reach": 8400
+                    },
+                    "S": {
+                        "slots": 1,
+                        "reach": 7400
+                    },
+                    "E": {
+                        "slots": 1,
+                        "reach": 1500
+                    }
+                }
+            ]
+        },
+        {
+            "BPSK": [
+                {
+                    "C": {
+                        "slots": 2,
+                        "reach": 17400
+                    },
+                    "L": {
+                        "slots": 2,
+                        "reach": 16700
+                    },
+                    "S": {
+                        "slots": 2,
+                        "reach": 14800
+                    },
+                    "E": {
+                        "slots": 2,
+                        "reach": 3100
+                    }
+                }
+            ]
+        }
+    ],
+    "300": [
+        {
+            "8QAM": [
+                {
+                    "C": {
+                        "slots": 1,
+                        "reach": 4700
+                    },
+                    "L": {
+                        "slots": 1,
+                        "reach": 4600
+                    },
+                    "S": {
+                        "slots": 1,
+                        "reach": 4100
+                    },
+                    "E": {
+                        "slots": 1,
+                        "reach": 900
+                    }
+                }
+            ]
+        },
+        {
+            "QPSK": [
+                {
+                    "C": {
+                        "slots": 2,
+                        "reach": 8700
+                    },
+                    "L": {
+                        "slots": 2,
+                        "reach": 8400
+                    },
+                    "S": {
+                        "slots": 2,
+                        "reach": 7400
+                    },
+                    "E": {
+                        "slots": 2,
+                        "reach": 1500
+                    }
+                }
+            ]
+        },
+        {
+            "BPSK": [
+                {
+                    "C": {
+                        "slots": 3,
+                        "reach": 17400
+                    },
+                    "L": {
+                        "slots": 3,
+                        "reach": 16700
+                    },
+                    "S": {
+                        "slots": 3,
+                        "reach": 14800
+                    },
+                    "E": {
+                        "slots": 3,
+                        "reach": 3100
+                    }
+                }
+            ]
+        }
+    ],
+    "400": [
+        {
+            "16QAM": [
+                {
+                    "C": {
+                        "slots": 1,
+                        "reach": 2300
+                    },
+                    "L": {
+                        "slots": 1,
+                        "reach": 2200
+                    },
+                    "S": {
+                        "slots": 1,
+                        "reach": 2000
+                    },
+                    "E": {
+                        "slots": 1,
+                        "reach": 400
+                    }
+                }
+            ]  
+        },
+        {
+            "8QAM": [
+                {
+                    "C": {
+                        "slots": 2,
+                        "reach": 4700
+                    },
+                    "L": {
+                        "slots": 2,
+                        "reach": 4600
+                    },
+                    "S": {
+                        "slots": 2,
+                        "reach": 4100
+                    },
+                    "E": {
+                        "slots": 2,
+                        "reach": 900
+                    }
+                }
+            ]
+        },
+        {
+            "QPSK": [
+                {
+                    "C": {
+                        "slots": 2,
+                        "reach": 8700
+                    },
+                    "L": {
+                        "slots": 2,
+                        "reach": 8400
+                    },
+                    "S": {
+                        "slots": 2,
+                        "reach": 7400
+                    },
+                    "E": {
+                        "slots": 2,
+                        "reach": 1500
+                    }
+                }
+            ]
+        },
+        {
+            "BPSK": [
+                {
+                    "C": {
+                        "slots": 4,
+                        "reach": 17400
+                    },
+                    "L": {
+                        "slots": 4,
+                        "reach": 16700
+                    },
+                    "S": {
+                        "slots": 4,
+                        "reach": 14800
+                    },
+                    "E": {
+                        "slots": 4,
+                        "reach": 3100
+                    }
+                }
+            ]
+        }
+    ]
+}

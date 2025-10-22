@@ -1,0 +1,210 @@
+{
+  "name": "5_node_example",
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Node_A",
+      "DC": 13,
+      "IXP": 3,
+      "param1": 10.5,
+      "param2": 20.3
+    },
+    {
+      "id": 1,
+      "label": "Node_B",
+      "DC": 5,
+      "IXP": 1,
+      "param1": 15.2,
+      "param2": 25.8
+    },
+    {
+      "id": 2,
+      "label": "Node_C",
+      "DC": 13,
+      "IXP": 2,
+      "param1": 12.7,
+      "param2": 18.9
+    },
+    {
+      "id": 3,
+      "label": "Node_D",
+      "DC": 15,
+      "IXP": 14,
+      "param1": 8.3,
+      "param2": 30.1
+    },
+    {
+      "id": 4,
+      "label": "Node_E",
+      "DC": 4,
+      "IXP": 8,
+      "param1": 14.0,
+      "param2": 22.5
+    }
+  ],
+  "links": [
+    {
+      "id": 0,
+      "src": 0,
+      "dst": 1,
+      "length": 100,
+      "slots": 400,
+      "comment": "SSMF: Single-core, single-mode, C-band only"
+    },
+    {
+      "id": 1,
+      "src": 1,
+      "dst": 0,
+      "length": 100,
+      "slots": 400
+    },
+    {
+      "id": 2,
+      "src": 0,
+      "dst": 2,
+      "length": 100,
+      "slots": [400, 400, 400],
+      "comment": "MCF: Multi-core (3 cores), single-mode each, C-band only"
+    },
+    {
+      "id": 3,
+      "src": 2,
+      "dst": 0,
+      "length": 100,
+      "slots": [400, 400, 400]
+    },
+    {
+      "id": 4,
+      "src": 2,
+      "dst": 3,
+      "length": 200,
+      "slots": [[400, 250, 250]],
+      "comment": "FMF: Single-core, multi-mode (3 modes), C-band only"
+    },
+    {
+      "id": 5,
+      "src": 3,
+      "dst": 2,
+      "length": 200,
+      "slots": [[400, 250, 250]]
+    },
+    {
+      "id": 6,
+      "src": 3,
+      "dst": 1,
+      "length": 200,
+      "slots": [[400, 250], [400, 250]],
+      "comment": "FMMCF: Multi-core (2 cores), multi-mode (2 modes each), C-band only"
+    },
+    {
+      "id": 7,
+      "src": 1,
+      "dst": 3,
+      "length": 200,
+      "slots": [[400, 250], [400, 250]]
+    },
+    {
+      "id": 8,
+      "src": 3,
+      "dst": 4,
+      "length": 400,
+      "slots": {"C": 400, "L": 520, "S": 1080},
+      "comment": "Multi-Band SSMF: Single-core, single-mode, 3 bands"
+    },
+    {
+      "id": 9,
+      "src": 4,
+      "dst": 3,
+      "length": 400,
+      "slots": {"C": 400, "L": 520, "S": 1080}
+    },
+    {
+      "id": 10,
+      "src": 4,
+      "dst": 1,
+      "length": 410,
+      "slots": {"C": [400, 250, 250], "L": [520, 250, 250]},
+      "comment": "Multi-Band MCF: Multi-core (3 cores), single-mode each, 2 bands"
+    },
+    {
+      "id": 11,
+      "src": 1,
+      "dst": 4,
+      "length": 410,
+      "slots": {"C": [400, 250, 250], "L": [520, 250, 250]}
+    },
+    {
+      "id": 12,
+      "src": 4,
+      "dst": 0,
+      "length": 300,
+      "slots": {"C": [[400, 250, 250], [400, 250, 250]], "L": [[520, 250, 250], [520, 250, 250]], "S": [[1080, 500, 500], [1080, 500, 500]]},
+      "comment": "Complex Multi-Band FMMCF: 2 cores, 3 modes each, 3 bands - most complex single fiber"
+    },
+    {
+      "id": 13,
+      "src": 0,
+      "dst": 4,
+      "length": 300,
+      "slots": {"C": [[400, 250, 250], [400, 250, 250]], "L": [[520, 250, 250], [520, 250, 250]], "S": [[1080, 500, 500], [1080, 500, 500]]}
+    },
+    {
+      "id": 14,
+      "src": 4,
+      "dst": 2,
+      "length": 300,
+      "fibers": [
+        {
+          "slots": 400,
+          "type": "SSMF",
+          "comment": "Explicit SSMF type"
+        },
+        {
+          "slots": [400, 400, 400, 400],
+          "type": "MCF",
+          "comment": "Explicit MCF type with 4 cores"
+        },
+        {
+          "slots": [[400, 250, 250]],
+          "comment": "Auto-detected FMF: 1 core, 3 modes"
+        },
+        {
+          "slots": {"C": 400, "L": 520, "S": 1080, "E": 1120},
+          "comment": "Auto-detected Multi-Band SSMF: 4 bands"
+        },
+        {
+          "slots": {"C": [[400, 250], [400, 250]], "L": [[520, 250], [520, 250]]},
+          "type": "FMMCF",
+          "comment": "Explicit FMMCF type with multi-band support"
+        }
+      ],
+      "comment": "Heterogeneous multi-fiber link with all fiber types"
+    },
+    {
+      "id": 15,
+      "src": 2,
+      "dst": 4,
+      "length": 300,
+      "fibers": [
+        {
+          "slots": 400,
+          "type": "SSMF"
+        },
+        {
+          "slots": [400, 400, 400, 400],
+          "type": "MCF"
+        },
+        {
+          "slots": [[400, 250, 250]]
+        },
+        {
+          "slots": {"C": 400, "L": 520, "S": 1080, "E": 1120}
+        },
+        {
+          "slots": {"C": [[400, 250], [400, 250]], "L": [[520, 250], [520, 250]]},
+          "type": "FMMCF"
+        }
+      ]
+    }
+  ]
+}

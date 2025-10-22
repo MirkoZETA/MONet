@@ -1,0 +1,9 @@
+build/*
+.vscode
+docs/doxygen-output
+docs/sphinx/build/*
+examples/BDM
+examples/offlineONDM
+coverage.sh
+examples/SDM/out/*
+.venv/

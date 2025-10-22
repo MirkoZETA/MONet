@@ -1,0 +1,32 @@
+[
+    {
+        "src": "Node_A",
+        "dst": "Node_B",
+        "required": 10
+    },
+    {
+        "src": "Node_A",
+        "dst": "Node_C",
+        "required": 10
+    },
+    {
+        "src": "Node_A",
+        "dst": "Node_D",
+        "required": 10
+    },
+    {
+        "src": "Node_B",
+        "dst": "Node_C",
+        "required": 10
+    },
+    {
+        "src": "Node_B",
+        "dst": "Node_D",
+        "required": 10
+    },
+    {
+        "src": "Node_C",
+        "dst": "Node_D",
+        "required": 10
+    }
+]
