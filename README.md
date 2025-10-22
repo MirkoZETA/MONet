@@ -5,9 +5,7 @@
 ![Static Badge](https://img.shields.io/badge/language-C%2B%2B-blue)
 [![Static Badge](https://img.shields.io/badge/licese-MIT-green)](https://gitlab.com/DaniloBorquez/flex-net-sim/-/blob/master/LICENSE.md?ref_type=heads)
 
-# MONet Library
-
-**MONet** (Multi-period Optical Network Evaluation Tool) is a C++ library for multi-period core optical network planning and evaluation. It enables researchers and engineers to implement and test custom allocation strategies (heuristics, ILPs, etc.) under realistic traffic growth scenarios.
+**MONet** is a C++ library for multi-period optical network planning and evaluation, inspired by <a href="https://gitlab.com/DaniloBorquez/flex-net-sim" target="_blank" rel="noopener noreferrer">Flex Net Sim</a>. It enables researchers and network planners to test allocation strategies (heuristics, ILPs), evaluate different network architectures, compare deployment strategies, and assess costs for optical networks using static/incremental traffic models.
 
 The library implements the traffic generation and growth model described in Patri et al., *"Planning Optical Networks for Unexpected Traffic Growth"* (ECOC 2020), which models realistic traffic evolution across multiple planning periods.
 
