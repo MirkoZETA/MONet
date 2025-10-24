@@ -1,5 +1,8 @@
 #include "network.hpp"
 
+#include <cmath>   // For pow() function used in nodalVariance() metric calculation
+#include <queue>   // For std::priority_queue used in Dijkstra and Yen's k-shortest paths algorithms
+
 Network::Network(void) {
   this->linkCounter = 0;
   this->nodeCounter = 0;
@@ -12,6 +15,8 @@ Network::Network(void) {
 
   this->nodesIn  = std::vector<int>{0};
   this->nodesOut = std::vector<int>{0};
+  this->paths = std::make_unique<Paths>();
+  this->pathK = 0;
 }
 
 Network::Network(std::string filename)
@@ -164,6 +169,12 @@ Network::Network(const Network &net) {
   }
   this->nodesIn = net.nodesIn;
   this->nodesOut = net.nodesOut;
+  if (net.paths) {
+    this->paths = std::make_unique<Paths>(*net.paths);
+  } else {
+    this->paths = std::make_unique<Paths>();
+  }
+  this->pathK = net.pathK;
 }
 
 std::string Network::getName() const {
@@ -231,20 +242,27 @@ void Network::connect(int src, int linkPos,
                 [](int &n) { n += 1; });
   this->links.at(linkPos)->src = src;
   this->links.at(linkPos)->dst = dst;
+  // Note: Node degrees are set in setPaths() methods, not here
 }
 // Connects two Nodes through one Link (order is important: src != dst):
 //
 //       (Source Node) ---Link---> (Destination Node)
 
-int Network::isConnected(int src, int dst) const {
+std::vector<int> Network::isConnected(int src, int dst) const {
+  std::vector<int> linkIds;
+  if (src < 0 || src >= this->nodeCounter || dst < 0 || dst >= this->nodeCounter) {
+    return linkIds;
+  }
+  if (src + 1 >= static_cast<int>(this->nodesOut.size())) {
+    return linkIds;
+  }
   for (int i = this->nodesOut[src]; i < this->nodesOut[src + 1]; i++) {
-    for (int j = nodesIn[dst]; j < nodesIn[dst + 1]; j++) {
-      if (linksOut[i]->getId() == linksIn[j]->getId()) {
-        return linksOut[i]->getId();
-      }
+    const auto& link = this->linksOut[i];
+    if (link->getDst() == dst) {
+      linkIds.push_back(link->getId());
     }
   }
-  return -1;
+  return linkIds;
 }
 
 int Network::getNumberOfLinks() const { return this->linkCounter; }
@@ -360,6 +378,372 @@ float Network::nodalVariance() {
   }
   result /= this->getNumberOfNodes();
   return result;
+}
+
+void Network::setPaths(int k) {
+  if (k <= 0) {
+    this->clearPaths();
+    this->pathK = 0;
+    return;
+  }
+
+  if (!this->paths) {
+    this->paths = std::make_unique<Paths>();
+  }
+
+  const int numberOfNodes = this->getNumberOfNodes();
+  // Initialize paths matrix: paths[src][dst] will contain up to k routes
+  this->paths->assign(numberOfNodes, std::vector<std::vector<Route>>(numberOfNodes));
+
+  // Compute k-shortest paths for each node pair
+  for (int src = 0; src < numberOfNodes; ++src) {
+    for (int dst = 0; dst < numberOfNodes; ++dst) {
+      // Skip self-loops (src == dst)
+      if (src == dst) {
+        continue;
+      }
+
+      // Use Yen's algorithm to find k shortest paths from src to dst
+      auto shortestPaths = this->yenKShortestPaths(src, dst, k);
+      if (shortestPaths.empty()) {
+        continue;  // No path exists between src and dst
+      }
+
+      // Convert ShortestPathResult (with link IDs) to Route (with Link pointers)
+      auto& cell = (*this->paths)[src][dst];
+      cell.reserve(shortestPaths.size());
+
+      for (const auto& pathResult : shortestPaths) {
+        Route route;
+        route.reserve(pathResult.linkPath.size());
+        // Convert each link ID to a shared_ptr<Link>
+        for (int linkId : pathResult.linkPath) {
+          route.push_back(this->getLink(linkId));
+        }
+        cell.push_back(std::move(route));
+      }
+    }
+  }
+
+  // Store the k value for future reference
+  this->pathK = k;
+
+  // Update node degrees based on outgoing links (out-degree only)
+  for (int node = 0; node < numberOfNodes; ++node) {
+    this->nodes.at(node)->setDegree(this->nodesOut[node + 1] - this->nodesOut[node]);
+  }
+}
+
+void Network::setPaths(const std::string& filename) {
+  std::ifstream file(filename);
+  if (!file.is_open()) {
+    throw std::runtime_error("Could not open file: " + filename);
+  }
+
+  nlohmann::json filePaths;
+  file >> filePaths;
+
+  if (!filePaths.contains("routes")) {
+    throw std::runtime_error("Error in file: " + filename + ". 'routes' field is missing.");
+  }
+
+  if (!this->paths) {
+    this->paths = std::make_unique<Paths>();
+  }
+
+  const int numberOfNodes = this->getNumberOfNodes();
+  this->paths->assign(numberOfNodes, std::vector<std::vector<Route>>(numberOfNodes));
+
+  int maxK = 0;
+
+  // Read each route entry explicitly (no automatic reverse computation)
+  for (const auto& route : filePaths["routes"]) {
+    if (!route.contains("src") || !route.contains("dst") || !route.contains("paths")) {
+      throw std::runtime_error("Error in file: " + filename +
+                               ". Each route must contain 'src', 'dst', and 'paths' fields.");
+    }
+
+    int src = route["src"];
+    int dst = route["dst"];
+    if (src < 0 || src >= numberOfNodes || dst < 0 || dst >= numberOfNodes) {
+      throw std::runtime_error("Invalid node index in route: src=" + std::to_string(src) +
+                               ", dst=" + std::to_string(dst));
+    }
+
+    const auto& pathsArray = route["paths"];
+    if (!pathsArray.is_array()) {
+      throw std::runtime_error("Invalid 'paths' field format in file: " + filename);
+    }
+
+    int pathsNumber = pathsArray.size();
+    if (pathsNumber == 0) {
+      continue;
+    }
+
+    // Store paths for the specified direction only (no reverse computation)
+    auto& pathsForThisDirection = (*this->paths)[src][dst];
+    pathsForThisDirection.resize(pathsNumber);
+
+    for (int pathIdx = 0; pathIdx < pathsNumber; ++pathIdx) {
+      const auto& pathLinkIds = pathsArray[pathIdx];
+      if (!pathLinkIds.is_array()) {
+        throw std::runtime_error("Each path must be an array of link IDs in file: " + filename);
+      }
+
+      int linksInPath = pathLinkIds.size();
+      if (linksInPath < 1) {
+        throw std::runtime_error("Each path must contain at least one link ID in file: " + filename);
+      }
+
+      Route route;
+      route.reserve(linksInPath);
+
+      // Build the route by converting link IDs to Link pointers
+      for (int c = 0; c < linksInPath; ++c) {
+        int linkId = pathLinkIds[c];
+        if (linkId < 0 || linkId >= this->getNumberOfLinks()) {
+          throw std::runtime_error("Invalid link ID in path: " + std::to_string(linkId));
+        }
+        auto link = this->getLink(linkId);
+
+        // Validate path continuity
+        if (c == 0) {
+          if (link->getSrc() != src) {
+            throw std::runtime_error("First link " + std::to_string(linkId) +
+                                     " does not start at source node " + std::to_string(src));
+          }
+        } else {
+          auto prevLink = route.back();
+          if (prevLink->getDst() != link->getSrc()) {
+            throw std::runtime_error("Path is not continuous: link " +
+                                     std::to_string(prevLink->getId()) + " to link " +
+                                     std::to_string(linkId));
+          }
+        }
+
+        route.push_back(link);
+      }
+
+      // Validate that path ends at destination
+      if (route.back()->getDst() != dst) {
+        throw std::runtime_error("Last link " + std::to_string(route.back()->getId()) +
+                                 " does not end at destination node " + std::to_string(dst));
+      }
+
+      pathsForThisDirection[pathIdx] = std::move(route);
+    }
+
+    maxK = std::max(maxK, pathsNumber);
+  }
+
+  this->pathK = maxK;
+
+  // Update node degrees based on outgoing links (out-degree only)
+  for (int node = 0; node < numberOfNodes; ++node) {
+    this->nodes.at(node)->setDegree(this->nodesOut[node + 1] - this->nodesOut[node]);
+  }
+}
+
+Paths* Network::getPaths() const {
+  return this->paths.get();
+}
+
+void Network::clearPaths() {
+  if (this->paths) {
+    this->paths->clear();
+  }
+  this->pathK = 0;
+}
+
+int Network::getPathK() const {
+  return this->pathK;
+}
+
+Network::ShortestPathResult Network::dijkstra(
+    int src,
+    int dst,
+    const std::unordered_set<int>& excludedLinks,
+    const std::unordered_set<int>& excludedNodes) const {
+  ShortestPathResult result;
+
+  const int numberOfNodes = this->nodeCounter;
+  if (src < 0 || src >= numberOfNodes || dst < 0 || dst >= numberOfNodes) {
+    return result;
+  }
+  if (excludedNodes.count(src) || excludedNodes.count(dst)) {
+    return result;
+  }
+
+  std::vector<double> distances(numberOfNodes, std::numeric_limits<double>::infinity());
+  std::vector<int> previousNode(numberOfNodes, -1);
+  std::vector<int> previousLink(numberOfNodes, -1);
+  std::vector<char> visited(numberOfNodes, 0);
+
+  distances[src] = 0.0;
+
+  using QueueEntry = std::pair<double, int>;
+  struct QueueCompare {
+    bool operator()(const QueueEntry& lhs, const QueueEntry& rhs) const {
+      return lhs.first > rhs.first;
+    }
+  };
+  std::priority_queue<QueueEntry, std::vector<QueueEntry>, QueueCompare> pq;
+  pq.push({0.0, src});
+
+  while (!pq.empty()) {
+    auto [currentDistance, currentNode] = pq.top();
+    pq.pop();
+
+    if (visited[currentNode]) {
+      continue;
+    }
+    if (excludedNodes.count(currentNode)) {
+      visited[currentNode] = 1;
+      continue;
+    }
+    visited[currentNode] = 1;
+
+    if (currentNode == dst) {
+      break;
+    }
+
+    if (currentNode + 1 >= static_cast<int>(this->nodesOut.size())) {
+      continue;
+    }
+
+    for (int edgeIndex = this->nodesOut[currentNode];
+         edgeIndex < this->nodesOut[currentNode + 1];
+         ++edgeIndex) {
+      const auto& link = this->linksOut[edgeIndex];
+      int linkId = link->getId();
+      if (excludedLinks.count(linkId)) {
+        continue;
+      }
+      int neighbor = link->getDst();
+      if (excludedNodes.count(neighbor) && neighbor != dst) {
+        continue;
+      }
+      double newDistance = currentDistance + link->getLength();
+      if (newDistance < distances[neighbor]) {
+        distances[neighbor] = newDistance;
+        previousNode[neighbor] = currentNode;
+        previousLink[neighbor] = linkId;
+        pq.push({newDistance, neighbor});
+      }
+    }
+  }
+
+  if (distances[dst] == std::numeric_limits<double>::infinity()) {
+    return result;
+  }
+
+  std::vector<int> nodePath;
+  std::vector<int> linkPath;
+  for (int current = dst; current != -1; current = previousNode[current]) {
+    nodePath.push_back(current);
+    if (previousLink[current] != -1) {
+      linkPath.push_back(previousLink[current]);
+    }
+  }
+  std::reverse(nodePath.begin(), nodePath.end());
+  std::reverse(linkPath.begin(), linkPath.end());
+
+  result.nodePath = std::move(nodePath);
+  result.linkPath = std::move(linkPath);
+  result.totalLength = distances[dst];
+  return result;
+}
+
+std::vector<Network::ShortestPathResult> Network::yenKShortestPaths(int src, int dst, int k) const {
+  std::vector<ShortestPathResult> kPaths;
+  if (k <= 0 || src == dst) {
+    return kPaths;
+  }
+
+  auto firstPath = this->dijkstra(src, dst);
+  if (firstPath.empty()) {
+    return kPaths;
+  }
+
+  kPaths.push_back(firstPath);
+
+  using Candidate = std::pair<double, ShortestPathResult>;
+  struct CandidateCompare {
+    bool operator()(const Candidate& lhs, const Candidate& rhs) const {
+      return lhs.first > rhs.first;
+    }
+  };
+  std::priority_queue<Candidate, std::vector<Candidate>, CandidateCompare> candidates;
+  std::unordered_set<std::vector<int>, VecHash> bestPathSet;
+  std::unordered_set<std::vector<int>, VecHash> candidateSet;
+
+  bestPathSet.insert(firstPath.linkPath);
+
+  for (int pathCount = 1; pathCount < k; ++pathCount) {
+    const auto& previousPath = kPaths[pathCount - 1];
+
+    for (size_t i = 0; i < previousPath.nodePath.size() - 1; ++i) {
+      int spurNode = previousPath.nodePath[i];
+      std::vector<int> rootNodes(previousPath.nodePath.begin(), previousPath.nodePath.begin() + i + 1);
+      std::vector<int> rootLinks(previousPath.linkPath.begin(), previousPath.linkPath.begin() + i);
+
+      std::unordered_set<int> removedLinks;
+      for (const auto& path : kPaths) {
+        if (path.nodePath.size() > i &&
+            std::equal(rootNodes.begin(), rootNodes.end(), path.nodePath.begin())) {
+          if (i < path.linkPath.size()) {
+            removedLinks.insert(path.linkPath[i]);
+          }
+        }
+      }
+
+      std::unordered_set<int> excludedNodes;
+      for (size_t j = 0; j + 1 < rootNodes.size(); ++j) {
+        excludedNodes.insert(rootNodes[j]);
+      }
+
+      auto spurPath = this->dijkstra(spurNode, dst, removedLinks, excludedNodes);
+      if (spurPath.empty()) {
+        continue;
+      }
+
+      ShortestPathResult totalPath;
+      totalPath.nodePath = rootNodes;
+      totalPath.nodePath.insert(totalPath.nodePath.end(),
+                                spurPath.nodePath.begin() + 1,
+                                spurPath.nodePath.end());
+
+      totalPath.linkPath = rootLinks;
+      totalPath.linkPath.insert(totalPath.linkPath.end(),
+                                spurPath.linkPath.begin(),
+                                spurPath.linkPath.end());
+
+      if (bestPathSet.count(totalPath.linkPath) || candidateSet.count(totalPath.linkPath)) {
+        continue;
+      }
+
+      double rootLength = 0.0;
+      for (int linkId : rootLinks) {
+        rootLength += this->links.at(linkId)->getLength();
+      }
+      totalPath.totalLength = rootLength + spurPath.totalLength;
+
+      candidates.push({totalPath.totalLength, totalPath});
+      candidateSet.insert(totalPath.linkPath);
+    }
+
+    if (candidates.empty()) {
+      break;
+    }
+
+    auto bestCandidate = candidates.top();
+    candidates.pop();
+    candidateSet.erase(bestCandidate.second.linkPath);
+    bestPathSet.insert(bestCandidate.second.linkPath);
+    kPaths.push_back(std::move(bestCandidate.second));
+  }
+
+  return kPaths;
 }
 
 std::shared_ptr<Fiber> Network::readSingleFiber(const nlohmann::json& fiberData) {

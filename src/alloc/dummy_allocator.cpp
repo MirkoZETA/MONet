@@ -15,12 +15,13 @@ void DummyAllocator::exec(
       if (!demand.isProvisioned()) {
         int src = demand.getSrc();
         int dst = demand.getDst();
-        int link = this->network->isConnected(src, dst);
-        if (link != -1) {
-          if (!this->network->isSlotUsed(link, 0, 0, fns::Band::C, 0, 2)) {
+        auto linkIds = this->network->isConnected(src, dst);
+        for (int linkId : linkIds) {
+          if (!this->network->isSlotUsed(linkId, 0, 0, fns::Band::C, 0, 2)) {
             auto new_connection = std::make_unique<Connection>();
-            new_connection->addLink(link, 0, 0, fns::Band::C, 0, 0, 2);
+            new_connection->addLink(linkId, 0, 0, fns::Band::C, 0, 0, 2);
             _newConnections.push_back(std::move(new_connection));
+            break;
           }
         }
       }

@@ -292,7 +292,7 @@
  * 
  */
 #define GET_BEST_ADAPTIVE_MF(_src, _dst, _bitrateIdx, _routeIdx, _band) \
-  GET_BITRATE_AT(_bitrateIdx).get()->getAdaptiveModulation((*this->path)[_src][_dst][_routeIdx], _band)
+  GET_BITRATE_AT(_bitrateIdx).get()->getAdaptiveModulation((*this->network->getPaths())[_src][_dst][_routeIdx], _band)
 /**
  * @brief Maximum reach (km) for the given BitRate/modulation/band.
  *
@@ -304,7 +304,7 @@
 
 
 /** @brief Number of candidate routes between \p _src and \p _dst. */
-#define GET_NUM_ROUTES(_src, _dst) (*this->path)[_src][_dst].size()
+#define GET_NUM_ROUTES(_src, _dst) (*this->network->getPaths())[_src][_dst].size()
 
 
 
@@ -322,9 +322,9 @@
  * 
  */
 #define GET_LINK_AT(_src,_dst,_routeIdx,_linkIdx) \
-  (*this->path)[_src][_dst][_routeIdx][_linkIdx]
+  (*this->network->getPaths())[_src][_dst][_routeIdx][_linkIdx]
 #define GET_NUM_LINKS(_src, _dst, route) \
-  (*this->path)[_src][_dst][route].size()
+  (*this->network->getPaths())[_src][_dst][route].size()
 #define GET_LINK_ID_AT(_src, _dst, route, link) \
   GET_LINK_AT(_src,_dst,route,link)->getId()
 /**

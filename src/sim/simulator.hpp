@@ -222,10 +222,9 @@ public:
   /**
    * @brief Gets the Paths vector of the network.
    *
-   * @return Matrix vector of the paths between two nodes and the respective
-   * Links inside that route.
+   * @return Raw pointer to the paths matrix (owned by Network), or nullptr if not set.
    */
-  std::shared_ptr<Paths> getPaths();
+  Paths* getPaths();
   /**
    * @brief
    */

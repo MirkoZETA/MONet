@@ -3,7 +3,9 @@
 // STL
 #include <algorithm>
 #include <fstream>
+#include <limits>
 #include <memory>
+#include <unordered_set>
 // core
 #include "link.hpp"
 #include "node.hpp"
@@ -279,17 +281,80 @@ public:
    */
   void connect(int src, int id, int dst);
   /**
-   * @brief The isConnected method checks if the source and destination Nodes
-   * are connected through a Link. If there's a connection between the two Nodes
-   * through a Link, the Id/position of that Link is returned; otherwise, -1 is
-   * returned.
+   * @brief Return all link IDs that connect the given source and destination nodes.
    *
-   * @param src the Id/position of the source node of the connection to be
-   * checked.
-   * @param dst the Id/position of the destination node of the connection to be
-   * checked.
+   * @param src Source node index.
+   * @param dst Destination node index.
+   * @return std::vector<int> containing the IDs of matching links (empty if none).
    */
-  int isConnected(int src, int dst) const;
+  std::vector<int> isConnected(int src, int dst) const;
+
+/**
+ * @brief Computes k-shortest paths for all node pairs using Yen's algorithm.
+ * 
+ * This method calculates the k-shortest paths between all pairs of nodes in the network
+ * using Yen's algorithm. The algorithm works by:
+ * 1. Finding the shortest path between each pair of nodes (using Dijkstra)
+ * 2. Iteratively finding the next shortest path by deviating from previously found paths
+ * 3. Storing results in the paths data structure for fast lookup during routing
+ * 
+ * The results are stored as shared pointers to Link objects, forming routes that can be
+ * used by the allocator during connection establishment.
+ * 
+ * @param k Number of shortest paths to compute per node pair
+ * 
+ * @note Time complexity: O(kN^2(M + N log N)) where N is nodes and M is links
+ * @note Space complexity: O(N^2 * k * avgPathLength)
+ * @note ShortestPathResult is an internal structure used by Yen's algorithm that stores
+ *       paths as vectors of link IDs. We convert these to Route objects (vectors of Link pointers)
+ *       for efficient use during connection allocation.
+ */
+  void setPaths(int k);
+
+/**
+ * @brief Loads paths from a JSON file without computing or inferring reverse routes.
+ * 
+ * This method reads precomputed routes from a JSON file. Each route entry in the file
+ * specifies a source, destination, and the explicit paths between them. The reverse
+ * direction must be explicitly declared in the file - this method does NOT automatically
+ * create reverse routes.
+ * 
+ * Being explicit (one direction per entry) avoids confusion and ensures that routing
+ * behavior matches exactly what is specified in the configuration file.
+ * 
+ * @param filename Path to JSON file containing routes
+ * 
+ * Expected JSON format:
+ * @code{.json}
+ * {
+ *   "routes": [
+ *     { "src": 0, "dst": 1, "paths": [[0, 2], [4, 5]] },
+ *     { "src": 1, "dst": 0, "paths": [[1, 3], [6, 7]] }
+ *   ]
+ * }
+ * @endcode
+ * 
+ * @note Each entry defines paths in ONE direction only
+ * @note Reverse paths must be explicitly declared in separate entries
+ * @note This ensures clarity and avoids assumptions about bidirectional routing
+ */
+  void setPaths(const std::string& filename);
+
+  /**
+   * @brief Retrieve the cached paths structure.
+   * @return Paths* Raw pointer to the paths (owned by Network), or nullptr if not set.
+   */
+  Paths* getPaths() const;
+
+  /**
+   * @brief Clear any cached paths.
+   */
+  void clearPaths();
+
+  /**
+   * @brief Return the currently cached path multiplicity (max K).
+   */
+  int getPathK() const;
 
   int getNumberOfLinks(void) const;
   std::vector<std::shared_ptr<Link>> getLinks(void) const;
@@ -316,9 +381,60 @@ private:
   std::vector<std::shared_ptr<Link>> linksOut;
   std::vector<int> nodesIn;
   std::vector<int> nodesOut;
+  std::unique_ptr<Paths> paths;
+  int pathK = 0;
   int linkCounter;
   int nodeCounter;
 
+  /**
+   * @brief Internal structure for storing path computation results during Yen's algorithm.
+   * 
+   * This structure is used internally by yenKShortestPaths() and dijkstra() methods
+   * to represent paths as vectors of node and link IDs. It's an intermediate format
+   * that is more efficient for path computation algorithms.
+   * 
+   * These results are later converted to Route objects (vectors of Link shared_ptr)
+   * for storage in the paths data structure, which is what external code uses.
+   * 
+   * @note We use link IDs instead of Link pointers during computation to allow
+   *       efficient path comparison and deduplication using hash sets.
+   */
+  struct ShortestPathResult {
+    std::vector<int> nodePath;     ///< Sequence of node IDs in the path
+    std::vector<int> linkPath;     ///< Sequence of link IDs in the path
+    double totalLength = std::numeric_limits<double>::infinity();  ///< Total path length
+    bool empty() const { return linkPath.empty(); }  ///< Check if path is empty/invalid
+  };
+
+  /**
+   * @brief Hash function for vectors of integers, used in Yen's algorithm.
+   * 
+   * This custom hash function allows us to use std::unordered_set with vectors
+   * of link IDs. It's used in yenKShortestPaths() to track which paths we've
+   * already found and avoid duplicate paths.
+   * 
+   * Without this, we couldn't use std::unordered_set<std::vector<int>> because
+   * the standard library doesn't provide a default hash for vectors.
+   * 
+   * The hash combines the vector size with each element using a standard
+   * hash-combining formula to minimize collisions.
+   */
+  struct VecHash {
+    size_t operator()(const std::vector<int>& v) const {
+      size_t seed = v.size();
+      for (int i : v) {
+        // Standard hash-combining formula
+        seed ^= static_cast<size_t>(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+      }
+      return seed;
+    }
+  };
+
   void validateAux(int idLink, int fiber, int core, int mode, int slotPos);
   void validateAux(int idLink, int fiber, int core, int mode, int slotFrom, int slotTo);
+  std::vector<ShortestPathResult> yenKShortestPaths(int src, int dst, int k) const;
+  ShortestPathResult dijkstra(int src,
+                              int dst,
+                              const std::unordered_set<int>& excludedLinks = {},
+                              const std::unordered_set<int>& excludedNodes = {}) const;
 };

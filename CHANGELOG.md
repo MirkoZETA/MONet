@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - JSON-based network definition with node attributes: ID, label, data centers (DCs), Internet Exchange Points (IXPs), population, coordinates (lat/lon), custom parameters (param1, param2)
   - Link attributes: ID, source, destination, length, fiber bundle
   - Network metrics: average neighborhood, nodal variance, link usage percentage
+  - Now network is the owner of paths and is in charge of compute and read route files
 - **Simulator class**:
   - Traffic model and growth model from *"Planning Optical Networks for Unexpected Traffic Growth"* Patri et al., (ECOC 2020) through `initializeDemands()` method
   - Normal distribution growth factors with configurable base rate and standard deviation
@@ -40,6 +41,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Compute K-shortest paths between node pairs using Yen's Algorithm with link lengths as weights
   - Path clearing and recomputation on topology changes
   - Automatic node degree calculation during adjacency list construction
+- **Allocator**:
+  - Paths is not a shared pointer anymore, only owned by network class
+- **JSON files**:
+  - Routes are now using the link ID instead of nodes
 
 ### ADDED
 - **Fiber class**: Multi-dimensional optical fiber representation

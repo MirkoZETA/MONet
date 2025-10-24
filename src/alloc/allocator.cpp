@@ -2,7 +2,6 @@
 
 Allocator::Allocator() {
   this->network = nullptr;
-  this->path = nullptr;
   this->name = std::string("No name");
 }
 
@@ -54,7 +53,3 @@ std::shared_ptr<Network> Allocator::getNetwork(void) {
 }
 
 void Allocator::setNetwork(std::shared_ptr<Network> network) { this->network = network; }
-
-void Allocator::setPaths(std::shared_ptr<Paths> path) {
-  this->path = path;
-}

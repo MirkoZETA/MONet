@@ -26,30 +26,6 @@
 class Controller
 {
 public:
-	/**
-	 * @brief Edge structure for adjacency list representation.
-	 * Represents a directed edge in the network graph.
-	 */
-	struct Edge
-	{
-		int to;       ///< Destination node index
-		int linkId;   ///< ID of the link in the network
-		double w;     ///< Weight (typically distance/cost)
-	};
-
-	/**
-	 * @brief Custom hash functor for std::vector<int>.
-	 * Enables using vector<int> as a key in unordered containers.
-	 */
-	struct VecHash {
-		size_t operator()(const std::vector<int>& v) const {
-			size_t seed = v.size();
-			for (int i : v) {
-				seed ^= i + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-			}
-			return seed;
-		}
-	};
 
 	/**
 	 * @brief Constructs a new Controller object. The attribute connections is
@@ -180,10 +156,10 @@ public:
 	 * @brief Get the Paths vector. This vector represents all the routes present
 	 * in the network between the source and destination nodes.
 	 *
-	 * @return a pointer to the four dimensional vector which represents the
-	 * paths.
+	 * @return a raw pointer to the four dimensional vector which represents the
+	 * paths (owned by Network), or nullptr if not set.
 	 */
-	std::shared_ptr<Paths> getPaths(void) const;
+	Paths* getPaths(void) const;
 	/**
 	 * @brief Clears all stored paths.
 	 */
@@ -299,24 +275,6 @@ public:
 							 std::optional<double> param2 = std::nullopt);	
 
 
-	// Path helpers
-							 
-	/**
-	 * @brief Builds the adjacency list representation of the network and calculates node degrees.
-	 * 
-	 * This method creates an adjacency list from the network's links and simultaneously
-	 * calculates the out-degree for each node. The calculated degree is stored in each
-	 * Node object using setDegree(). This ensures that node degrees are automatically
-	 * updated whenever the network topology changes (e.g., when links are added).
-	 * 
-	 * The adjacency list is used for efficient pathfinding algorithms (Dijkstra, Yen's K-shortest paths).
-	 * 
-	 * @note This method is automatically called when:
-	 *       - The network is set via setNetwork()
-	 *       - Links or nodes are added via addLink() or addNode() (triggers recompute flag)
-	 */
-	void buildAdjacencyList();
-
 	// TODO: MAKE IT PRIVATE and set a getter
 	void (*failureManagementFunction)(
 		Network& network,
@@ -328,11 +286,8 @@ public:
 private:
 	std::shared_ptr<Network> network;
 	std::unique_ptr<Allocator> allocator;
-	std::shared_ptr<Paths> path;
 	std::vector<std::unique_ptr<Connection>> connections;
 	std::vector<std::unique_ptr<P2P>> p2ps;
-	std::vector<std::vector<Edge>> adj;
-	int k;
 	bool recompute;
 
 	/**
@@ -345,24 +300,6 @@ private:
 			double time);
 
 	// Path helpers
-
-	/**
-	 * @brief Computes the shortest path between two nodes using Dijkstra's algorithm.
-	 * @param src Source node index
-	 * @param dst Destination node index
-	 * @param excludedLinks Set of link IDs to exclude from the search
-	 * @return std::vector<int> Vector of node indices representing the shortest path
-	 */
-	std::vector<int> dijkstra(int src, int dst, const std::unordered_set<int> &excludedLinks = {}, const std::unordered_set<int> &excludedNodes = {});
-
-	/**
-	 * @brief Computes k shortest paths between two nodes using Yen's algorithm.
-	 * @param src Source node index
-	 * @param dst Destination node index
-	 * @param k Number of shortest paths to find
-	 * @return std::vector<std::vector<int>> Vector of paths, each path is a vector of node indices
-	 */
-	std::vector<std::vector<int>> yenKShortestPaths(int src, int dst, int k);
 };
 
 #endif

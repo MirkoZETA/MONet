@@ -81,7 +81,7 @@ void Simulator::setAllocator(std::unique_ptr<Allocator> newAllocator) {
         "method.");
   }
   newAllocator->setNetwork(this->controller->getNetwork());
-  newAllocator->setPaths(this->controller->getPaths());
+  // Note: Paths are managed by Network, accessed via network->getPaths()
   this->controller->setAllocator(std::move(newAllocator));
 }
 
@@ -197,7 +197,7 @@ Demand* Simulator::getDemand(int id) {
     }
     return nullptr;
 }
-std::shared_ptr<Paths> Simulator::getPaths() {
+Paths* Simulator::getPaths() {
   return this->controller->getPaths();
 }
 std::unique_ptr<Controller>& Simulator::getController() {
@@ -324,7 +324,7 @@ void Simulator::initializeDemands(void) {
 
   try {
     // Generate demand matrix based on network topology
-    // Note: Node degrees are calculated and set by Controller::buildAdjacencyList()
+    // Node degrees are updated alongside topology changes (via Network::connect/setPaths).
     int demandId = 0;
     for (int i = 0; i < totalNodes; i++) {
       for (int j = 0; j < totalNodes; j++) {
@@ -823,4 +823,3 @@ void Simulator::printFinalInfo() {
             << this->timeDuration.count()
             << " seconds ---\n\n";
 }
-

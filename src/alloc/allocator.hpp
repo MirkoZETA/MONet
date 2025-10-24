@@ -87,13 +87,6 @@ public:
    */
   std::shared_ptr<Network> getNetwork(void);
   /**
-   * @brief Set the Path attribute of the Allocator.
-   *
-   * @param path the pointer to the Path vector. This vector contains the
-   * information regarding the routes between the Nodes inside Network.
-   */
-  void setPaths(std::shared_ptr<Paths> path);
-  /**
    * @brief Get the name attribute of the allocator object.
    *
    * @return std::string the name of the allocator.
@@ -106,11 +99,6 @@ protected:
    * connections on.
    */
   std::shared_ptr<Network> network;
-  /**
-   * @brief A pointer to a four dimensional vector that contains pointers to
-   * each Link on every existing route between the Nodes inside the Network.
-   */
-  std::shared_ptr<Paths> path;
   /**
    * @brief The Name of the allocation algorithm.
    */

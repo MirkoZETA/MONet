@@ -167,7 +167,7 @@ TEST_CASE("Modify Network and clearPaths")
 	std::map<fns::Band, std::vector<std::vector<int>>> bandSlotMatrix = {
 			{fns::Band::C, {{400}}}};
 
-	SECTION("clearPaths empties cached paths and adjacency (subsequent recompute repopulates)")
+	SECTION("clearPaths empties cached paths (subsequent recompute repopulates)")
 	{
 		controller.setPaths(2);
 		REQUIRE_FALSE(controller.getPaths()->empty());
@@ -176,7 +176,6 @@ TEST_CASE("Modify Network and clearPaths")
 		CHECK(controller.getPaths()->empty());
 
 		// Rebuild after clear
-		CHECK_NOTHROW(controller.buildAdjacencyList());
 		CHECK_NOTHROW(controller.setPaths(2));
 		CHECK_FALSE(controller.getPaths()->empty());
 	}
@@ -193,7 +192,6 @@ TEST_CASE("Modify Network and clearPaths")
 																		 bandSlotMatrix));
 
 		controller.clearPaths();
-		controller.buildAdjacencyList();
 		controller.setPaths(3);
 
 		// After recompute, paths should still be non-empty (graph valid)
@@ -229,7 +227,6 @@ TEST_CASE("Modify Network and clearPaths")
 		CHECK(controller.getPaths()->empty());
 
 		// Recompute once at the end
-		CHECK_NOTHROW(controller.buildAdjacencyList());
 		CHECK_NOTHROW(controller.setPaths(3));
 
 		CHECK_FALSE(controller.getPaths()->empty());
@@ -250,7 +247,6 @@ TEST_CASE("Modify Network and clearPaths")
 
 		// Reset
 		controller.clearPaths();
-		controller.buildAdjacencyList();
 		controller.setPaths(3);
 
 		// Check that are connected between 5 and 6
@@ -268,7 +264,6 @@ TEST_CASE("Modify Network and clearPaths")
 
 		// Reset
 		controller.clearPaths();
-		controller.buildAdjacencyList();
 		controller.setPaths(3);
 
 		// Now 5 and 6 should be connected to the rest of the network

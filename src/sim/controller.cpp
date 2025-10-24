@@ -1,17 +1,11 @@
 #include "controller.hpp"
 
-#include <fstream>
 #include <memory>
-#include <queue>
-#include <algorithm>
-#include <limits>
-#include <unordered_set>
 
 Controller::Controller() {
   this->network = nullptr;
   this->allocator = std::make_unique<Allocator>();
   this->connections = std::vector<std::unique_ptr<Connection>>();
-  this->path = std::make_shared<Paths>();
   this->callbackFunction = nullptr;
   this->failureManagementFunction = nullptr;
   this->recompute = false;
@@ -20,20 +14,13 @@ Controller::Controller(std::shared_ptr<Network> network) {
   this->network = network;
   this->allocator = std::make_unique<Allocator>();
   this->connections = std::vector<std::unique_ptr<Connection>>();
-  this->path = std::make_shared<Paths>();
   this->callbackFunction = nullptr;
   this->recompute = false;
-  if (this->network) {
-    buildAdjacencyList();
-  }
 };
 
 // Network management
 void Controller::setNetwork(std::shared_ptr<Network> network) {
   this->network = network;
-  if (this->network) {
-    buildAdjacencyList();
-  }
 }
 std::shared_ptr<Network> Controller::getNetwork(void) const {
   return this->network;
@@ -143,185 +130,47 @@ void Controller::assignConnections(
   }
   // Recompute paths if needed
   // This is done lazily to avoid unnecessary recomputations
-  if (this->recompute && this->k > 0) {
-    this->clearPaths();
-    this->buildAdjacencyList();
-    this->setPaths(this->k);
-    this->recompute = false;
+  if (this->recompute) {
+    if (!this->network) {
+      throw std::runtime_error("Network must be set before recomputing paths");
+    }
+    int k = this->network->getPathK();
+    if (k > 0) {
+      this->network->clearPaths();
+      this->network->setPaths(k);
+      this->recompute = false;
+    }
   }
 }
 
-// Paths management
+// Paths management (this goes to Network.cpp) -> setPaths(std::string filename) { this->network->setPaths(filename); }
 void Controller::setPaths(std::string filename) {
-  // open JSON file
-  std::ifstream file(filename);
-  if (!file.is_open()) {
-    throw std::runtime_error("Could not open file: " + filename);
-  }
-  
-  nlohmann::json filePaths;
-  file >> filePaths;
-
-  // Check if network is set
   if (!this->network) {
     throw std::runtime_error("Network must be set before setting paths");
   }
-  // Check if routes field exists
-  if (!filePaths.contains("routes")) {
-    throw std::runtime_error("Error in file: " + filename + 
-                             ". 'routes' field is missing.");
-  }
-
-  int numberOfNodes = this->network->getNumberOfNodes();
-
-  // allocate space for path[src]
-  this->path->resize(numberOfNodes);
-
-  // allocate space for path[src][dst]
-  for (int t = 0; t < numberOfNodes; t++) {
-    (*this->path)[t].resize(numberOfNodes);
-  }
-
-  int routesNumber = filePaths["routes"].size();
-  int maxK = 0;
-
-  for (int i = 0; i < routesNumber; i++) {
-    const auto& route = filePaths["routes"][i];
-    
-    // Check required fields exist
-    if (!route.contains("src") || !route.contains("dst") || !route.contains("paths")) {
-      throw std::runtime_error("Error in file: " + filename + 
-                               ". Each route must contain 'src', 'dst', and 'paths' fields.");
-    }
-
-    int src = route["src"];
-    int dst = route["dst"];
-
-    // Validate node indices
-    if (src < 0 || src >= numberOfNodes || dst < 0 || dst >= numberOfNodes) {
-      throw std::runtime_error("Invalid node index in route: src=" + std::to_string(src) + 
-                               ", dst=" + std::to_string(dst));
-    }
-    int pathsNumber = route["paths"].size();
-    if (pathsNumber == 0) {
-      continue; // Skip empty paths
-    }
-    if (pathsNumber > maxK) {
-      maxK = pathsNumber;
-    }
-
-    // allocate path[src][dst][pathsNumber]
-    (*this->path)[src][dst].resize(pathsNumber);
-
-    // go through available routes
-    for (int b = 0; b < pathsNumber; b++) {
-      const auto& pathNodes = route["paths"][b];
-      int nodesPathNumber = pathNodes.size();
-      if (nodesPathNumber < 2) {
-        throw std::runtime_error("Error in file: " + filename + 
-                                 ". Each path must contain at least two nodes.");
-      }
-      int lastNode = nodesPathNumber - 1;
-      for (int c = 0; c < lastNode; c++) {
-        int actNode = pathNodes[c];
-        int nextNode = pathNodes[c + 1];
-
-        // Validate node indices
-        if (actNode < 0 || actNode >= numberOfNodes || 
-            nextNode < 0 || nextNode >= numberOfNodes) {
-          throw std::runtime_error("Invalid node index in path: " + 
-                                   std::to_string(actNode) + " -> " + std::to_string(nextNode));
-        }
-
-        int idLink = this->network->isConnected(actNode, nextNode);
-        if (idLink == -1) {
-          throw std::runtime_error("No link found between nodes " + 
-                                   std::to_string(actNode) + " and " + std::to_string(nextNode));
-        }
-
-        (*this->path)[src][dst][b].push_back(this->network->getLink(idLink));
-      }
-    }
-  }
-  this->k = maxK;
+  this->network->setPaths(filename);
 }
+// (this goes to Network.cpp) and has to be implemented as setPaths(int k) { this->network->setPaths(k); }
 void Controller::setPaths(int k) {
   // Check if network is set
   if (!this->network) {
     throw std::runtime_error("Network must be set before computing paths");
   }
-  this->k = k;
-
-  int numberOfNodes = this->network->getNumberOfNodes();
-  
-  // Initialize paths structure
-  this->path->resize(numberOfNodes);
-  for (int i = 0; i < numberOfNodes; i++) {
-    (*this->path)[i].resize(numberOfNodes);
-  }
-
-  // Compute k shortest paths for all pairs where src < dst
-  for (int src = 0; src < numberOfNodes; src++) {
-    for (int dst = src + 1; dst < numberOfNodes; dst++) {
-
-      if (src == dst) continue;
-
-      // Compute k shortest paths from src to dst using Yen's algorithm
-      std::vector<std::vector<int>> kPaths = yenKShortestPaths(src, dst, k);
-      
-      if (kPaths.empty()) continue;
-
-      // Store paths for src -> dst
-      (*this->path)[src][dst].reserve(kPaths.size());
-      for (const auto& nodePath : kPaths) {
-        Route route;
-        route.reserve(nodePath.size() - 1);
-        for (size_t i = 0; i < nodePath.size() - 1; i++) {
-          int linkId = this->network->isConnected(nodePath[i], nodePath[i + 1]);
-          if (linkId != -1) {
-            route.push_back(this->network->getLink(linkId));
-          }
-        }
-        (*this->path)[src][dst].push_back(route);
-      }
-      // Store paths for dst -> src (reverse paths)
-      (*this->path)[dst][src].reserve(kPaths.size());
-      for (const auto& nodePath : kPaths) {
-        Route reverseRoute;
-        reverseRoute.reserve(nodePath.size() - 1);
-        
-        // Traverse the node path in reverse order
-        for (int i = nodePath.size() - 1; i > 0; i--) {
-          int linkId = this->network->isConnected(nodePath[i], nodePath[i - 1]);
-          if (linkId != -1) {
-            reverseRoute.push_back(this->network->getLink(linkId));
-          }
-        }
-        (*this->path)[dst][src].push_back(reverseRoute);
-      }
-    }
-  }
+  this->network->setPaths(k);
 }
-std::shared_ptr<Paths> Controller::getPaths(void) const {
-  return this->path;
+// (this goes to Network.cpp) -> getPaths(void) const { return this->network->getPaths(); }
+Paths* Controller::getPaths(void) const {
+  if (!this->network) {
+    throw std::runtime_error("Network must be set before getting paths");
+  }
+  return this->network->getPaths();
 }
+// (this goes to Network.cpp) -> clearPaths(void) { this->network->clearPaths(); }
 void Controller::clearPaths() {
-  if (this->path) {
-    // Clear out all stored routes
-    for (auto &row : *this->path) {
-      for (auto &col : row) {
-        for (auto &routes : col) {
-          routes.clear(); // clear each Route (vector<shared_ptr<Link>>)
-        }
-        col.clear(); // clear vector<Route>
-      }
-      row.clear(); // clear vector<vector<Route>>
-    }
-    this->path->clear(); // clear top-level Paths
+  if (!this->network) {
+    throw std::runtime_error("Network must be set before clearing paths");
   }
-
-  // Reset adjacency list
-  this->adj.clear();
+  this->network->clearPaths();
 }
 
 // P2P management
@@ -333,14 +182,15 @@ void Controller::addP2P(int src, int dst, int pathIdx, std::vector<int> fiberIdx
     dst < 0 || dst >= this->network->getNumberOfNodes()) {
     throw std::invalid_argument("Invalid source or destination node index");
   }
-  if (this->path.get()->empty()) {
+  auto paths = this->network->getPaths();
+  if (!paths || paths->empty()) {
     throw std::runtime_error("Paths must be computed before adding P2P connections");
   }
-  if (pathIdx < 0 || pathIdx >= static_cast<int>((*this->path)[src][dst].size())) {
+  if (pathIdx < 0 || pathIdx >= static_cast<int>((*paths)[src][dst].size())) {
     throw std::out_of_range("Invalid path index for the given source and destination");
   }
 
-  const auto& pathLinks = (*this->path)[src][dst][pathIdx];
+  const auto& pathLinks = (*paths)[src][dst][pathIdx];
   if (static_cast<int>(fiberIdxs.size()) != static_cast<int>(pathLinks.size())) {
     throw std::invalid_argument("Size of fiberIdxs must match number of links in the path");
   }
@@ -386,16 +236,17 @@ void Controller::addP2P(int src, int dst, int pathIdx, const std::map<fns::Band,
     dst < 0 || dst >= this->network->getNumberOfNodes()) {
     throw std::invalid_argument("Invalid source or destination node index");
   }
-  if (this->path.get()->empty()) {
+  auto paths = this->network->getPaths();
+  if (!paths || paths->empty()) {
     throw std::runtime_error("Paths must be computed before adding P2P connections");
   }
-  if (pathIdx < 0 || pathIdx >= static_cast<int>((*this->path)[src][dst].size())) {
+  if (pathIdx < 0 || pathIdx >= static_cast<int>((*paths)[src][dst].size())) {
     throw std::out_of_range("Invalid path index for the given source and destination");
   }
 
   auto newP2P = std::make_unique<P2P>(this->p2ps.size(), src, dst);
 
-  for (const auto& link : (*this->path)[src][dst][pathIdx]) {
+  for (const auto& link : (*paths)[src][dst][pathIdx]) {
     auto newFiber = std::make_shared<Fiber>(bandSlotMatrix);
 
     // Add fiber to the actual Link in the Network
@@ -446,7 +297,7 @@ void Controller::migrateConnectionToP2P(int p2pId, int core, fns::Band band, int
   }
 }
 
-// Network modification methods
+// Network modification methods (dont touch yet)
 void Controller::addLink(
     int src, int dst, float length,
     const std::map<fns::Band, std::vector<std::vector<int>>>& bandSlotMatrix) {
@@ -490,156 +341,4 @@ void Controller::addNode(int id,
   this->network->addNode(std::move(node));
 
   this->recompute = true;
-}
-
-
-// Path helpers
-void Controller::buildAdjacencyList() {
-    if (!network) return;
-    int numberOfNodes = network->getNumberOfNodes();
-    adj.assign(numberOfNodes, std::vector<Edge>());
-    
-    // Initialize node degrees to 0
-    std::vector<int> nodeDegrees(numberOfNodes, 0);
-    
-    // Build adjacency list and count out-degrees
-    for (const auto& link : network->getLinks()) {
-        int srcNode = link->getSrc();
-        adj[srcNode].push_back({link->getDst(), link->getId(), link->getLength()});
-        
-        // Count out-degree for each node
-        if (srcNode >= 0 && srcNode < numberOfNodes) {
-            nodeDegrees[srcNode]++;
-        }
-    }
-    
-    // Set the degree attribute for each node
-    for (int i = 0; i < numberOfNodes; i++) {
-        network->getNode(i)->setDegree(nodeDegrees[i]);
-    }
-}
-std::vector<int> Controller::dijkstra(int src, int dst, const std::unordered_set<int>& excludedLinks, const std::unordered_set<int>& excludedNodes) {
-  int numberOfNodes = this->network->getNumberOfNodes();
-  
-  if (excludedNodes.count(src) || excludedNodes.count(dst)) {
-      return {};
-  }
-
-  std::vector<double> distances(numberOfNodes, std::numeric_limits<double>::infinity());
-  std::vector<int> previous(numberOfNodes, -1);
-  std::vector<char> visited(numberOfNodes, 0);
-  
-  distances[src] = 0.0;
-  
-  using PQElement = std::pair<double, int>;
-  std::priority_queue<PQElement, std::vector<PQElement>, std::greater<PQElement>> pq;
-  pq.push({0.0, src});
-  
-  while (!pq.empty()) {
-    auto [currentDist, currentNode] = pq.top();
-    pq.pop();
-    
-    if (visited[currentNode] || excludedNodes.count(currentNode)) continue;
-    visited[currentNode] = 1;
-    
-    if (currentNode == dst) break;
-    
-    if (currentNode >= adj.size()) continue;
-
-    for (const auto& edge : adj[currentNode]) {
-      if (excludedLinks.count(edge.linkId)) continue;
-      
-      double newDist = currentDist + edge.w;
-      
-      if (newDist < distances[edge.to]) {
-        distances[edge.to] = newDist;
-        previous[edge.to] = currentNode;
-        pq.push({newDist, edge.to});
-      }
-    }
-  }
-  if (distances[dst] == std::numeric_limits<double>::infinity()) {
-    return {}; // No path found
-  }
-  std::vector<int> path;
-  for (int current = dst; current != -1; current = previous[current]) {
-    path.push_back(current);
-  }
-  std::reverse(path.begin(), path.end());
-  return path;
-}
-std::vector<std::vector<int>> Controller::yenKShortestPaths(int src, int dst, int k) {
-  std::vector<std::vector<int>> kPaths;
-  
-  std::vector<int> shortestPath = dijkstra(src, dst);
-  if (shortestPath.empty()) {
-    return kPaths;
-  }
-  
-  kPaths.push_back(shortestPath);
-  
-  using Candidate = std::pair<double, std::vector<int>>;
-  std::priority_queue<Candidate, std::vector<Candidate>, std::greater<Candidate>> candidates;
-  std::unordered_set<std::vector<int>, VecHash> candidateSet;
-
-  for (int pathCount = 1; pathCount < k; pathCount++) {
-    const std::vector<int>& previousPath = kPaths.back();
-    
-    for (size_t i = 0; i < previousPath.size() - 1; i++) {
-      int spurNode = previousPath[i];
-      std::vector<int> rootPath(previousPath.begin(), previousPath.begin() + i + 1);
-      
-      std::unordered_set<int> removedLinks;
-      for (const auto& path : kPaths) {
-        if (path.size() > i && std::equal(rootPath.begin(), rootPath.end(), path.begin())) {
-          if (i + 1 < path.size()) {
-            int linkId = this->network->isConnected(path[i], path[i + 1]);
-            if (linkId != -1) {
-              removedLinks.insert(linkId);
-            }
-          }
-        }
-      }
-      
-      std::unordered_set<int> excludedNodes;
-      for(size_t j = 0; j < i; ++j) {
-          excludedNodes.insert(previousPath[j]);
-      }
-      
-      std::vector<int> spurPath = dijkstra(spurNode, dst, removedLinks, excludedNodes);
-      
-      if (!spurPath.empty() && spurPath.size() > 1) {
-        std::vector<int> totalPath = rootPath;
-        totalPath.insert(totalPath.end(), spurPath.begin() + 1, spurPath.end());
-        
-        if (candidateSet.find(totalPath) == candidateSet.end()) {
-          double pathLength = 0.0;
-          for (size_t j = 0; j < totalPath.size() - 1; j++) {
-            int linkId = this->network->isConnected(totalPath[j], totalPath[j + 1]);
-            if (linkId != -1) {
-              pathLength += this->network->getLink(linkId)->getLength();
-            } else {
-              pathLength = std::numeric_limits<double>::infinity();
-              break;
-            }
-          }
-          
-          if(pathLength != std::numeric_limits<double>::infinity()){
-            candidates.push({pathLength, totalPath});
-            candidateSet.insert(totalPath);
-          }
-        }
-      }
-    }
-    
-    if (candidates.empty()) {
-      break;
-    }
-    
-    kPaths.push_back(candidates.top().second);
-    candidateSet.erase(candidates.top().second);
-    candidates.pop();
-  }
-  
-  return kPaths;
 }

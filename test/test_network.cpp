@@ -2,6 +2,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "../src/core/network.hpp"
+#include <algorithm>
 #include "catch.hpp"
 
 TEST_CASE("Constructor (Network) with JSON file") {
@@ -35,7 +36,13 @@ TEST_CASE("Constructor (Network) with JSON file") {
 
   for (int i = 0; i < 14; i++) {
     for (int j = 0; j < 14; j++) {
-      CHECK(net.isConnected(i, j) == adjacencyMatrix[i][j]);
+      auto linkIds = net.isConnected(i, j);
+      if (adjacencyMatrix[i][j] == -1) {
+        CHECK(linkIds.empty());
+      } else {
+        REQUIRE_FALSE(linkIds.empty());
+        CHECK(std::find(linkIds.begin(), linkIds.end(), adjacencyMatrix[i][j]) != linkIds.end());
+      }
     }
   }
 
@@ -311,9 +318,16 @@ TEST_CASE("Network Connectivity Operations") {
   network.connect(1, 1, 2);  // Connect node 1 to node 2 via link 1
   
   // Test connectivity checks
-  CHECK(network.isConnected(0, 1) == 0);  // Connected via link 0
-  CHECK(network.isConnected(1, 2) == 1);  // Connected via link 1
-  CHECK(network.isConnected(0, 2) == -1); // Not directly connected
+  auto forwardLinks = network.isConnected(0, 1);
+  REQUIRE_FALSE(forwardLinks.empty());
+  CHECK(std::find(forwardLinks.begin(), forwardLinks.end(), 0) != forwardLinks.end());
+
+  auto chainLinks = network.isConnected(1, 2);
+  REQUIRE_FALSE(chainLinks.empty());
+  CHECK(std::find(chainLinks.begin(), chainLinks.end(), 1) != chainLinks.end());
+
+  auto missingLinks = network.isConnected(0, 2);
+  CHECK(missingLinks.empty()); // Not directly connected
   
   // Test invalid connections
   CHECK_THROWS_AS(network.connect(0, 99, 1), std::runtime_error); // Invalid link
@@ -383,7 +397,7 @@ TEST_CASE("Network Empty State") {
   CHECK_THROWS_AS(network.getNode("NonExistent"), std::invalid_argument);
   CHECK_THROWS_AS(network.getLink(0), std::runtime_error);
   CHECK(network.getLink(0, 1) == nullptr);
-  CHECK(network.isConnected(0, 1) == -1);
+  CHECK(network.isConnected(0, 1).empty());
 
   // Name should be "Unnamed Network" by default
   CHECK(network.getName() == "Unnamed Network");
