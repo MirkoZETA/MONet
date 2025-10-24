@@ -46,6 +46,26 @@ Band charToBand(char c);
 // Converts string to FiberType enum
 FiberType stringToFiberType(const std::string& type);
 
+// Converts FiberType enum to string
+std::string fiberTypeToString(FiberType type);
+
+// ANSI color codes for console output
+namespace colors {
+    // Reset and formatting
+    constexpr const char* RESET = "\033[0m";
+    constexpr const char* BOLD = "\033[1m";
+    constexpr const char* ITALIC = "\033[3m";
+    constexpr const char* BOLD_CYAN = "\033[1;36m";
+    
+    // Colors for status indicators
+    constexpr const char* RED = "\033[31m";
+    constexpr const char* YELLOW = "\033[33m";
+    constexpr const char* BRIGHT_GREEN = "\033[92m";
+    constexpr const char* BRIGHT_RED = "\033[91m";
+    // Orange (256-color palette) for intermediate warning
+    constexpr const char* ORANGE = "\033[38;5;208m";
+}
+
 } // namespace fns
 
 #endif // UTILS_HPP

@@ -2,106 +2,157 @@
     "name": "DT-17",
     "nodes": [
         {
-            "id": 0,
             "label": "Norden",
-            "IXP": 3,
-            "DC": 2
+            "id": 0,
+            "latitude": 53.59878,
+            "longitude": 7.19671,
+            "pop": 24767,
+            "DC": 0,
+            "IXP": 0
         },
         {
-            "id": 1,
             "label": "Hamburg",
-            "IXP": 3,
-            "DC": 15
+            "id": 1,
+            "latitude": 53.54473,
+            "longitude": 9.9853,
+            "pop": 1845229,
+            "DC": 32,
+            "IXP": 3
         },
         {
-            "id": 2,
             "label": "Bremen",
-            "IXP": 0,
-            "DC": 3
+            "id": 2,
+            "latitude": 53.07913,
+            "longitude": 8.79834,
+            "pop": 546501,
+            "DC": 9,
+            "IXP": 2
         },
         {
-            "id": 3,
             "label": "Berlin",
-            "IXP": 7,
-            "DC": 16
+            "id": 3,
+            "latitude": 52.5119,
+            "longitude": 13.39678,
+            "pop": 3426354,
+            "DC": 49,
+            "IXP": 5
         },
         {
-            "id": 4,
             "label": "Hannover",
-            "IXP": 0,
-            "DC": 3
+            "id": 4,
+            "latitude": 52.37159,
+            "longitude": 9.72658,
+            "pop": 515140,
+            "DC": 9,
+            "IXP": 2
         },
         {
-            "id": 5,
             "label": "Essen",
-            "IXP": 0,
-            "DC": 2
+            "id": 5,
+            "latitude": 51.45792,
+            "longitude": 7.01947,
+            "pop": 593085,
+            "DC": 3,
+            "IXP": 1
         },
         {
-            "id": 6,
             "label": "Dortmund",
-            "IXP": 0,
-            "DC": 5
+            "id": 6,
+            "latitude": 51.51257,
+            "longitude": 7.4589,
+            "pop": 588462,
+            "DC": 9,
+            "IXP": 2
         },
         {
+            "label": "Dusseldorf",
             "id": 7,
-            "label": "Duesseldorf",
-            "IXP": 5,
-            "DC": 16
+            "latitude": 51.21454,
+            "longitude": 6.77234,
+            "pop": 620523,
+            "DC": 33,
+            "IXP": 9
         },
         {
-            "id": 8,
             "label": "Leipzig",
-            "IXP": 0,
-            "DC": 7
+            "id": 8,
+            "latitude": 51.33818,
+            "longitude": 12.37046,
+            "pop": 504971,
+            "DC": 6,
+            "IXP": 2
         },
         {
+            "label": "Cologne",
             "id": 9,
-            "label": "Koeln",
-            "IXP": 0,
-            "DC": 4
+            "latitude": 50.93178,
+            "longitude": 6.95419,
+            "pop": 963395,
+            "DC": 17,
+            "IXP": 1
         },
         {
-            "id": 10,
             "label": "Frankfurt",
-            "IXP": 18,
-            "DC": 40
+            "id": 10,
+            "latitude": 50.10917,
+            "longitude": 8.67597,
+            "pop": 650000,
+            "DC": 129,
+            "IXP": 26
         },
         {
+            "label": "Nurnberg",
             "id": 11,
-            "label": "Nuernberg",
-            "IXP": 3,
-            "DC": 16
+            "latitude": 49.44665,
+            "longitude": 11.07694,
+            "pop": 515543,
+            "DC": 21,
+            "IXP": 4
         },
         {
-            "id": 12,
             "label": "Mannheim",
-            "IXP": 0,
-            "DC": 4
+            "id": 12,
+            "latitude": 49.48733,
+            "longitude": 8.46464,
+            "pop": 307960,
+            "DC": 9,
+            "IXP": 1
         },
         {
-            "id": 13,
             "label": "Karlsruhe",
-            "IXP": 0,
-            "DC": 2
+            "id": 13,
+            "latitude": 49.00689,
+            "longitude": 8.40365,
+            "pop": 283799,
+            "DC": 7,
+            "IXP": 2
         },
         {
-            "id": 14,
             "label": "Stuttgart",
-            "IXP": 0,
-            "DC": 13
+            "id": 14,
+            "latitude": 48.77906,
+            "longitude": 9.17103,
+            "pop": 630305,
+            "DC": 25,
+            "IXP": 1
         },
         {
-            "id": 15,
             "label": "Ulm",
-            "IXP": 0,
-            "DC": 2
+            "id": 15,
+            "latitude": 48.40848,
+            "longitude": 9.97852,
+            "pop": 120451,
+            "DC": 0,
+            "IXP": 0
         },
         {
+            "label": "Munich",
             "id": 16,
-            "label": "Muenchen",
-            "IXP": 1,
-            "DC": 20
+            "latitude": 48.14159,
+            "longitude": 11.57703,
+            "pop": 1260391,
+            "DC": 35,
+            "IXP": 2
         }
     ],
     "links": [

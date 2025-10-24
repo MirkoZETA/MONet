@@ -537,16 +537,6 @@ TEST_CASE("Run Simulation with Fiber Addition")
 
 TEST_CASE("Build & init with all JSON files (simple)")
 {
-  // ARPANet
-  {
-    Simulator s{"../examples/example_networks/ARPANet.json",
-                "../examples/example_networks/ARPANet_routes.json",
-                "../examples/example_bitrates/basic_example.json"};
-    CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
-    CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
-    CHECK_NOTHROW(s.init());
-		CHECK_NOTHROW(s.run(false));
-  }
 
   // DT-17
   {
@@ -560,12 +550,20 @@ TEST_CASE("Build & init with all JSON files (simple)")
   }
 
 	// DT-50
-	// TODO
-
-  // EuroCore
   {
-    Simulator s{"../examples/example_networks/EuroCore.json",
-                "../examples/example_networks/EuroCore_routes.json",
+	Simulator s{"../examples/example_networks/DT-50.json",
+				"../examples/example_networks/DT-50_routes.json",
+				"../examples/example_bitrates/basic_example.json"};
+	CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
+	CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
+	CHECK_NOTHROW(s.init());
+	CHECK_NOTHROW(s.run(false));
+  }
+
+  // EURO-16
+  {
+    Simulator s{"../examples/example_networks/EURO-16.json",
+                "../examples/example_networks/EURO-16_routes.json",
                 "../examples/example_bitrates/basic_example.json"};
     CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
     CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
@@ -573,10 +571,10 @@ TEST_CASE("Build & init with all JSON files (simple)")
 		CHECK_NOTHROW(s.run(false));
   }
 
-  // FMMCF_example
+  // MCF example
   {
-    Simulator s{"../examples/example_networks/FMMCF_example.json",
-                "../examples/example_networks/FMMCF_example_routes.json",
+    Simulator s{"../examples/example_networks/NSFNet_MCF.json",
+                "../examples/example_networks/NSFNet_routes.json",
                 "../examples/example_bitrates/basic_example.json"};
     CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
     CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
@@ -584,9 +582,9 @@ TEST_CASE("Build & init with all JSON files (simple)")
 		CHECK_NOTHROW(s.run(false));
   }
 
-  // NSFNet_CLSE (uses NSFNet_routes.json as in your list)
+  // NSFNet_MB (uses NSFNet_routes.json as in your list)
   {
-    Simulator s{"../examples/example_networks/NSFNet_CLSE.json",
+    Simulator s{"../examples/example_networks/NSFNet_MB.json",
                 "../examples/example_networks/NSFNet_routes.json",
                 "../examples/example_bitrates/basic_example.json"};
     CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
@@ -610,17 +608,6 @@ TEST_CASE("Build & init with all JSON files (simple)")
   {
     Simulator s{"../examples/example_networks/UKNet.json",
                 "../examples/example_networks/UKNet_routes.json",
-                "../examples/example_bitrates/basic_example.json"};
-    CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
-    CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
-    CHECK_NOTHROW(s.init());
-		CHECK_NOTHROW(s.run(false));
-  }
-
-  // USNet
-  {
-    Simulator s{"../examples/example_networks/USNet.json",
-                "../examples/example_networks/USNet_routes.json",
                 "../examples/example_bitrates/basic_example.json"};
     CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
     CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));

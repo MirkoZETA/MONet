@@ -364,6 +364,21 @@ public:
   std::vector<const Node *> getNodes(void) const;
   std::string getName() const;
 
+  /**
+   * @brief Exports the network topology to a JSON file named "network_export.json" in the current directory.
+   * 
+   * The exported JSON contains nodes and links arrays matching the format used by the Network(filename) constructor.
+   */
+  void networkToJson() const;
+
+  /**
+   * @brief Exports the computed routes to a JSON file named "routes_export.json" in the current directory.
+   * 
+   * The exported JSON contains the routes array with source, destination, and paths for each node pair.
+   * @throws std::runtime_error if no paths have been computed yet (paths is null or empty).
+   */
+  void routesToJson() const;
+
   void useSlots(int idLink, int fiber, int core, fns::Band band, int mode, int slotFrom, int slotTo, int connectionId);
   void unuseSlots(int idLink, int fiber, int core, fns::Band band, int mode, int slotFrom, int slotTo);
   int isSlotUsed(int idLink, int fiber, int core, fns::Band band, int mode, int slotPos);

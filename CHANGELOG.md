@@ -22,17 +22,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - JSON-based network definition with node attributes: ID, label, data centers (DCs), Internet Exchange Points (IXPs), population, coordinates (lat/lon), custom parameters (param1, param2)
   - Link attributes: ID, source, destination, length, fiber bundle
   - Network metrics: average neighborhood, nodal variance, link usage percentage
-  - Now network is the owner of paths and is in charge of compute and read route files
+  - Network is now the owner of paths and is in charge of computing and reading route files
+  - JSON export methods: `networkToJson()`, `routesToJson()` with 4-space indentation and ordered fields
 - **Simulator class**:
   - Traffic model and growth model from *"Planning Optical Networks for Unexpected Traffic Growth"* Patri et al., (ECOC 2020) through `initializeDemands()` method
   - Normal distribution growth factors with configurable base rate and standard deviation
   - User-definable number of periods for long-term planning
+  - ANSI color-coded console output: library name and completion time in bold cyan; underprovisioning percentage color-coded by severity (green for 0.0%, yellow 0.1-20%, orange 20-50%, bright red 50-80%, dark red >80%); bold attribute labels with italic network and algorithm names
   - Period-by-period demand tracking and provisioning
   - Event-driven simulation architecture with callback support
   - Dynamic topology modification (add nodes/links during simulation)
 - **Connection class**:
   - P2P allocation flag (point-to-point dedicated fiber)
   - Dynamic bitrate modification for P2P connections
+  - Counter-based ID management independent of vector indices
 - **BitRate class**:
   - Multiple modulation format objects per bitrate (distance-adaptive schemes)
   - Distance-adaptive modulation selection: (1) reach requirement, (2) minimum slots (spectral efficiency), (3) maximum reach (reliability)
@@ -41,8 +44,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Compute K-shortest paths between node pairs using Yen's Algorithm with link lengths as weights
   - Path clearing and recomputation on topology changes
   - Automatic node degree calculation during adjacency list construction
+  - JSON export method: `demandsToJson()`
 - **Allocator**:
-  - Paths is not a shared pointer anymore, only owned by network class
+  - Paths are not shared pointers anymore, only owned by network class
 - **JSON files**:
   - Routes are now using the link ID instead of nodes
 

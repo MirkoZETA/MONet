@@ -108,16 +108,20 @@ public:
 	/**
 	 * @brief Adds a new connection to the controller's list of connections.
 	 * The new connection is created with the given parameters and added to the
-	 * connections vector.
+	 * connections vector. The connection ID is automatically assigned based on
+	 * the internal connectionCounter.
 	 */
 	void addConnection(std::unique_ptr<Connection> &&connection);
 	/**
 	 * @brief Get a connection by its ID.
+	 * 
+	 * Note: This method searches for the connection by ID, not by vector index.
+	 * Connection IDs are managed by an internal counter and may not correspond
+	 * to the vector index if connections are removed or reordered.
 	 *
-	 *
-	 * @param idConnection The ID of the connection (0-based sequential index).
+	 * @param idConnection The ID of the connection.
 	 * @return Connection& A reference to the connection object.
-	 * @throws std::out_of_range if the ID is invalid.
+	 * @throws std::out_of_range if no connection with the given ID is found.
 	 */
 	Connection &getConnection(int idConnection);
 	/**
@@ -169,6 +173,7 @@ public:
 	 * @brief Adds a new P2P connection to the controller's list of P2P connections.
 	 * The new P2P connection is created with the given source and destination nodes,
 	 * and new fibers are created for each link in the specified path.
+	 * The P2P ID is automatically assigned based on the internal p2pCounter.
 	 *
 	 * @param src Source node id
 	 * @param dst Destination node id
@@ -180,6 +185,7 @@ public:
 	 * @brief Adds a new P2P connection to the controller's list of P2P connections.
 	 * The new P2P connection is created with the given source and destination nodes,
 	 * and the specified fibers are used for each link in the specified path.
+	 * The P2P ID is automatically assigned based on the internal p2pCounter.
 	 *
 	 * @param src Source node id
 	 * @param dst Destination node id
@@ -192,10 +198,14 @@ public:
 	void addP2P(int src, int dst, int pathIdx, std::vector<int> fiberIdxs);
 	/**
 	 * @brief Get a P2P connection by its ID.
+	 * 
+	 * Note: This method searches for the P2P by ID, not by vector index.
+	 * P2P IDs are managed by an internal counter and may not correspond
+	 * to the vector index if P2Ps are removed or reordered.
 	 *
-	 * @param id The ID of the P2P connection (0-based sequential index).
+	 * @param id The ID of the P2P connection.
 	 * @return P2P& A reference to the P2P connection object.
-	 * @throws std::out_of_range if the ID is invalid.
+	 * @throws std::out_of_range if no P2P with the given ID is found.
 	 */
 	P2P &getP2P(int id);
 	/**
@@ -230,6 +240,16 @@ public:
 															int idConnection, 
 															std::shared_ptr<const BitRate> bitRate);
 
+	/**
+	 * @brief Exports current demands to a JSON file named "demands_export.json" in the current directory.
+	 * 
+	 * The exported JSON contains a demands array with source, destination, required and allocated capacity for each demand,
+	 * along with a timestamp of when the export was generated.
+	 * 
+	 * @param demands The demand matrix to export.
+	 * @param time The current simulation time.
+	 */
+	void demandsToJson(const std::vector<std::vector<Demand>>& demands, double time) const;
 
 	// Network modification methods
 
@@ -288,6 +308,8 @@ private:
 	std::unique_ptr<Allocator> allocator;
 	std::vector<std::unique_ptr<Connection>> connections;
 	std::vector<std::unique_ptr<P2P>> p2ps;
+	int connectionCounter;
+	int p2pCounter;
 	bool recompute;
 
 	/**

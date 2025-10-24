@@ -13,7 +13,6 @@ TEST_CASE("Controller Constructor and Basic Getters/Setters")
 
 	SECTION("Default Constructor")
 	{
-
 		CHECK(controller.getNetwork() == nullptr);
 		CHECK_NOTHROW(controller.getAllocator()); // Should have a default allocator
 		CHECK(controller.getConnections().empty());
@@ -54,7 +53,7 @@ TEST_CASE("Controller Constructor and Basic Getters/Setters")
 		CHECK_THROWS_AS(controller.getConnection(-1), std::out_of_range);
 		CHECK_THROWS_AS(controller.getP2P(0), std::out_of_range);
 
-		auto conn = std::make_unique<Connection>(0, 1.0, std::make_shared<const BitRate>(10.0), false, 0, 1);
+		auto conn = std::make_unique<Connection>(std::make_shared<const BitRate>(10.0), 0, 1);
 		controller.addConnection(std::move(conn));
 		CHECK_NOTHROW(controller.getConnection(0));
 
@@ -109,12 +108,11 @@ TEST_CASE("Controller P2P Management")
 	SECTION("Migrate connection to P2P")
 	{
 		auto bitrate = std::make_shared<BitRate>(10.0);
-		auto conn = std::make_unique<Connection>(0, 1.0, bitrate, false, 0, 1);
-
-		// Store the ID before moving the connection
-		int connectionId = conn->getId();
+		auto conn = std::make_unique<Connection>(bitrate, 0, 1);
 
 		controller.addConnection(std::move(conn));
+		// Store the ID after moving the connection (last added connection)
+		int connectionId = controller.getConnections().back()->getId();
 
 		CHECK(controller.getConnections().size() == 1);
 
@@ -273,4 +271,80 @@ TEST_CASE("Modify Network and clearPaths")
 		CHECK_FALSE(controller.getPaths()->at(0).at(6).empty());
 		CHECK_FALSE(controller.getPaths()->at(1).at(6).empty());
 	}
+}
+
+TEST_CASE("Controller JSON Export - demandsToJson")
+{
+	// Create a controller with a network
+	auto network = std::make_shared<Network>("../examples/example_networks/NSFNet.json");
+	Controller controller(network);
+	
+	// Create a demand matrix
+	int numNodes = network->getNumberOfNodes();
+	std::vector<std::vector<Demand>> demands(numNodes, std::vector<Demand>(numNodes));
+	
+	// Add some sample demands
+	demands[0][1] = Demand(0, 0, 1, 100.0);  // Seattle to Palo Alto
+	demands[0][1].addAllocatedCapacity(80.0);  // 80 Gbps allocated
+	
+	demands[1][2] = Demand(1, 1, 2, 200.0);  // Palo Alto to San Diego
+	demands[1][2].addAllocatedCapacity(150.0);  // 150 Gbps allocated
+	
+	demands[2][3] = Demand(2, 2, 3, 50.0);   // San Diego to Salt Lake City
+	demands[2][3].addAllocatedCapacity(50.0);   // Fully allocated
+	
+	demands[3][4] = Demand(3, 3, 4, 300.0);  // Salt Lake City to Houston
+	// No allocation - testing unprovisioned demand
+	
+	double currentTime = 123.456;
+	
+	// Export demands to JSON
+	CHECK_NOTHROW(controller.demandsToJson(demands, currentTime));
+	
+	// Verify the file was created
+	std::ifstream exportedFile("demands_export.json");
+	REQUIRE(exportedFile.is_open());
+	
+	// Parse the exported JSON
+	nlohmann::json exported;
+	exportedFile >> exported;
+	exportedFile.close();
+	
+	// Verify structure
+	REQUIRE(exported.contains("time"));
+	CHECK(exported["time"] == currentTime);
+	
+	REQUIRE(exported.contains("demands"));
+	REQUIRE(exported["demands"].is_array());
+	CHECK(exported["demands"].size() == 4);  // We added 4 demands
+	
+	// Check first demand (Seattle to Palo Alto)
+	auto demand0 = exported["demands"][0];
+	CHECK(demand0["id"] == 0);
+	CHECK(demand0["src"] == 0);
+	CHECK(demand0["dst"] == 1);
+	CHECK(demand0["required"] == 100.0);
+	CHECK(demand0["allocated"] == 80.0);
+	CHECK(demand0["unprovisioned"] == 20.0);
+
+	// Check fully allocated demand
+	auto demand2 = exported["demands"][2];
+	CHECK(demand2["id"] == 2);
+	CHECK(demand2["src"] == 2);
+	CHECK(demand2["dst"] == 3);
+	CHECK(demand2["required"] == 50.0);
+	CHECK(demand2["allocated"] == 50.0);
+	CHECK(demand2["unprovisioned"] == 0.0);
+
+	// Check unprovisioned demand
+	auto demand3 = exported["demands"][3];
+	CHECK(demand3["id"] == 3);
+	CHECK(demand3["src"] == 3);
+	CHECK(demand3["dst"] == 4);
+	CHECK(demand3["required"] == 300.0);
+	CHECK(demand3["allocated"] == 0.0);
+	CHECK(demand3["unprovisioned"] == 300.0);
+
+	// Clean up
+	std::remove("demands_export.json");
 }

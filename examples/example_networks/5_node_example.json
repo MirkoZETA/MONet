@@ -6,6 +6,7 @@
       "label": "Node_A",
       "DC": 13,
       "IXP": 3,
+      "pop": 500000,
       "param1": 10.5,
       "param2": 20.3
     },
@@ -14,6 +15,7 @@
       "label": "Node_B",
       "DC": 5,
       "IXP": 1,
+      "pop": 300000,
       "param1": 15.2,
       "param2": 25.8
     },
@@ -22,6 +24,7 @@
       "label": "Node_C",
       "DC": 13,
       "IXP": 2,
+      "pop": 400000,
       "param1": 12.7,
       "param2": 18.9
     },
@@ -30,6 +33,7 @@
       "label": "Node_D",
       "DC": 15,
       "IXP": 14,
+      "pop": 500000,
       "param1": 8.3,
       "param2": 30.1
     },
@@ -38,6 +42,7 @@
       "label": "Node_E",
       "DC": 4,
       "IXP": 8,
+      "pop": 500000,
       "param1": 14.0,
       "param2": 22.5
     }

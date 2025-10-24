@@ -833,3 +833,369 @@ std::vector<std::shared_ptr<Fiber>> Network::readMultiFiber(const nlohmann::json
     
     return fibers;
 }
+
+void Network::networkToJson() const {
+  nlohmann::ordered_json output;
+  
+  // Add network name
+  output["name"] = this->name;
+  
+  // Export nodes
+  output["nodes"] = nlohmann::json::array();
+  for (const auto& nodePtr : this->nodes) {
+    nlohmann::ordered_json nodeJson;
+    // Fields exported in order: id, label, DC, IXP, pop, param1, param2, longitude, latitude
+    nodeJson["id"] = nodePtr->getId();
+    
+    // Add optional fields only if they have values
+    // Use try-catch since getters throw NodeAttributeNotSetException if not set
+    try {
+      auto label = nodePtr->getLabel();
+      if (label.has_value()) {
+        nodeJson["label"] = label.value();
+      }
+    } catch (const NodeAttributeNotSetException&) {
+      // Field not set, skip it
+    }
+    
+    try {
+      auto dc = nodePtr->getDCs();
+      if (dc.has_value()) {
+        nodeJson["DC"] = dc.value();
+      }
+    } catch (const NodeAttributeNotSetException&) {
+      // Field not set, skip it
+    }
+    
+    try {
+      auto ixp = nodePtr->getIXPs();
+      if (ixp.has_value()) {
+        nodeJson["IXP"] = ixp.value();
+      }
+    } catch (const NodeAttributeNotSetException&) {
+      // Field not set, skip it
+    }
+    
+    try {
+      auto pop = nodePtr->getPopulation();
+      if (pop.has_value()) {
+        nodeJson["pop"] = pop.value();
+      }
+    } catch (const NodeAttributeNotSetException&) {
+      // Field not set, skip it
+    }
+    
+    try {
+      auto p1 = nodePtr->getParam1();
+      if (p1.has_value()) {
+        nodeJson["param1"] = p1.value();
+      }
+    } catch (const NodeAttributeNotSetException&) {
+      // Field not set, skip it
+    }
+    
+    try {
+      auto p2 = nodePtr->getParam2();
+      if (p2.has_value()) {
+        nodeJson["param2"] = p2.value();
+      }
+    } catch (const NodeAttributeNotSetException&) {
+      // Field not set, skip it
+    }
+    
+    try {
+      auto lon = nodePtr->getLongitude();
+      if (lon.has_value()) {
+        nodeJson["longitude"] = lon.value();
+      }
+    } catch (const NodeAttributeNotSetException&) {
+      // Field not set, skip it
+    }
+    
+    try {
+      auto lat = nodePtr->getLatitude();
+      if (lat.has_value()) {
+        nodeJson["latitude"] = lat.value();
+      }
+    } catch (const NodeAttributeNotSetException&) {
+      // Field not set, skip it
+    }
+    
+    output["nodes"].push_back(nodeJson);
+  }
+  
+  // Export links
+  output["links"] = nlohmann::json::array();
+  for (const auto& linkPtr : this->links) {
+    nlohmann::ordered_json linkJson;
+    linkJson["id"] = linkPtr->getId();
+    linkJson["src"] = linkPtr->getSrc();
+    linkJson["dst"] = linkPtr->getDst();
+    linkJson["length"] = linkPtr->getLength();
+    
+    // Handle fiber configuration
+    const auto& fibers = linkPtr->getFibers();
+    if (fibers.size() == 1) {
+      // Single fiber - export at link level
+      const auto& fiber = fibers[0];
+      const auto& bands = fiber->getBands();
+      
+      // Simple case: single band (C)
+      if (bands.size() == 1 && bands[0] == fns::Band::C) {
+        int numCores = fiber->getNumberOfCores();
+        
+        if (numCores == 1) {
+          int numModes = fiber->getNumberOfModes(0, fns::Band::C);
+          if (numModes == 1) {
+            // SSMF: single core, single mode
+            linkJson["slots"] = fiber->getNumberOfSlots(0, fns::Band::C, 0);
+          } else {
+            // FMF: single core, multiple modes
+            std::vector<int> modeSlots;
+            for (int mode = 0; mode < numModes; ++mode) {
+              modeSlots.push_back(fiber->getNumberOfSlots(0, fns::Band::C, mode));
+            }
+            linkJson["slots"] = nlohmann::json::array({modeSlots});
+          }
+        } else {
+          // MCF or FMMCF: multiple cores
+          std::vector<std::vector<int>> coreMatrix;
+          bool isMCF = true;
+          for (int core = 0; core < numCores; ++core) {
+            int numModes = fiber->getNumberOfModes(core, fns::Band::C);
+            if (numModes > 1) {
+              isMCF = false;
+            }
+            std::vector<int> modeSlots;
+            for (int mode = 0; mode < numModes; ++mode) {
+              modeSlots.push_back(fiber->getNumberOfSlots(core, fns::Band::C, mode));
+            }
+            coreMatrix.push_back(modeSlots);
+          }
+          
+          if (isMCF) {
+            // MCF: extract just first mode from each core
+            std::vector<int> coreSlots;
+            for (const auto& modes : coreMatrix) {
+              coreSlots.push_back(modes[0]);
+            }
+            linkJson["slots"] = coreSlots;
+          } else {
+            // FMMCF: full matrix
+            linkJson["slots"] = coreMatrix;
+          }
+        }
+      } else {
+        // Multi-band fiber
+        nlohmann::json bandsJson;
+        int numCores = fiber->getNumberOfCores();
+        
+        for (const auto& band : bands) {
+          std::string bandStr(1, fns::bandToChar(band));
+          
+          if (numCores == 1) {
+            int numModes = fiber->getNumberOfModes(0, band);
+            if (numModes == 1) {
+              // Multi-band SSMF
+              bandsJson[bandStr] = fiber->getNumberOfSlots(0, band, 0);
+            } else {
+              // Multi-band FMF
+              std::vector<int> modeSlots;
+              for (int mode = 0; mode < numModes; ++mode) {
+                modeSlots.push_back(fiber->getNumberOfSlots(0, band, mode));
+              }
+              bandsJson[bandStr] = nlohmann::json::array({modeSlots});
+            }
+          } else {
+            // Multi-band MCF or FMMCF
+            std::vector<std::vector<int>> coreMatrix;
+            bool isMCF = true;
+            for (int core = 0; core < numCores; ++core) {
+              int numModes = fiber->getNumberOfModes(core, band);
+              if (numModes > 1) {
+                isMCF = false;
+              }
+              std::vector<int> modeSlots;
+              for (int mode = 0; mode < numModes; ++mode) {
+                modeSlots.push_back(fiber->getNumberOfSlots(core, band, mode));
+              }
+              coreMatrix.push_back(modeSlots);
+            }
+            
+            if (isMCF) {
+              // Multi-band MCF
+              std::vector<int> coreSlots;
+              for (const auto& modes : coreMatrix) {
+                coreSlots.push_back(modes[0]);
+              }
+              bandsJson[bandStr] = coreSlots;
+            } else {
+              // Multi-band FMMCF
+              bandsJson[bandStr] = coreMatrix;
+            }
+          }
+        }
+        linkJson["slots"] = bandsJson;
+      }
+      
+      // Add type if not SSMF (default)
+      if (fiber->getType() != fns::FiberType::SSMF) {
+        linkJson["type"] = fns::fiberTypeToString(fiber->getType());
+      }
+    } else {
+      // Multiple fibers
+      linkJson["fibers"] = nlohmann::json::array();
+      for (const auto& fiber : fibers) {
+        nlohmann::ordered_json fiberJson;
+        const auto& bands = fiber->getBands();
+        
+        // Same logic as single fiber for slots
+        if (bands.size() == 1 && bands[0] == fns::Band::C) {
+          int numCores = fiber->getNumberOfCores();
+          
+          if (numCores == 1) {
+            int numModes = fiber->getNumberOfModes(0, fns::Band::C);
+            if (numModes == 1) {
+              fiberJson["slots"] = fiber->getNumberOfSlots(0, fns::Band::C, 0);
+            } else {
+              std::vector<int> modeSlots;
+              for (int mode = 0; mode < numModes; ++mode) {
+                modeSlots.push_back(fiber->getNumberOfSlots(0, fns::Band::C, mode));
+              }
+              fiberJson["slots"] = nlohmann::json::array({modeSlots});
+            }
+          } else {
+            std::vector<std::vector<int>> coreMatrix;
+            bool isMCF = true;
+            for (int core = 0; core < numCores; ++core) {
+              int numModes = fiber->getNumberOfModes(core, fns::Band::C);
+              if (numModes > 1) {
+                isMCF = false;
+              }
+              std::vector<int> modeSlots;
+              for (int mode = 0; mode < numModes; ++mode) {
+                modeSlots.push_back(fiber->getNumberOfSlots(core, fns::Band::C, mode));
+              }
+              coreMatrix.push_back(modeSlots);
+            }
+            
+            if (isMCF) {
+              std::vector<int> coreSlots;
+              for (const auto& modes : coreMatrix) {
+                coreSlots.push_back(modes[0]);
+              }
+              fiberJson["slots"] = coreSlots;
+            } else {
+              fiberJson["slots"] = coreMatrix;
+            }
+          }
+        } else {
+          nlohmann::json bandsJson;
+          int numCores = fiber->getNumberOfCores();
+          
+          for (const auto& band : bands) {
+            std::string bandStr(1, fns::bandToChar(band));
+            
+            if (numCores == 1) {
+              int numModes = fiber->getNumberOfModes(0, band);
+              if (numModes == 1) {
+                bandsJson[bandStr] = fiber->getNumberOfSlots(0, band, 0);
+              } else {
+                std::vector<int> modeSlots;
+                for (int mode = 0; mode < numModes; ++mode) {
+                  modeSlots.push_back(fiber->getNumberOfSlots(0, band, mode));
+                }
+                bandsJson[bandStr] = nlohmann::json::array({modeSlots});
+              }
+            } else {
+              std::vector<std::vector<int>> coreMatrix;
+              bool isMCF = true;
+              for (int core = 0; core < numCores; ++core) {
+                int numModes = fiber->getNumberOfModes(core, band);
+                if (numModes > 1) {
+                  isMCF = false;
+                }
+                std::vector<int> modeSlots;
+                for (int mode = 0; mode < numModes; ++mode) {
+                  modeSlots.push_back(fiber->getNumberOfSlots(core, band, mode));
+                }
+                coreMatrix.push_back(modeSlots);
+              }
+              
+              if (isMCF) {
+                std::vector<int> coreSlots;
+                for (const auto& modes : coreMatrix) {
+                  coreSlots.push_back(modes[0]);
+                }
+                bandsJson[bandStr] = coreSlots;
+              } else {
+                bandsJson[bandStr] = coreMatrix;
+              }
+            }
+          }
+          fiberJson["slots"] = bandsJson;
+        }
+        
+        if (fiber->getType() != fns::FiberType::SSMF) {
+          fiberJson["type"] = fns::fiberTypeToString(fiber->getType());
+        }
+        
+        linkJson["fibers"].push_back(fiberJson);
+      }
+    }
+    
+    output["links"].push_back(linkJson);
+  }
+  
+  // Write to file
+  std::ofstream file("network_export.json");
+  if (!file.is_open()) {
+    throw std::runtime_error("Could not create file: network_export.json");
+  }
+  file << output.dump(4);  // Pretty print with 4-space indent
+  file.close();
+}
+
+void Network::routesToJson() const {
+  if (!this->paths || this->paths->empty()) {
+    throw std::runtime_error("No paths have been computed yet. Call setPaths() before exporting routes.");
+  }
+  
+  nlohmann::ordered_json output;
+  output["routes"] = nlohmann::json::array();
+  
+  const int numberOfNodes = this->getNumberOfNodes();
+  
+  for (int src = 0; src < numberOfNodes; ++src) {
+    for (int dst = 0; dst < numberOfNodes; ++dst) {
+      if (src == dst) continue;
+      
+      const auto& routesForPair = (*this->paths)[src][dst];
+      if (routesForPair.empty()) continue;
+      
+      nlohmann::ordered_json routeEntry;
+      routeEntry["src"] = src;
+      routeEntry["dst"] = dst;
+      routeEntry["paths"] = nlohmann::json::array();
+      
+      for (const auto& route : routesForPair) {
+        std::vector<int> pathIds;
+        for (const auto& link : route) {
+          pathIds.push_back(link->getId());
+        }
+        routeEntry["paths"].push_back(pathIds);
+      }
+      
+      output["routes"].push_back(routeEntry);
+    }
+  }
+  
+  // Write to file
+  std::ofstream file("routes_export.json");
+  if (!file.is_open()) {
+    throw std::runtime_error("Could not create file: routes_export.json");
+  }
+  file << output.dump(4);
+  file.close();
+}
+

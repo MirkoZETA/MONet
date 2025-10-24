@@ -1,11 +1,15 @@
 #include "controller.hpp"
 
+#include <fstream>
 #include <memory>
 
 Controller::Controller() {
   this->network = nullptr;
   this->allocator = std::make_unique<Allocator>();
   this->connections = std::vector<std::unique_ptr<Connection>>();
+  this->p2ps = std::vector<std::unique_ptr<P2P>>();
+  this->connectionCounter = 0;
+  this->p2pCounter = 0;
   this->callbackFunction = nullptr;
   this->failureManagementFunction = nullptr;
   this->recompute = false;
@@ -14,6 +18,9 @@ Controller::Controller(std::shared_ptr<Network> network) {
   this->network = network;
   this->allocator = std::make_unique<Allocator>();
   this->connections = std::vector<std::unique_ptr<Connection>>();
+  this->p2ps = std::vector<std::unique_ptr<P2P>>();
+  this->connectionCounter = 0;
+  this->p2pCounter = 0;
   this->callbackFunction = nullptr;
   this->recompute = false;
 };
@@ -62,16 +69,18 @@ void Controller::addConnection(std::unique_ptr<Connection>&& connection) {
   if (!connection) {
     throw std::invalid_argument("Cannot add a null Connection");
   }
+  // Assign ID based on counter
+  connection->setId(this->connectionCounter);
+  this->connectionCounter++;
   this->connections.push_back(std::move(connection));
 }
 Connection& Controller::getConnection(int idConnection) {
-  if (idConnection < 0 || idConnection >= this->connections.size()) {
-    throw std::out_of_range("Connection ID out of range");
+  for (auto& conn : this->connections) {
+    if (conn && conn->getId() == idConnection) {
+      return *conn;
+    }
   }
-  if (!this->connections[idConnection]) {
-    throw std::runtime_error("Connection object is null");
-  }
-  return *this->connections[idConnection];
+  throw std::out_of_range("Connection with ID " + std::to_string(idConnection) + " not found");
 }
 std::vector<std::unique_ptr<Connection>>& Controller::getConnections() {
   return this->connections;
@@ -96,7 +105,7 @@ void Controller::assignConnections(
 
   for (auto& connectionPtr : newConnections) {
     Connection& conn = *connectionPtr;
-    conn.setId(this->connections.size());
+    // Note: ID is assigned in addConnection()
     conn.setTime(time);
 
     const int src = conn.getSrc();
@@ -194,7 +203,9 @@ void Controller::addP2P(int src, int dst, int pathIdx, std::vector<int> fiberIdx
   if (static_cast<int>(fiberIdxs.size()) != static_cast<int>(pathLinks.size())) {
     throw std::invalid_argument("Size of fiberIdxs must match number of links in the path");
   }
-  auto newP2P = std::make_unique<P2P>(this->p2ps.size(), src, dst);
+  // Create P2P with ID from counter
+  auto newP2P = std::make_unique<P2P>(this->p2pCounter, src, dst);
+  this->p2pCounter++;
 
   for (size_t i = 0; i < pathLinks.size(); ++i) {
     const auto& link = pathLinks[i];
@@ -217,13 +228,13 @@ void Controller::addP2P(int src, int dst, int pathIdx, std::vector<int> fiberIdx
   this->p2ps.push_back(std::move(newP2P));
 }
 P2P& Controller::getP2P(int id) {
-  if (id < 0 || id >= static_cast<int>(this->p2ps.size())) {
-    throw std::out_of_range("P2P ID out of range");
+  // Search for P2P by ID, not by index
+  for (auto& p2p : this->p2ps) {
+    if (p2p && p2p->getId() == id) {
+      return *p2p;
+    }
   }
-  if (!this->p2ps[id]) {
-    throw std::runtime_error("P2P object is null");
-  }
-  return *this->p2ps[id];
+  throw std::out_of_range("P2P with ID " + std::to_string(id) + " not found");
 }
 std::vector<std::unique_ptr<P2P>>& Controller::getP2Ps() {
   return this->p2ps;
@@ -244,7 +255,9 @@ void Controller::addP2P(int src, int dst, int pathIdx, const std::map<fns::Band,
     throw std::out_of_range("Invalid path index for the given source and destination");
   }
 
-  auto newP2P = std::make_unique<P2P>(this->p2ps.size(), src, dst);
+  // Create P2P with ID from counter
+  auto newP2P = std::make_unique<P2P>(this->p2pCounter, src, dst);
+  this->p2pCounter++;
 
   for (const auto& link : (*paths)[src][dst][pathIdx]) {
     auto newFiber = std::make_shared<Fiber>(bandSlotMatrix);
@@ -341,4 +354,40 @@ void Controller::addNode(int id,
   this->network->addNode(std::move(node));
 
   this->recompute = true;
+}
+
+void Controller::demandsToJson(const std::vector<std::vector<Demand>>& demands, double time) const {
+  nlohmann::json output;
+  
+  // Add metadata
+  output["time"] = time;
+  output["demands"] = nlohmann::json::array();
+  
+  // Export all demands
+  for (const auto& demandVector : demands) {
+    for (const auto& demand : demandVector) {
+      // Skip empty/uninitialized demands
+      if (demand.getSrc() < 0 || demand.getDst() < 0) {
+        continue;
+      }
+      
+      nlohmann::json demandJson;
+      demandJson["id"] = demand.getId();
+      demandJson["src"] = demand.getSrc();
+      demandJson["dst"] = demand.getDst();
+      demandJson["required"] = demand.getRequiredCapacity();
+      demandJson["allocated"] = demand.getAllocatedCapacity();
+      demandJson["unprovisioned"] = demand.getUnprovisionedCapacity();
+
+      output["demands"].push_back(demandJson);
+    }
+  }
+  
+  // Write to file
+  std::ofstream file("demands_export.json");
+  if (!file.is_open()) {
+    throw std::runtime_error("Could not create file: demands_export.json");
+  }
+  file << output.dump(4);
+  file.close();
 }

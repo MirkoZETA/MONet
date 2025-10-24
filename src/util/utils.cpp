@@ -35,4 +35,15 @@ FiberType stringToFiberType(const std::string& type) {
     throw std::runtime_error("Unknown fiber type: " + type);
 }
 
+std::string fiberTypeToString(FiberType type) {
+    switch (type) {
+        case FiberType::SSMF: return "SSMF";
+        case FiberType::FMF: return "FMF";
+        case FiberType::MCF: return "MCF";
+        case FiberType::FMMCF: return "FMMCF";
+        case FiberType::HCF: return "HCF";
+        default: throw std::runtime_error("Unknown fiber type enum value");
+    }
+}
+
 }

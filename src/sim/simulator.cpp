@@ -529,32 +529,35 @@ void Simulator::updateDemands() {
 
 
 void Simulator::printInitialInfo() {
-  std::cout << "\n--- Flex Net Sim (" << VERSION_MAJOR << "." << VERSION_MINOR
-            << "." << VERSION_REVISION << ") ---"
-            << "\n\n";
-  std::cout << std::setfill(' ') << std::setw(20) << std::left << "Network:";
-  std::cout << std::setw(30)
-            << this->controller->getNetwork()->getName() << "\n";
-  std::cout << std::setfill(' ') << std::setw(20) << std::left << "Nodes:";
-  std::cout << std::setw(30)
-            << this->controller->getNetwork()->getNumberOfNodes() << "\n";
-  std::cout << std::setw(20) << "Links:";
-  std::cout << std::setw(30)
-            << this->controller->getNetwork()->getNumberOfLinks() << "\n";
-  std::cout << std::setw(20) << "Periods:";
+  std::cout << "\n" << fns::colors::BOLD_CYAN << "--- MONet (" 
+            << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_REVISION 
+            << ") ---" << fns::colors::RESET << "\n\n";
+  // Print Algorithm first (italic), then network info. Attribute labels are bold.
+  std::cout << fns::colors::BOLD << std::setfill(' ') << std::setw(20) << std::left << "Algorithm:" << fns::colors::RESET;
+  std::cout << fns::colors::ITALIC << std::setw(30) << this->controller->getAllocator()->getName() << fns::colors::RESET << "\n";
+
+  std::cout << fns::colors::BOLD << std::setfill(' ') << std::setw(20) << std::left << "Network:" << fns::colors::RESET;
+  std::cout << fns::colors::ITALIC << std::setw(30) << this->controller->getNetwork()->getName() << fns::colors::RESET << "\n";
+
+  std::cout << fns::colors::BOLD << std::setfill(' ') << std::setw(20) << std::left << "Nodes:" << fns::colors::RESET;
+  std::cout << std::setw(30) << this->controller->getNetwork()->getNumberOfNodes() << "\n";
+
+  std::cout << fns::colors::BOLD << std::setw(20) << std::left << "Links:" << fns::colors::RESET;
+  std::cout << std::setw(30) << this->controller->getNetwork()->getNumberOfLinks() << "\n";
+
+  std::cout << fns::colors::BOLD << std::setw(20) << std::left << "Periods:" << fns::colors::RESET;
   std::cout << std::setw(30) << this->numberOfPeriods << "\n";
   if (!this->growthRates.empty()) {
-    std::cout << std::setw(20) << "Growth Rate:";
+    std::cout << fns::colors::BOLD << std::setw(20) << "Growth Rate:" << fns::colors::RESET;
     std::cout << std::setw(30) << "USER DEFINED" << "\n";
   }
   else {
-    std::cout << std::setw(20) << "Growth Rate:";
+    std::cout << fns::colors::BOLD << std::setw(20) << "Growth Rate:" << fns::colors::RESET;
     std::cout << std::setw(30) << (this->baseGrowthRate) << "\n";
-    std::cout << std::setw(20) << "Std deviation:";
+    std::cout << fns::colors::BOLD << std::setw(20) << "Std deviation:" << fns::colors::RESET;
     std::cout << std::setw(30) << this->growthRateStdDev << "\n";
   }
-  std::cout << std::setw(20) << "Algorithm:";
-  std::cout << std::setw(30) << this->controller->getAllocator()->getName() << "\n";
+  
 
   std::cout << "\n";
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
@@ -567,7 +570,7 @@ void Simulator::printInitialInfo() {
   std::cout << std::setw(13) << "+";
   std::cout << std::setw(1)  << "+\n";
 
-  std::cout << std::setfill(' ') << std::setw(11) << "| Period";
+  std::cout << fns::colors::BOLD << std::setfill(' ') << std::setw(11) << "| Period";
   std::cout << std::setw(15) << "| Total LPs";
   std::cout << std::setw(23) << "| Req. Cap. (Tbps)";
   std::cout << std::setw(25) << "| Alloc. Cap. (Tbps)";
@@ -575,7 +578,7 @@ void Simulator::printInitialInfo() {
   std::cout << std::setw(20) << "| Underprv. (%)";
   std::cout << std::setw(17) << "| Growth (%)";
   std::cout << std::setw(13) << "| time(s)";
-  std::cout << std::setw(1)  << "|\n";
+  std::cout << std::setw(1)  << "|" << fns::colors::RESET << "\n";
 
   std::cout << std::setfill('-') << std::setw(11) << std::left << "+";
   std::cout << std::setw(15) << "+";
@@ -680,7 +683,20 @@ void Simulator::printRow(bool highVerbose) {
   std::cout << std::setw(21) << std::fixed << std::setprecision(2) << totalRequired / 1000.0 << " |";
   std::cout << std::setw(23) << std::fixed << std::setprecision(2) << totalAllocated / 1000.0 << " |";
   std::cout << std::setw(13) << std::fixed << std::setprecision(1) << utilization << " |";
-  std::cout << std::setw(18) << std::fixed << std::setprecision(1) << underProvisioningRatio << " |";
+  
+  // Color-code underprovisioning: green (0.0%), yellow (0.1-20%), orange (20-50%), bright red (50-80%), dark red (>80%)
+  if (underProvisioningRatio == 0.0) {
+    std::cout << fns::colors::BRIGHT_GREEN;
+  } else if (underProvisioningRatio <= 20.0) {
+    std::cout << fns::colors::YELLOW;
+  } else if (underProvisioningRatio <= 50.0) {
+    std::cout << fns::colors::ORANGE;
+  } else if (underProvisioningRatio <= 80.0) {
+    std::cout << fns::colors::BRIGHT_RED;
+  } else {
+    std::cout << fns::colors::RED; // Darker red
+  }
+  std::cout << std::setw(18) << std::fixed << std::setprecision(1) << underProvisioningRatio << fns::colors::RESET << " |";
 
   // Print growth percentage or dash for first period
   std::cout << std::setw(15);
@@ -818,8 +834,8 @@ void Simulator::printFinalInfo() {
   std::cout << std::setw(13) << "+";
   std::cout << std::setw(1)  << "+\n";
 
-  std::cout << "\n--- Simulation Completed in "
+  std::cout << "\n--- Simulation Completed in " << fns::colors::BOLD_CYAN
             << std::fixed << std::setprecision(1)
             << this->timeDuration.count()
-            << " seconds ---\n\n";
+            << fns::colors::RESET << " seconds ---\n\n";
 }

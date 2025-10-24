@@ -18,30 +18,33 @@ TEST_CASE("Constructor (Network) with JSON file") {
   // Name
   CHECK(net.getName() == "NSFNet");
 
+  // Adjacency matrix: adjacencyMatrix[src][dst] = link_id, -1 if no link
+  // Extracted from NSFNet.json links array
   int adjacencyMatrix[14][14] = {
-      {-1, 0, 2, -1, -1, -1, -1, 4, -1, -1, -1, -1, -1, -1},
-      {1, -1, 6, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-      {3, 7, -1, -1, -1, 10, -1, -1, -1, -1, -1, -1, -1, -1},
-      {-1, 9, -1, -1, 12, -1, -1, -1, -1, -1, 14, -1, -1, -1},
-      {-1, -1, -1, 13, -1, 16, 18, -1, -1, -1, -1, -1, -1, -1},
-      {-1, -1, 11, -1, 17, -1, -1, -1, -1, 20, -1, -1, -1, 22},
-      {-1, -1, -1, -1, 19, -1, -1, 24, -1, -1, -1, -1, -1, -1},
-      {5, -1, -1, -1, -1, -1, 25, -1, 26, -1, -1, -1, -1, -1},
-      {-1, -1, -1, -1, -1, -1, -1, 27, -1, 28, -1, 30, 32, -1},
-      {-1, -1, -1, -1, -1, 21, -1, -1, 29, -1, -1, -1, -1, -1},
-      {-1, -1, -1, 15, -1, -1, -1, -1, -1, -1, -1, 34, 36, -1},
-      {-1, -1, -1, -1, -1, -1, -1, -1, 31, -1, 35, -1, -1, 38},
-      {-1, -1, -1, -1, -1, -1, -1, -1, 33, -1, 37, -1, -1, 40},
-      {-1, -1, -1, -1, -1, 23, -1, -1, -1, -1, -1, 39, 41, -1}};
+      { -1,  21,  23,  -1,  -1,  -1,  -1,  -1,  27,  -1,  -1,  -1,  -1,  -1},  // 0
+      {  0,  -1,  22,  26,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1},  // 1
+      {  2,   1,  -1,  -1,  31,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1},  // 2
+      { -1,   5,  -1,  -1,  -1,   4,  -1,  -1,  -1,  30,  -1,  -1,  -1,  -1},  // 3
+      { -1,  -1,  10,  -1,  -1,   8,  -1,  11,  -1,  -1,  33,  -1,  -1,  -1},  // 4
+      { -1,  -1,  -1,  25,  29,  -1,  24,  -1,  -1,  -1,  -1,  -1,  -1,  -1},  // 5
+      { -1,  -1,  -1,  -1,  -1,   3,  -1,  13,  28,  -1,  -1,  -1,  -1,  -1},  // 6
+      { -1,  -1,  -1,  -1,  32,  -1,  34,  -1,  -1,  -1,  -1,  -1,  -1,  14},  // 7
+      {  6,  -1,  -1,  -1,  -1,  -1,   7,  -1,  -1,  -1,  -1,  -1,  -1,  36},  // 8
+      { -1,  -1,  -1,   9,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  18,  37,  -1},  // 9
+      { -1,  -1,  -1,  -1,  12,  -1,  -1,  -1,  -1,  -1,  -1,  20,  17,  -1},  // 10
+      { -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  39,  41,  -1,  -1,  40},  // 11
+      { -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  16,  38,  -1,  -1,  -1},  // 12
+      { -1,  -1,  -1,  -1,  -1,  -1,  -1,  35,  15,  -1,  -1,  19,  -1,  -1}}; // 13
 
-  for (int i = 0; i < 14; i++) {
-    for (int j = 0; j < 14; j++) {
-      auto linkIds = net.isConnected(i, j);
-      if (adjacencyMatrix[i][j] == -1) {
+  // Test connectivity: adjacencyMatrix is indexed as [src][dst]
+  for (int src = 0; src < 14; src++) {
+    for (int dst = 0; dst < 14; dst++) {
+      auto linkIds = net.isConnected(src, dst);
+      if (adjacencyMatrix[src][dst] == -1) {
         CHECK(linkIds.empty());
       } else {
         REQUIRE_FALSE(linkIds.empty());
-        CHECK(std::find(linkIds.begin(), linkIds.end(), adjacencyMatrix[i][j]) != linkIds.end());
+        CHECK(std::find(linkIds.begin(), linkIds.end(), adjacencyMatrix[src][dst]) != linkIds.end());
       }
     }
   }
@@ -401,4 +404,114 @@ TEST_CASE("Network Empty State") {
 
   // Name should be "Unnamed Network" by default
   CHECK(network.getName() == "Unnamed Network");
+}
+
+TEST_CASE("JSON Export - networkToJson") {
+  // Load the NSFNet network
+  Network network("../examples/example_networks/NSFNet.json");
+  
+  // Export to JSON
+  CHECK_NOTHROW(network.networkToJson());
+  
+  // Verify the file was created
+  std::ifstream exportedFile("network_export.json");
+  REQUIRE(exportedFile.is_open());
+  
+  // Parse the exported JSON
+  nlohmann::json exported;
+  exportedFile >> exported;
+  exportedFile.close();
+  
+  // Verify network name
+  CHECK(exported["name"] == "NSFNet");
+  
+  // Verify nodes
+  REQUIRE(exported.contains("nodes"));
+  REQUIRE(exported["nodes"].is_array());
+  CHECK(exported["nodes"].size() == 14);
+  
+  // Check first node (Seattle)
+  auto node0 = exported["nodes"][0];
+  CHECK(node0["id"] == 0);
+  CHECK(node0.contains("longitude"));
+  CHECK(node0.contains("latitude"));
+  CHECK(node0.contains("pop"));
+  CHECK(node0.contains("DC"));
+  CHECK(node0.contains("IXP"));
+  
+  // Verify links
+  REQUIRE(exported.contains("links"));
+  REQUIRE(exported["links"].is_array());
+  CHECK(exported["links"].size() == 42);  // NSFNet has 42 links (21 bidirectional)
+  
+  // Check first link
+  auto link0 = exported["links"][0];
+  CHECK(link0["id"] == 0);
+  CHECK(link0.contains("src"));
+  CHECK(link0.contains("dst"));
+  CHECK(link0.contains("length"));
+  CHECK(link0.contains("slots"));
+  
+  // Reload the exported network to verify it's valid
+  CHECK_NOTHROW(Network("network_export.json"));
+  Network reloaded("network_export.json");
+  
+  // Verify the reloaded network has the same structure
+  CHECK(reloaded.getName() == "NSFNet");
+  CHECK(reloaded.getNumberOfNodes() == 14);
+  CHECK(reloaded.getNumberOfLinks() == 42);
+  
+  // Clean up
+  std::remove("network_export.json");
+}
+
+TEST_CASE("JSON Export - routesToJson") {
+  // Load the NSFNet network
+  Network network("../examples/example_networks/NSFNet.json");
+  
+  // Compute k-shortest paths (k=3)
+  CHECK_NOTHROW(network.setPaths(3));
+  
+  // Export routes to JSON
+  CHECK_NOTHROW(network.routesToJson());
+  
+  // Verify the file was created
+  std::ifstream exportedFile("routes_export.json");
+  REQUIRE(exportedFile.is_open());
+  
+  // Parse the exported JSON
+  nlohmann::json exported;
+  exportedFile >> exported;
+  exportedFile.close();
+  
+  // Verify routes structure
+  REQUIRE(exported.contains("routes"));
+  REQUIRE(exported["routes"].is_array());
+  CHECK(exported["routes"].size() > 0);
+  
+  // Check a route entry
+  auto route0 = exported["routes"][0];
+  CHECK(route0.contains("src"));
+  CHECK(route0.contains("dst"));
+  CHECK(route0.contains("paths"));
+  REQUIRE(route0["paths"].is_array());
+  CHECK(route0["paths"].size() <= 3);  // k=3 maximum
+  
+  // Verify each path is an array of link IDs
+  if (route0["paths"].size() > 0) {
+    auto path0 = route0["paths"][0];
+    REQUIRE(path0.is_array());
+    CHECK(path0.size() > 0);  // Should have at least one link
+    // Each element should be a link ID (integer)
+    for (const auto& linkId : path0) {
+      CHECK(linkId.is_number_integer());
+    }
+  }
+  
+  // Test error when no paths are computed
+  Network emptyNetwork;
+  CHECK_THROWS_AS(emptyNetwork.routesToJson(), std::runtime_error);
+  
+  // Clean up
+  std::remove("routes_export.json");
 }
