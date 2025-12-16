@@ -1,0 +1,11 @@
+{
+  "name": "Label Spaces Net",
+  "nodes": [
+    {"id": 0, "label": "New York"},
+    {"id": 1, "label": "Los Angeles"}
+  ],
+  "links": [
+    {"id": 0, "src": 0, "dst": 1, "length": 100.0, "slots": 320, "type": "SSMF"},
+    {"id": 1, "src": 1, "dst": 0, "length": 100.0, "slots": 320, "type": "SSMF"}
+  ]
+}

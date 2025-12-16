@@ -207,6 +207,22 @@ TEST_CASE("Constructor (Simulator)")
 								"../examples/example_demands/5_node_example_demands.json", 5));
 }
 
+TEST_CASE("Demands file supports node labels with spaces") {
+	Simulator s(
+			"../test/test_label_spaces_network.json",
+			"../test/test_label_spaces_routes.json",
+			"../examples/example_bitrates/basic_example.json",
+			"../test/test_label_spaces_demands.json");
+
+	auto* d01 = s.getDemand(0, 1);
+	REQUIRE(d01 != nullptr);
+	CHECK(d01->getRequiredCapacity() == Approx(200.0));
+
+	auto* d10 = s.getDemand(1, 0);
+	REQUIRE(d10 != nullptr);
+	CHECK(d10->getRequiredCapacity() == Approx(150.0));
+}
+
 TEST_CASE("Getters and Setters (Simulator)")
 {
 

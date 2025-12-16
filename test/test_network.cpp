@@ -241,12 +241,18 @@ TEST_CASE("Network Node Management") {
   
   // Test nonexistent label
   CHECK_THROWS_AS(network.getNode("NonExistent"), std::invalid_argument);
-  
   // Test all nodes retrieval
   std::vector<const Node*> allNodes = network.getNodes();
   CHECK(allNodes.size() == 2);
   CHECK(allNodes[0]->getId() == 0);
   CHECK(allNodes[1]->getId() == 1);
+}
+
+TEST_CASE("Node labels with spaces") {
+  Network network("../test/test_label_spaces_network.json");
+  std::unique_ptr<Node>& nodeByLabel = network.getNode("New York");
+  CHECK(nodeByLabel->getId() == 0);
+  CHECK(nodeByLabel->getLabel().value_or("") == "New York");
 }
 
 TEST_CASE("Network Link Management") {

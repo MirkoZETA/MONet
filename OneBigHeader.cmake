@@ -1,4 +1,4 @@
-FILE(GLOB sources "${PROJECT_SOURCE_DIR}/src/*")
+FILE(GLOB_RECURSE sources "${PROJECT_SOURCE_DIR}/src/*.hpp")
 list(REVERSE sources)
 list(LENGTH sources len_sources)
 set(HEADER_NAME "simulator.hpp")

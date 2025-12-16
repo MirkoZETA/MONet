@@ -1,0 +1,4 @@
+[
+  {"src": "New York", "dst": "Los Angeles", "required": 200.0},
+  {"src": "Los Angeles", "dst": "New York", "required": 150.0}
+]
