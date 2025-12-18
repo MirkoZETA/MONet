@@ -1,3 +1,9 @@
+#ifndef MACROS_HPP
+#define MACROS_HPP
+
+// Dependencies for macros
+#include "../sim/simulator.hpp"
+
 /**
  *  @brief Begin the definition of an allocator function This is
  *  the main entry point for your allocation logic.
@@ -406,3 +412,5 @@
     } \
     return __minSlots; \
   }())
+
+#endif // MACROS_HPP
