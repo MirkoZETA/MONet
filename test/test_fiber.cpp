@@ -280,8 +280,8 @@ TEST_CASE("Slot Allocation and Fiber Status")
     CHECK(fiber.getSlot(0, fns::Band::C, 0, 149) == 2);
     
     // Test unallocated slots
-    CHECK(fiber.getSlot(0, fns::Band::C, 0, 1) == 0);
-    CHECK(fiber.getSlot(0, fns::Band::C, 0, 50) == 0);
+    CHECK(fiber.getSlot(0, fns::Band::C, 0, 1) == -1);
+    CHECK(fiber.getSlot(0, fns::Band::C, 0, 50) == -1);
     
     // Test dedicated P2P flag - first reset fiber to clear allocations
     fiber.resetFiber();
@@ -322,7 +322,7 @@ TEST_CASE("Fiber Reset and Clear Operations")
     CHECK_FALSE(fiber.isActive());
     CHECK(fiber.getNumberOfBands() == 2); // Structure preserved
     CHECK(fiber.getNumberOfSlots(0, fns::Band::C, 0) == 100);
-    CHECK(fiber.getSlot(0, fns::Band::C, 0, 0) == 0); // Allocation cleared
+    CHECK(fiber.getSlot(0, fns::Band::C, 0, 0) == -1); // Allocation cleared
     
     // Allocate again and test clearFiber
     fiber.setSlot(0, fns::Band::C, 0, 0, 3);

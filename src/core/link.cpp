@@ -119,7 +119,7 @@ float Link::getUsagePercentage(void) const {
             int slots = fiber->getNumberOfSlots(coreIdx, band, modeIdx);
             totalSlots += slots;
             for (size_t slotIdx = 0; slotIdx < slots; ++slotIdx) {
-              if (fiber->getSlot(coreIdx, band, modeIdx, slotIdx)) {
+              if (fiber->getSlot(coreIdx, band, modeIdx, slotIdx) != -1) {
                 usedSlots++;
               }
             }

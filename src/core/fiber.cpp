@@ -4,7 +4,7 @@ Fiber::Fiber(void) {
 	this->resources = std::map<fns::Band, std::vector<std::vector<std::vector<int>>>>();
 	this->resources[fns::defaults::BAND] = std::vector<std::vector<std::vector<int>>>(
 			fns::defaults::CORES, std::vector<std::vector<int>>(
-					fns::defaults::MODES, std::vector<int>(fns::defaults::SLOTS)
+					fns::defaults::MODES, std::vector<int>(fns::defaults::SLOTS, -1)
 			)
 	);
 	this->setType(fns::FiberType::SSMF);
@@ -18,7 +18,7 @@ Fiber::Fiber(int slots) {
 	this->resources = std::map<fns::Band, std::vector<std::vector<std::vector<int>>>>();
 	this->resources[fns::Band::C] = std::vector<std::vector<std::vector<int>>>(
 			fns::defaults::CORES, std::vector<std::vector<int>>(
-					fns::defaults::MODES, std::vector<int>(slots)
+					fns::defaults::MODES, std::vector<int>(slots, -1)
 			)
 	);
 	this->setType(fns::FiberType::SSMF);
@@ -69,7 +69,7 @@ Fiber::Fiber(const std::map<fns::Band, std::vector<std::vector<int>>>& bandSlotM
 			this->resources[band][core].resize(bandModes);
 			for (int mode = 0; mode < bandModes; mode++) {
 				int slots = matrix[core][mode];
-				this->resources[band][core][mode].resize(slots);
+				this->resources[band][core][mode].resize(slots, -1);
 			}
 		}
 	}
@@ -134,7 +134,7 @@ void Fiber::addBand(fns::Band band, int modes, int slots){
 	}
 	this->resources[band] = std::vector<std::vector<std::vector<int>>>(
 		cores, std::vector<std::vector<int>>(
-			modes, std::vector<int>(slots)
+			modes, std::vector<int>(slots, -1)
 		)
 	);
 }
@@ -176,7 +176,7 @@ void Fiber::setCores(const std::vector<std::vector<int>>& coreConfig) {
 		for (const auto& perCore : slotMatrix) {
 			for (const auto& perMode : perCore) {
 				for (const auto& slot : perMode) {
-					if (slot != 0) {
+					if (slot != -1) {
 						throw std::runtime_error("Cannot change core configuration when slots are already allocated.");
 					}
 				}
@@ -196,7 +196,7 @@ void Fiber::setCores(const std::vector<std::vector<int>>& coreConfig) {
 			
 			for (int mode = 0; mode < modesForCore; mode++) {
 				int slotsForMode = coreConfig[core][mode];
-				slotMatrix[core][mode].resize(slotsForMode, 0); // Initialize all slots to 0
+				slotMatrix[core][mode].resize(slotsForMode, -1); // Initialize all slots to -1 (free)
 			}
 		}
 	}
@@ -232,7 +232,7 @@ void Fiber::setModes(int core, fns::Band band, const std::vector<int>& slotsPerM
 	// Check if any slots are allocated in this specific core/band
 	for (const auto& perMode : coreSlots) {
 		for (const auto& slot : perMode) {
-			if (slot != 0) {
+			if (slot != -1) {
 				throw std::runtime_error("Cannot change number of modes when slots are already allocated.");
 			}
 		}
@@ -241,7 +241,7 @@ void Fiber::setModes(int core, fns::Band band, const std::vector<int>& slotsPerM
 	coreSlots.clear();
 	coreSlots.reserve(slotsPerMode.size());
 	for (int slots : slotsPerMode) {
-		coreSlots.emplace_back(slots, 0); // Create mode with 'slots' elements, all set to 0
+		coreSlots.emplace_back(slots, -1); // Create mode with 'slots' elements, all set to -1 (free)
 	}
 }
 
@@ -304,12 +304,12 @@ int Fiber::getNumberOfSlots(int core, fns::Band band, int mode) const {
 
 // Fiber Status
 bool Fiber::isActive(void) const {
-	// Check if ANY slot is occupied
+	// Check if ANY slot is occupied (not -1)
 	for (const auto& [band, slotMatrix] : this->resources) {
 		for (const auto& coreSlots : slotMatrix) {
 			for (const auto& modeSlots : coreSlots) {
 				for (const auto& slot : modeSlots) {
-					if (slot != 0) {
+					if (slot != -1) {
 						return true;
 					}
 				}
@@ -352,7 +352,7 @@ void Fiber::resetFiber(void) {
 	for (auto& [band, slotMatrix] : this->resources) {
 		for (auto& coreSlots : slotMatrix) {
 			for (auto& modeSlots : coreSlots) {
-				std::fill(modeSlots.begin(), modeSlots.end(), 0);
+				std::fill(modeSlots.begin(), modeSlots.end(), -1);
 			}
 		}
 	}

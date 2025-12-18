@@ -24,7 +24,10 @@ void Allocator::exec(
 }
 
 void Allocator::alloc(Connection connection) {
-  int id = connection.getId();
+  // Use a temporary positive ID for marking slots in the network copy.
+  // The actual connection ID will be assigned later by the Controller.
+  // This ensures slots are marked as "used" (not -1 which means "free").
+  int id = this->tempConnectionCounter++;
 
   // Allocate resources for the connection
   for (int i = 0; i < connection.getLinks().size(); i++) {

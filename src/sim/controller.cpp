@@ -33,6 +33,11 @@ std::shared_ptr<Network> Controller::getNetwork(void) const {
   return this->network;
 }
 
+// This version allows modifying the original network pointer
+std::shared_ptr<Network>& Controller::getNetwork() {
+  return this->network;
+}
+
 // Allocator management
 void Controller::setAllocator(std::unique_ptr<Allocator> allocator) {
   this->allocator = std::move(allocator);
@@ -105,7 +110,11 @@ void Controller::assignConnections(
 
   for (auto& connectionPtr : newConnections) {
     Connection& conn = *connectionPtr;
-    // Note: ID is assigned in addConnection()
+    
+    // Assign ID BEFORE using it in useSlots - this is critical!
+    conn.setId(this->connectionCounter);
+    this->connectionCounter++;
+    
     conn.setTime(time);
 
     const int src = conn.getSrc();
@@ -125,8 +134,8 @@ void Controller::assignConnections(
         conn.getId());
     }
 
-    // Move each Connection into a unique_ptr owned by Controller
-    this->addConnection(std::move(connectionPtr));
+    // Move connection into Controller's ownership (ID already assigned above)
+    this->connections.push_back(std::move(connectionPtr));
   }
   // Call the user-defined callback function after processing connections
   if (this->callbackFunction) {

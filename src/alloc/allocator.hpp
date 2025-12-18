@@ -103,4 +103,9 @@ protected:
    * @brief The Name of the allocation algorithm.
    */
   std::string name;
+  /**
+   * @brief Counter for assigning temporary connection IDs during allocation.
+   * This ensures slots are marked with positive IDs (not -1) in the network copy.
+   */
+  int tempConnectionCounter = 1;
 };

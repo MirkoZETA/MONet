@@ -376,15 +376,15 @@ TEST_CASE("Network Slot Management") {
   }
   
   // Test unused slots
-  CHECK(retrievedFiber->getSlot(0, fns::Band::C, 0, 9) == 0);   // Before used range
-  CHECK(retrievedFiber->getSlot(0, fns::Band::C, 0, 15) == 0);  // After used range (slotTo is exclusive)
+  CHECK(retrievedFiber->getSlot(0, fns::Band::C, 0, 9) == -1);   // Before used range
+  CHECK(retrievedFiber->getSlot(0, fns::Band::C, 0, 15) == -1);  // After used range (slotTo is exclusive)
   
   // Free the slots
   CHECK_NOTHROW(network.unuseSlots(0, 0, 0, fns::Band::C, 0, 10, 15));
   
   // Verify slots are free
   for (int slot = 10; slot < 15; slot++) {
-    CHECK(retrievedFiber->getSlot(0, fns::Band::C, 0, slot) == 0);
+    CHECK(retrievedFiber->getSlot(0, fns::Band::C, 0, slot) == -1);
   }
   
   // Test invalid slot operations

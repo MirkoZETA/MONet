@@ -80,10 +80,37 @@ Network::Network(std::string filename)
 
   // adding links to the network
   for (int i = 0; i < numberOfLinks; i++) {
-    int id = network["links"][i]["id"];
-    float length = network["links"][i]["length"];
-    int src = network["links"][i]["src"];
-    int dst = network["links"][i]["dst"];
+    const auto& linkJson = network["links"][i];
+    
+    // Validate required fields exist with helpful error messages
+    if (!linkJson.contains("id")) {
+      throw std::runtime_error("Network JSON Error: Link at index " + std::to_string(i) + 
+                               " is missing required field 'id'");
+    }
+    if (!linkJson.contains("length")) {
+      throw std::runtime_error("Network JSON Error: Link " + std::to_string(linkJson.value("id", i)) + 
+                               " is missing required field 'length'");
+    }
+    if (!linkJson.contains("src")) {
+      throw std::runtime_error("Network JSON Error: Link " + std::to_string(linkJson.value("id", i)) + 
+                               " is missing required field 'src'");
+    }
+    if (!linkJson.contains("dst")) {
+      throw std::runtime_error("Network JSON Error: Link " + std::to_string(linkJson.value("id", i)) + 
+                               " is missing required field 'dst'");
+    }
+    // Check for 'slots' field when not using 'fibers' array
+    if (!linkJson.contains("fibers") && !linkJson.contains("slots")) {
+      throw std::runtime_error("Network JSON Error: Link " + std::to_string(linkJson["id"].get<int>()) + 
+                               " is missing required field 'slots'. Each link must specify either 'slots' "
+                               "(for single fiber) or 'fibers' (for multiple fibers). "
+                               "Example: \"slots\": 320 for a standard fiber with 320 slots.");
+    }
+    
+    int id = linkJson["id"];
+    float length = linkJson["length"];
+    int src = linkJson["src"];
+    int dst = linkJson["dst"];
 
     // Store this link direction
     linkPairs[{src, dst}] = id;
@@ -91,16 +118,16 @@ Network::Network(std::string filename)
     std::shared_ptr<Link> link;
 
     // Check if "fibers" field exists (multiple fibers)
-    if (network["links"][i].contains("fibers")) {
+    if (linkJson.contains("fibers")) {
       // Warn if link-level type is specified but will be ignored
-      if (network["links"][i].contains("type")) {
+      if (linkJson.contains("type")) {
         std::cerr << "Warning: Link " << id << " has link-level 'type' field that will be ignored. "
                   << "When using 'fibers' array, type must be set individually for each fiber." << std::endl;
       }
-      std::vector<std::shared_ptr<Fiber>> multi_fiber = readMultiFiber(network["links"][i]["fibers"]);
+      std::vector<std::shared_ptr<Fiber>> multi_fiber = readMultiFiber(linkJson["fibers"]);
       link = std::make_shared<Link>(id, length, multi_fiber);
     } else {
-      std::shared_ptr<Fiber> single_fiber = readSingleFiber(network["links"][i]);
+      std::shared_ptr<Fiber> single_fiber = readSingleFiber(linkJson);
       link = std::make_shared<Link>(id, length, single_fiber);
     }
     
@@ -175,6 +202,35 @@ Network::Network(const Network &net) {
     this->paths = std::make_unique<Paths>();
   }
   this->pathK = net.pathK;
+
+  // IMPORTANT: Paths store shared_ptr<Link>. The deep-copied Network has new Link
+  // objects, but copying Paths would otherwise keep pointing at the original
+  // network's Link instances. That desynchronizes fiber counts/slot states between
+  // GET_LINK_AT(...) (paths) and getLink(id) (links vector).
+  // Remap every route hop to the corresponding Link in *this* Network.
+  if (this->paths) {
+    for (auto& bySrc : *this->paths) {
+      for (auto& byDst : bySrc) {
+        for (auto& route : byDst) {
+          for (auto& linkPtr : route) {
+            if (!linkPtr) continue;
+            const int id = linkPtr->getId();
+            if (id >= 0 && id < static_cast<int>(this->links.size())) {
+              linkPtr = this->links[static_cast<std::size_t>(id)];
+              continue;
+            }
+            // Fallback: find by ID (should not happen if IDs are contiguous).
+            for (const auto& localLink : this->links) {
+              if (localLink && localLink->getId() == id) {
+                linkPtr = localLink;
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 std::string Network::getName() const {
@@ -323,12 +379,12 @@ void Network::useSlots(int idLink, int fiber, int core, fns::Band band, int mode
 void Network::unuseSlots(int idLink, int fiber, int core, fns::Band band, int mode, int slotFrom, int slotTo) {
   validateAux(idLink, fiber, core, mode, slotFrom, slotTo);
   for (int i = slotFrom; i < slotTo; i++)
-    this->getLink(idLink)->getFiber(fiber).get()->setSlot(core, band, mode, i, false);
+    this->getLink(idLink)->getFiber(fiber).get()->setSlot(core, band, mode, i, -1);
 }
 
 int Network::isSlotUsed(int idLink, int fiber, int core, fns::Band band, int mode, int slotPos){
   validateAux(idLink, fiber, core, mode, slotPos);
-  return this->getLink(idLink)->getFiber(fiber).get()->getSlot(core, band, mode, slotPos);
+  return this->getLink(idLink)->getFiber(fiber).get()->getSlot(core, band, mode, slotPos) != -1;
 }
 
 void Network::validateAux(int idLink, int fiber, int core, int mode, int slotPos) {
@@ -747,6 +803,16 @@ std::vector<Network::ShortestPathResult> Network::yenKShortestPaths(int src, int
 }
 
 std::shared_ptr<Fiber> Network::readSingleFiber(const nlohmann::json& fiberData) {
+  // Validate 'slots' field exists
+  if (!fiberData.contains("slots")) {
+    throw std::runtime_error("Fiber JSON Error: Missing required field 'slots'. "
+                             "Each fiber must specify a 'slots' configuration. "
+                             "Examples:\n"
+                             "  - SSMF: \"slots\": 320\n"
+                             "  - MCF: \"slots\": [80, 90, 70]\n"
+                             "  - Multi-band: \"slots\": {\"C\": 344, \"L\": 480}");
+  }
+  
   const auto& slotsData = fiberData["slots"];
 
   // Create fiber based on slots configuration

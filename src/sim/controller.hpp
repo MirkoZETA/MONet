@@ -60,7 +60,11 @@ public:
 	 * @return Network. a pointer to the network object from the controller. This
 	 * is the network the controller is currently using
 	 */
-	std::shared_ptr<Network> getNetwork(void) const;
+	// 1. Non-const version: allows modifying the original network pointer
+	std::shared_ptr<Network>& getNetwork();
+
+	// 2. Const version: keeps existing behavior (returns a copy)
+	std::shared_ptr<Network> getNetwork() const;
 
 	/**
 	 * @brief Set the allocator of the controller. The allocator determines how

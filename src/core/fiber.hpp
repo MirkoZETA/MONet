@@ -170,13 +170,13 @@ public:
 	int getNumberOfModes(int core, fns::Band band) const;
 
 	/**
-	 * @brief Get the value of a specific slot (connection ID or 0 if free).
+	 * @brief Get the value of a specific slot (connection ID or -1 if free).
 	 *
 	 * @param core Core index (0-based).
 	 * @param band Band to query.
 	 * @param mode Mode index (0-based).
 	 * @param slotPos Slot position index (0-based).
-	 * @return int Connection ID occupying the slot, or 0 if the slot is free.
+	 * @return int Connection ID occupying the slot, or -1 if the slot is free.
 	 */
 	int getSlot(int core, fns::Band band, int mode, int slotPos) const;
 
