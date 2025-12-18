@@ -33,7 +33,7 @@ int main()
   sim.init();
 
   // Run the simulation
-  sim.run(true);
+  sim.run("results");
 
   // Print growth Rates
   for (int period = 1; period < sim.getNumberOfPeriods(); ++period)

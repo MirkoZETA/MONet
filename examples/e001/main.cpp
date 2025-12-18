@@ -242,7 +242,7 @@ int main()
 	sim.init();
 
 	// Run the simulation
-	sim.run(true);
+	sim.run("results");
 
 	// Obtain the growth factors used per period
 	//std::vector<double> growthFactors = sim.getGrowthValues();

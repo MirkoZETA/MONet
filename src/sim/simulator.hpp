@@ -6,6 +6,7 @@
 #include <list>
 #include <filesystem>
 #include <memory>
+#include <string>
 // math
 #include "../math/normal_variable.hpp"
 #include "../math/uniform_variable.hpp"
@@ -105,7 +106,17 @@ public:
   /**
    * @brief
    */
-  void run(bool highVerbose);
+  /**
+   * @brief Runs the simulation.
+    * @param outputPath If empty, disables detailed per-period report output.
+    *                  If it points to a directory (no extension), the report is
+    *                  written to "<outputPath>/period_report.txt".
+    *                  If it points to a file (has an extension), the report is
+    *                  written exactly to that file path.
+    *
+    *                  Parent directories are created if necessary.
+   */
+    void run(const std::string& outputPath);
 
   /**
    * @brief
@@ -286,7 +297,7 @@ private:
   /**
    * @brief
    */
-  void printRow(bool highVerbose);
+  void printRow(const std::string& reportFilePath);
   /**
    * @brief
    */

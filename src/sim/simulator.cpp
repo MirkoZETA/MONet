@@ -386,16 +386,39 @@ void Simulator::initializeDemands(void) {
   }
 }
 void Simulator::run(void) {
-    run(false);
+    run("");
 }
-void Simulator::run(bool highVerbose) {
-    printInitialInfo();
-    
-    while (!this->events.empty() && this->currentPeriod < this->numberOfPeriods) {
-        eventRoutine();
-        printRow(highVerbose);
+void Simulator::run(const std::string& outputPath) {
+  printInitialInfo();
+
+  std::string reportFilePath;
+  if (!outputPath.empty()) {
+    const std::filesystem::path outPath(outputPath);
+    const std::filesystem::path reportPath =
+        outPath.has_extension() ? outPath : (outPath / "period_report.txt");
+
+    const std::filesystem::path parentDir = reportPath.parent_path();
+    if (!parentDir.empty()) {
+      std::error_code ec;
+      std::filesystem::create_directories(parentDir, ec); // no-op if exists
+      if (ec) {
+        throw std::runtime_error(
+            "Could not create output directory '" + parentDir.string() + "': " + ec.message());
+      }
+      if (!std::filesystem::exists(parentDir) || !std::filesystem::is_directory(parentDir)) {
+        throw std::runtime_error(
+            "Output path '" + parentDir.string() + "' is not a directory.");
+      }
     }
-    printFinalInfo();
+
+    reportFilePath = reportPath.string();
+  }
+
+  while (!this->events.empty() && this->currentPeriod < this->numberOfPeriods) {
+    eventRoutine();
+    printRow(reportFilePath);
+  }
+  printFinalInfo();
 }
 void Simulator::eventRoutine() {
   this->currentEvent = this->events.front();
@@ -553,9 +576,9 @@ void Simulator::printInitialInfo() {
   }
   else {
     std::cout << fns::colors::BOLD << std::setw(20) << "Growth Rate:" << fns::colors::RESET;
-    std::cout << std::setw(30) << (this->baseGrowthRate) << "\n";
+    std::cout << std::setw(30) << std::fixed << std::setprecision(2) << (this->baseGrowthRate) << "\n";
     std::cout << fns::colors::BOLD << std::setw(20) << "Std deviation:" << fns::colors::RESET;
-    std::cout << std::setw(30) << this->growthRateStdDev << "\n";
+    std::cout << std::setw(30) << std::fixed << std::setprecision(2) << this->growthRateStdDev << "\n";
   }
   
 
@@ -592,7 +615,7 @@ void Simulator::printInitialInfo() {
   this->startingTime = std::chrono::high_resolution_clock::now();
 }
 
-void Simulator::printRow(bool highVerbose) {
+void Simulator::printRow(const std::string& reportFilePath) {
   // Calculate elapsed time
   this->checkTime = std::chrono::high_resolution_clock::now();
   this->timeDuration = std::chrono::duration_cast<std::chrono::duration<double>>(
@@ -665,7 +688,7 @@ void Simulator::printRow(bool highVerbose) {
           for (int modeIndex = 0; modeIndex < fiber.get()->getNumberOfModes(coreIndex, band); modeIndex++) {
             // Per slot
             for (int slotIndex = 0; slotIndex < fiber.get()->getNumberOfSlots(coreIndex, band, modeIndex); slotIndex++) {
-              if (fiber.get()->getSlot(coreIndex, band, modeIndex, slotIndex)) {
+              if (fiber.get()->getSlot(coreIndex, band, modeIndex, slotIndex) != -1) {
                 usedSlots++;
               }
               totalSlots++;
@@ -682,7 +705,7 @@ void Simulator::printRow(bool highVerbose) {
   std::cout << std::setw(13) << this->controller.get()->getConnections().size() << " |";
   std::cout << std::setw(21) << std::fixed << std::setprecision(2) << totalRequired / 1000.0 << " |";
   std::cout << std::setw(23) << std::fixed << std::setprecision(2) << totalAllocated / 1000.0 << " |";
-  std::cout << std::setw(13) << std::fixed << std::setprecision(1) << utilization << " |";
+  std::cout << std::setw(13) << std::fixed << std::setprecision(2) << utilization << " |";
   
   // Color-code underprovisioning: green (0.0%), yellow (0.1-20%), orange (20-50%), bright red (50-80%), dark red (>80%)
   if (underProvisioningRatio == 0.0) {
@@ -711,29 +734,8 @@ void Simulator::printRow(bool highVerbose) {
   std::cout << "\n";
 
   // Generate detailed report if verbose mode is enabled
-  if (highVerbose) {
-
-    // Create results directory if it doesn't exist
-    std::filesystem::path outDir = std::filesystem::path("results");
-    std::error_code ec;
-    std::filesystem::create_directories(outDir, ec); // no-op if exists
-
-    if (ec) {
-      std::cerr << "Warning: Could not create results directory '" << outDir.string()
-                << "': " << ec.message() << "\n";
-      return; // Skip file output if directory creation fails
-    }
-    
-    // Guard against a path that exists but isn't a directory
-    if (!std::filesystem::exists(outDir) || !std::filesystem::is_directory(outDir)) {
-      std::cerr << "Warning: Path '" << outDir.string()
-                << "' is not a directory.\n";
-      return;
-    }
-
-    // Define output file path
-    std::filesystem::path filePath = outDir / "period_report.txt";
-
+  if (!reportFilePath.empty()) {
+    const std::filesystem::path filePath(reportFilePath);
     // Open file for appending
     std::ofstream outFile(filePath, std::ios::app);
     if (!outFile.is_open()) {

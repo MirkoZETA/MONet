@@ -100,7 +100,7 @@ BEGIN_ALLOC_FUNCTION(FirstFit_100G)
 							for (size_t l = 0; l < GET_NUM_LINKS(SRC, DST, r); l++) {
 								// Now we OR the slots of this link with the totalSlots vector
 								for (size_t s = 0; s < minSlots; s++) {
-									totalSlots[s] = totalSlots[s] | GET_SLOT(SRC, DST, r, l, selectedFibersIdx[l], c, band, m, s);
+									totalSlots[s] = totalSlots[s] | (GET_SLOT(SRC, DST, r, l, selectedFibersIdx[l], c, band, m, s) != -1);
 								} // Next slot
 							} // Next link
 
@@ -128,25 +128,30 @@ BEGIN_ALLOC_FUNCTION(FirstFit_100G)
 									auto newConnectionMirror = NEW_CONNECTION(bitRate, DST, SRC);
 
 									// Populate the connection with the route data
-									for (size_t l = 0; l < GET_NUM_LINKS(SRC, DST, r); l++) {
+										const size_t numLinks = GET_NUM_LINKS(SRC, DST, r);
+										for (size_t l = 0; l < numLinks; l++) {
+											auto linkFwd = GET_LINK_AT(SRC, DST, r, l);
+											ADD_LINK_TO_CONNECTION(/*connection object=*/newConnection,
+															 /*linkId=*/linkFwd,
+															 /*fiber=*/selectedFibersIdx[l],
+															 /*core=*/c, /*band=*/band, /*mode=*/m,
+															 /*startSlot=*/currentSlotIndex,
+															 /*len=*/requiredSlots);
+										}
 
-										auto linkIdFwd = GET_LINK_AT(SRC, DST, r, l);
-										ADD_LINK_TO_CONNECTION(/*connection object=*/newConnection,
-																					 /*linkId=*/linkIdFwd,
-																					 /*fiber=*/selectedFibersIdx[l],
-																					 /*core=*/c, /*band=*/band, /*mode=*/m,
-																					 /*startSlot=*/currentSlotIndex,
-																					 /*len=*/requiredSlots);
-
-										linkIdFwd = GET_LINK_AT(DST, SRC, r, l);
-										// For the reverse connection, we use the same slots, core, mode, band
-										ADD_LINK_TO_CONNECTION(/*connection object=*/newConnectionMirror,
-																					 /*linkId=*/linkIdFwd,
-																					 /*fiber=*/selectedFibersIdx[l],
-																					 /*core=*/c, /*band=*/band, /*mode=*/m,
-																					 /*startSlot=*/currentSlotIndex,
-																					 /*len=*/requiredSlots);
-									}
+										// Mirror: reverse the forward hops and map each hop to its opposite-direction link.
+										for (size_t mirrorIdx = 0; mirrorIdx < numLinks; ++mirrorIdx) {
+											const size_t fwdIdx = numLinks - 1 - mirrorIdx;
+											auto linkFwd = GET_LINK_AT(SRC, DST, r, fwdIdx);
+											auto linkRev = this->network->getLink(linkFwd->getDst(), linkFwd->getSrc());
+											REQUIRE(linkRev);
+											ADD_LINK_TO_CONNECTION(/*connection object=*/newConnectionMirror,
+															 /*linkId=*/linkRev,
+															 /*fiber=*/selectedFibersIdx[fwdIdx],
+															 /*core=*/c, /*band=*/band, /*mode=*/m,
+															 /*startSlot=*/currentSlotIndex,
+															 /*len=*/requiredSlots);
+										}
 									// Allocate the connections
 									ALLOCATE_CONNECTION(newConnection);
 									ALLOCATE_CONNECTION(newConnectionMirror);
@@ -280,15 +285,16 @@ TEST_CASE("Run simple Simulation")
 	s.setBaseGrowthRate(0.29);
 	s.init();
 
-	// Currently writting to "<cwd>/results/period_report.txt":
-	const std::filesystem::path out = std::filesystem::path("results") / "period_report.txt";
+	const std::filesystem::path outputFolder = std::filesystem::path("results") / "test_simulator";
+	// Verbose output is written to "<outputFolder>/period_report.txt"
+	const std::filesystem::path out = outputFolder / "period_report.txt";
 
 	// Clean old file to avoid false positives
 	std::error_code ec;
 	std::filesystem::remove(out, ec); // ignore errors if it doesn't exist
 
 	// Run the simulation (with verbose output)
-	CHECK_NOTHROW(s.run(true));
+	CHECK_NOTHROW(s.run(outputFolder.string()));
 
 	// Check existence, regularity, and non-zero size of the output file
 	REQUIRE(std::filesystem::exists(out));
@@ -442,7 +448,7 @@ BEGIN_ALLOC_FUNCTION(FirstFit_100G_MF)
 								for (size_t l = 0; l < GET_NUM_LINKS(SRC, DST, r); l++) {
 									// Now we OR the slots of this link with the totalSlots vector
 									for (size_t s = 0; s < minSlots; s++) {
-										totalSlots[s] = totalSlots[s] | GET_SLOT(SRC, DST, r, l, selectedFibersIdx[l], c, band, m, s);
+										totalSlots[s] = totalSlots[s] | (GET_SLOT(SRC, DST, r, l, selectedFibersIdx[l], c, band, m, s) != -1);
 									} // Next slot
 								} // Next link
 
@@ -468,27 +474,30 @@ BEGIN_ALLOC_FUNCTION(FirstFit_100G_MF)
 										// we create a connection object (two if working with symmetric demands)
 										auto newConnection = NEW_CONNECTION(bitRate, SRC, DST);
 										auto newConnectionMirror = NEW_CONNECTION(bitRate, DST, SRC);
-										auto selectedFibersIdxMirror = inverseVector(selectedFibersIdx);
 
 										// Populate the connection with the route data
-										for (size_t l = 0; l < GET_NUM_LINKS(SRC, DST, r); l++) {
-
-											auto linkIdFwd = GET_LINK_AT(SRC, DST, r, l);
+										const size_t numLinks = GET_NUM_LINKS(SRC, DST, r);
+										for (size_t l = 0; l < numLinks; l++) {
+											auto linkFwd = GET_LINK_AT(SRC, DST, r, l);
 											ADD_LINK_TO_CONNECTION(/*connection object=*/newConnection,
-																						/*linkId=*/linkIdFwd,
-																						/*fiber=*/selectedFibersIdx[l],
-																						/*core=*/c, /*band=*/band, /*mode=*/m,
-																						/*startSlot=*/currentSlotIndex,
-																						/*len=*/requiredSlots);
+															/*linkId=*/linkFwd,
+															/*fiber=*/selectedFibersIdx[l],
+															/*core=*/c, /*band=*/band, /*mode=*/m,
+															/*startSlot=*/currentSlotIndex,
+															/*len=*/requiredSlots);
+										}
 
-											auto linkIdMirror = GET_LINK_AT(DST, SRC, r, l);
-											// For the reverse connection, we use the same slots, core, mode, band
+										for (size_t mirrorIdx = 0; mirrorIdx < numLinks; ++mirrorIdx) {
+											const size_t fwdIdx = numLinks - 1 - mirrorIdx;
+											auto linkFwd = GET_LINK_AT(SRC, DST, r, fwdIdx);
+											auto linkRev = this->network->getLink(linkFwd->getDst(), linkFwd->getSrc());
+											REQUIRE(linkRev);
 											ADD_LINK_TO_CONNECTION(/*connection object=*/newConnectionMirror,
-																						/*linkId=*/linkIdMirror,
-																						/*fiber=*/selectedFibersIdxMirror[l],
-																						/*core=*/c, /*band=*/band, /*mode=*/m,
-																						/*startSlot=*/currentSlotIndex,
-																						/*len=*/requiredSlots);
+															/*linkId=*/linkRev,
+															/*fiber=*/selectedFibersIdx[fwdIdx],
+															/*core=*/c, /*band=*/band, /*mode=*/m,
+															/*startSlot=*/currentSlotIndex,
+															/*len=*/requiredSlots);
 										}
 										// Allocate the connections
 										ALLOCATE_CONNECTION(newConnection);
@@ -519,7 +528,7 @@ TEST_CASE("Run Simulation with Multi-Fiber") {
 	s.init();
 
 	// Run the simulation
-	CHECK_NOTHROW(s.run(false));
+	CHECK_NOTHROW(s.run(""));
 }
 
 BEGIN_CALLBACK_FUNCTION(AddFibersCallback)
@@ -548,7 +557,7 @@ TEST_CASE("Run Simulation with Fiber Addition")
 	s.init();
 
 	// Run the simulation
-	s.run(false);
+	s.run("");
 }
 
 TEST_CASE("Build & init with all JSON files (simple)")
@@ -562,7 +571,7 @@ TEST_CASE("Build & init with all JSON files (simple)")
     CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
     CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
     CHECK_NOTHROW(s.init());
-		CHECK_NOTHROW(s.run(false));
+		CHECK_NOTHROW(s.run(""));
   }
 
 	// DT-50
@@ -573,7 +582,7 @@ TEST_CASE("Build & init with all JSON files (simple)")
 	CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
 	CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
 	CHECK_NOTHROW(s.init());
-	CHECK_NOTHROW(s.run(false));
+		CHECK_NOTHROW(s.run(""));
   }
 
   // EURO-16
@@ -584,7 +593,7 @@ TEST_CASE("Build & init with all JSON files (simple)")
     CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
     CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
     CHECK_NOTHROW(s.init());
-		CHECK_NOTHROW(s.run(false));
+		CHECK_NOTHROW(s.run(""));
   }
 
   // MCF example
@@ -595,7 +604,7 @@ TEST_CASE("Build & init with all JSON files (simple)")
     CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
     CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
     CHECK_NOTHROW(s.init());
-		CHECK_NOTHROW(s.run(false));
+		CHECK_NOTHROW(s.run(""));
   }
 
   // NSFNet_MB (uses NSFNet_routes.json as in your list)
@@ -606,7 +615,7 @@ TEST_CASE("Build & init with all JSON files (simple)")
     CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
     CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
     CHECK_NOTHROW(s.init());
-		CHECK_NOTHROW(s.run(false));
+		CHECK_NOTHROW(s.run(""));
   }
 
   // NSFNet
@@ -617,7 +626,7 @@ TEST_CASE("Build & init with all JSON files (simple)")
     CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
     CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
     CHECK_NOTHROW(s.init());
-		CHECK_NOTHROW(s.run(false));
+		CHECK_NOTHROW(s.run(""));
   }
 
   // UKNet
@@ -628,6 +637,172 @@ TEST_CASE("Build & init with all JSON files (simple)")
     CHECK_NOTHROW(USE_ALLOC_FUNCTION(FirstFit_100G, s));
     CHECK_NOTHROW(USE_CALLBACK_FUNCTION(TestCallback, s));
     CHECK_NOTHROW(s.init());
-		CHECK_NOTHROW(s.run(false));
+		CHECK_NOTHROW(s.run(""));
+  }
+}
+
+/**
+ * Test that verifies slots are actually marked after ALLOCATE_CONNECTION
+ * and that utilization calculation correctly counts used slots.
+ * 
+ * This test specifically checks:
+ * 1. Slots are initialized to -1 (free)
+ * 2. After allocation, slots are set to connection ID (positive int)
+ * 3. Utilization calculation correctly counts slots != -1 as used
+ */
+TEST_CASE("Slot marking and utilization calculation") {
+  Simulator s{"../examples/example_networks/5_node_example.json",
+              "../examples/example_bitrates/basic_example.json", 5};
+
+  USE_ALLOC_FUNCTION(FirstFit_100G, s);
+  s.setNumberOfPeriods(1);
+  s.init();
+
+  auto network = s.getController()->getNetwork();
+
+  // SECTION 1: Verify slots are initialized to -1 before allocation
+  SECTION("Slots initialized to -1 before allocation") {
+    auto link = network->getLink(0);
+    REQUIRE(link->getFibers().size() > 0);
+    auto fiber = link->getFiber(0);
+    
+    for (auto band : fiber->getBands()) {
+      for (int c = 0; c < fiber->getNumberOfCores(); c++) {
+        for (int m = 0; m < fiber->getNumberOfModes(c, band); m++) {
+          for (int slot = 0; slot < std::min(10, fiber->getNumberOfSlots(c, band, m)); slot++) {
+            CHECK(fiber->getSlot(c, band, m, slot) == -1);
+          }
+        }
+      }
+    }
+  }
+
+  // SECTION 2: Run allocation and verify slots are marked
+  SECTION("Slots marked after allocation") {
+		s.run("");
+
+    // Count connections
+    auto& connections = s.getController()->getConnections();
+    REQUIRE(connections.size() > 0);
+
+    // Verify at least some slots are marked (not -1)
+    int usedSlots = 0;
+    int totalSlots = 0;
+    for (auto link : network->getLinks()) {
+      for (auto fiber : link->getFibers()) {
+        for (auto band : fiber->getBands()) {
+          for (int c = 0; c < fiber->getNumberOfCores(); c++) {
+            for (int m = 0; m < fiber->getNumberOfModes(c, band); m++) {
+              for (int slot = 0; slot < fiber->getNumberOfSlots(c, band, m); slot++) {
+                totalSlots++;
+                if (fiber->getSlot(c, band, m, slot) != -1) {
+                  usedSlots++;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    INFO("Total slots: " << totalSlots);
+    INFO("Used slots: " << usedSlots);
+    INFO("Connections: " << connections.size());
+    
+    // With connections allocated, we MUST have some used slots
+    CHECK(usedSlots > 0);
+    
+    // Utilization should be > 0 if we have connections
+    double utilization = (totalSlots > 0) ? (100.0 * usedSlots / totalSlots) : 0.0;
+    CHECK(utilization > 0.0);
+  }
+}
+
+/**
+ * Test that verifies the Network::useSlots() method actually marks slots
+ */
+TEST_CASE("Network::useSlots marks slots with connection ID") {
+  Network net("../examples/example_networks/5_node_example.json");
+  
+  // Get first link and fiber
+  auto link = net.getLink(0);
+  REQUIRE(link->getFibers().size() > 0);
+  auto fiber = link->getFiber(0);
+  
+  // Find first available band
+  auto bands = fiber->getBands();
+  REQUIRE(bands.size() > 0);
+  auto band = bands[0];
+  
+  int connectionId = 42;
+  int slotFrom = 0;
+  int slotTo = 5;
+  
+  // Verify slots are -1 before
+  for (int s = slotFrom; s < slotTo; s++) {
+    CHECK(fiber->getSlot(0, band, 0, s) == -1);
+  }
+  
+  // Use slots
+  net.useSlots(link->getId(), 0, 0, band, 0, slotFrom, slotTo, connectionId);
+  
+  // Verify slots are now marked with connection ID
+  for (int s = slotFrom; s < slotTo; s++) {
+    CHECK(fiber->getSlot(0, band, 0, s) == connectionId);
+  }
+  
+  // Verify isSlotUsed returns true (1)
+  for (int s = slotFrom; s < slotTo; s++) {
+    CHECK(net.isSlotUsed(link->getId(), 0, 0, band, 0, s) == 1);
+  }
+  
+  // Verify slots outside range are still -1
+  CHECK(fiber->getSlot(0, band, 0, slotTo) == -1);
+  CHECK(net.isSlotUsed(link->getId(), 0, 0, band, 0, slotTo) == 0);
+}
+
+/**
+ * Test that verifies Allocator::alloc marks slots via Network::useSlots
+ */
+TEST_CASE("Allocator::alloc marks slots via Network::useSlots") {
+  Network net("../examples/example_networks/5_node_example.json");
+  
+  // Create allocator with the network
+  Allocator alloc(std::make_shared<Network>(net));
+  
+  // Create bitrate 
+  auto bitRate = std::make_shared<BitRate>(100.0);
+  bitRate->addModulation("BPSK", {{fns::Band::C, 8}}, {{fns::Band::C, 5520}});
+  int reqSlots = bitRate->getRequiredSlots(0, fns::Band::C);
+  
+  // Get first link
+  auto link = alloc.getNetwork()->getLink(0);
+  int linkId = link->getId();
+  auto fiber = link->getFiber(0);
+  auto bands = fiber->getBands();
+  REQUIRE(bands.size() > 0);
+  auto band = bands[0];
+  
+  // Create connection (ID will be assigned by allocator during alloc)
+  Connection conn(bitRate, 0, 1);
+  // Note: conn.getId() returns -1 here, but allocator generates its own ID
+  
+  // Add link info to connection
+  conn.addLink(linkId, 0, 0, band, 0, 0, reqSlots);
+  
+  // Verify slots before allocation
+  for (int s = 0; s < reqSlots; s++) {
+    CHECK(fiber->getSlot(0, band, 0, s) == -1);
+  }
+  
+  // Allocate via allocator
+  alloc.alloc(conn);
+  
+  // Verify slots after allocation - should be marked with a positive ID (not -1)
+  // The allocator generates its own temporary IDs for marking slots
+  for (int s = 0; s < reqSlots; s++) {
+    int slotValue = fiber->getSlot(0, band, 0, s);
+    CHECK(slotValue > 0);  // Must be positive (marked as used)
+    CHECK(slotValue != -1);  // Must not be -1 (free)
   }
 }
