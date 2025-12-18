@@ -40,7 +40,7 @@ class NormalVariable : public RandomVariable {
 
  private:
   double currentValue;
-  std::normal_distribution<double> dist;
+  std::lognormal_distribution<double> dist;
 };
 
 #endif
